@@ -1,48 +1,235 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n-nodes-dalil-ai
 
-# n8n-nodes-starter
+This is an n8n community node for integrating with Dalil AI CRM. It provides comprehensive people management capabilities with dynamic custom field support.
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
+![n8n.io - Workflow Automation](https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png)
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+## Installation
 
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+### Community Nodes (Recommended)
+
+1. Go to **Settings > Community Nodes** in your n8n instance
+2. Select **Install**
+3. Enter `n8n-nodes-dalil-ai` in **Package Name**
+4. Agree to the risks and select **Install**
+
+After installation, you'll have access to the **Dalil AI** node.
+
+### Manual Installation
+
+To get started, install the package:
+
+```bash
+npm install n8n-nodes-dalil-ai
+```
+
+For n8n running locally or in Docker:
+```bash
+cd ~/.n8n/nodes
+npm install n8n-nodes-dalil-ai
+```
+
+Restart n8n to register the new nodes.
 
 ## Prerequisites
 
-You need the following installed on your development machine:
+- Dalil AI API running (default: `http://localhost:3000`)
+- Valid Dalil AI API key with Bearer token authentication
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 20. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  npm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+## Configuration
 
-## Using this starter
+### 1. Credentials Setup
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+1. In n8n, go to **Credentials** and create a new **Dalil AI API** credential
+2. Enter your API key in the **API Key** field
+3. Test the connection to ensure it's working
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+### 2. API Base URL
 
-## More information
+The node is configured to use `http://localhost:3000` by default. If your Dalil AI API is running on a different URL, you'll need to update the base URL in the node configuration.
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+## Supported Operations
+
+### People Resource
+
+| Operation | Description |
+|-----------|-------------|
+| **Create** | Create a new person with required fields (firstName, lastName, primaryEmail) |
+| **Create Many** | Batch create multiple people using JSON array |
+| **Update** | Update an existing person by ID |
+| **Delete** | Delete a person by ID |
+| **Get** | Retrieve a single person by ID with depth control |
+| **Get Many** | Retrieve multiple people with filtering and pagination |
+
+## Features
+
+### ✅ **Dynamic Custom Fields**
+- Automatically loads custom fields from Dalil AI metadata API
+- Only shows fields marked as `isCustom: true` and `isActive: true`
+- Seamlessly integrates with standard fields
+
+### ✅ **Complex Data Types**
+- **Names**: firstName, lastName structure
+- **Emails**: primaryEmail with additionalEmails array
+- **Phones**: Country codes, calling codes, additional numbers
+- **Social Links**: LinkedIn and X (Twitter) with labels and URLs
+- **Custom Properties**: Dynamic key-value pairs
+
+### ✅ **Advanced Query Options**
+- **Depth Control**: 0, 1, or 2 levels of nested data
+- **Filtering**: Complex field-based filters
+- **Sorting**: Multi-field sorting with direction control
+- **Pagination**: Cursor-based with `startingAfter`/`endingBefore`
+
+## Usage Examples
+
+### Creating a Person
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe", 
+  "primaryEmail": "john.doe@example.com",
+  "additionalFields": {
+    "jobTitle": "Software Engineer",
+    "city": "New York",
+    "score": 85,
+    "customPropertiesUi": {
+      "customPropertiesValues": [
+        {
+          "property": "intro",
+          "value": "Experienced developer"
+        },
+        {
+          "property": "workPreference",
+          "value": ["REMOTE_WORK", "HYBRID"]
+        }
+      ]
+    }
+  }
+}
+```
+
+### Batch Creating People
+
+```json
+[
+  {
+    "name": {"firstName": "Alice", "lastName": "Smith"},
+    "emails": {"primaryEmail": "alice@example.com"},
+    "jobTitle": "Product Manager"
+  },
+  {
+    "name": {"firstName": "Bob", "lastName": "Wilson"},
+    "emails": {"primaryEmail": "bob@example.com"},
+    "city": "San Francisco"
+  }
+]
+```
+
+### Advanced Filtering
+
+```
+filter: firstName[eq]:John,score[gt]:50,city[in]:["New York","San Francisco"]
+orderBy: createdAt[DescNullsLast],score[AscNullsFirst]
+```
+
+## API Endpoints Used
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/rest/people` | GET | Retrieve people with filtering |
+| `/rest/people` | POST | Create single person |
+| `/rest/people/{id}` | GET | Get person by ID |
+| `/rest/people/{id}` | PATCH | Update person |
+| `/rest/people/{id}` | DELETE | Delete person |
+| `/rest/batch/people` | POST | Create multiple people |
+| `/rest/metadata/standard-id/{id}` | GET | Load custom field metadata |
+
+**People Standard ID**: `20202020-e674-48e5-a542-72570eee7213`
+
+## Testing the Node
+
+### 1. Start Your Dalil AI API
+```bash
+# Ensure your API is running on http://localhost:3000
+curl http://localhost:3000/rest/people
+```
+
+### 2. Test in n8n Workflow
+
+1. **Create a new workflow**
+2. **Add Dalil AI node**
+3. **Configure credentials** with your API key
+4. **Test operations**:
+   - Start with **Get Many** to verify connection
+   - Try **Create** with minimal data
+   - Test **Custom Properties** loading
+
+### 3. Verify Custom Fields Loading
+
+1. Go to **Create** operation
+2. Open **Additional Fields**
+3. Check **Custom Properties** section
+4. Verify dropdown loads your custom fields from API
+
+## Troubleshooting
+
+### Common Issues
+
+**❌ "Authentication failed"**
+- Verify API key is correct
+- Check if API is running on `http://localhost:3000`
+- Ensure Bearer token format is accepted
+
+**❌ "Custom properties not loading"**
+- Check metadata API endpoint: `/rest/metadata/standard-id/20202020-e674-48e5-a542-72570eee7213`
+- Verify fields have `isCustom: true` and `isActive: true`
+- Check API authentication for metadata endpoint
+
+**❌ "Node not appearing in n8n"**
+- Restart n8n after installation
+- Check if package is installed in correct directory
+- Verify `package.json` includes the node
+
+### Debug Mode
+
+Enable debug logs in n8n to see API requests:
+```bash
+export N8N_LOG_LEVEL=debug
+```
+
+## Development
+
+### Building the Package
+
+```bash
+npm run build
+```
+
+### Running in Development
+
+```bash
+npm run dev
+```
+
+### Linting and Formatting
+
+```bash
+npm run lint
+npm run format
+```
+
+## API Documentation
+
+For complete API documentation, visit: [https://docs.dalil-ai.com](https://docs.dalil-ai.com)
+
+## Support
+
+- **GitHub Issues**: [Report bugs and feature requests](https://github.com/dalil-ai/n8n-nodes-dalil-ai/issues)
+- **Documentation**: [Dalil AI API Docs](https://docs.dalil-ai.com)
+- **Email**: support@dalil-ai.com
 
 ## License
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+[MIT](LICENSE.md)

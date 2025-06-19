@@ -1,0 +1,22 @@
+{
+	"node": "n8n-nodes-dalil-ai.DalilAI",
+	"nodeVersion": "1.0",
+	"codex": {
+		"categories": ["CRM"],
+		"subcategories": {
+			"CRM": ["People Management"]
+		},
+		"resources": {
+			"primaryDocumentation": [
+				{
+					"url": "https://docs.dalil-ai.com"
+				}
+			],
+			"credentialDocumentation": [
+				{
+					"url": "https://docs.dalil-ai.com/authentication"
+				}
+			]
+		}
+	}
+} 
