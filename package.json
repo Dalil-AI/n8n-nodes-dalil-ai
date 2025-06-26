@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-dalil-ai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "n8n community node for Dalil AI CRM integration",
   "keywords": [
     "n8n-community-node-package",
@@ -39,7 +39,8 @@
       "dist/credentials/DalilAiApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/DalilAI/DalilAI.node.js"
+      "dist/nodes/DalilAI/DalilAI.node.js",
+      "dist/nodes/DalilAI/DalilAITrigger.node.js"
     ]
   },
   "devDependencies": {

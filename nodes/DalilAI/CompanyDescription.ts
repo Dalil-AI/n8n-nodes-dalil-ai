@@ -1,6 +1,6 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-export const peopleOperations: INodeProperties[] = [
+export const companyOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -8,97 +8,82 @@ export const peopleOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 			},
 		},
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create a new person',
-				action: 'Create a person',
+				description: 'Create a new company',
+				action: 'Create a company',
 			},
 			{
 				name: 'Create Many',
 				value: 'createMany',
-				description: 'Create multiple people',
-				action: 'Create many people',
+				description: 'Create multiple companies',
+				action: 'Create many companies',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete a person',
-				action: 'Delete a person',
+				description: 'Delete a company',
+				action: 'Delete a company',
 			},
 			{
 				name: 'Get',
 				value: 'get',
-				description: 'Get a person',
-				action: 'Get a person',
+				description: 'Get a company',
+				action: 'Get a company',
 			},
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Get many people',
-				action: 'Get many people',
+				description: 'Get many companies',
+				action: 'Get many companies',
 			},
 			{
 				name: 'Update',
 				value: 'update',
-				description: 'Update a person',
-				action: 'Update a person',
+				description: 'Update a company',
+				action: 'Update a company',
 			},
 		],
 		default: 'create',
 	},
 ];
 
-export const peopleFields: INodeProperties[] = [
+export const companyFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
-	/*                                people:create                               */
+	/*                                company:create                              */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'First Name',
-		name: 'firstName',
+		displayName: 'Company Name',
+		name: 'name',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['create'],
 			},
 		},
 		default: '',
-		description: 'The first name of the person',
+		description: 'The company name',
 	},
 	{
-		displayName: 'Last Name',
-		name: 'lastName',
+		displayName: 'Domain Name URL',
+		name: 'domainUrl',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['create'],
 			},
 		},
 		default: '',
-		description: 'The last name of the person',
-	},
-	{
-		displayName: 'Primary Email',
-		name: 'primaryEmail',
-		type: 'string',
-		placeholder: 'name@email.com',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The primary email address of the person',
+		description: 'The company website URL',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -108,104 +93,160 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['create'],
 			},
 		},
 		options: [
-			// Default fields (isCustom: false) from the API
 			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
+				displayName: 'Domain Name Label',
+				name: 'domainLabel',
 				type: 'string',
 				default: '',
-				description: 'URL to the person\'s avatar image',
+				description: 'Label for the domain name',
 			},
-
 			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
+				displayName: 'Industry',
+				name: 'industry',
 				type: 'string',
-				typeOptions: {
-					multipleValues: true,
-				},
-				default: [],
-				description: 'Additional email addresses',
+				default: '',
+				description: 'The company industry',
 			},
-
-
+			{
+				displayName: 'Employees',
+				name: 'employees',
+				type: 'number',
+				typeOptions: {
+					minValue: 1,
+				},
+				default: 1,
+				description: 'Number of employees in the company',
+			},
 			{
 				displayName: 'LinkedIn URL',
 				name: 'linkedinUrl',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile URL',
+				description: 'Company LinkedIn profile URL',
 			},
 			{
 				displayName: 'LinkedIn Label',
 				name: 'linkedinLabel',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile label',
+				description: 'Company LinkedIn profile label',
 			},
 			{
 				displayName: 'X (Twitter) URL',
 				name: 'xUrl',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile URL',
+				description: 'Company X (Twitter) profile URL',
 			},
 			{
 				displayName: 'X (Twitter) Label',
 				name: 'xLabel',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile label',
+				description: 'Company X (Twitter) profile label',
 			},
 			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
+				displayName: 'Annual Recurring Revenue Amount',
+				name: 'arrAmount',
+				type: 'number',
+				typeOptions: {
+					minValue: 0,
+				},
+				default: 0,
+				description: 'Annual Recurring Revenue amount in micros',
 			},
 			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
+				displayName: 'Currency Code',
+				name: 'currencyCode',
 				type: 'string',
-				default: '',
-				description: 'Primary phone number',
+				default: 'USD',
+				description: 'Currency code for ARR (e.g., USD, EUR)',
 			},
 			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
+				displayName: 'Address Street 1',
+				name: 'addressStreet1',
 				type: 'string',
 				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
+				description: 'Company address street line 1',
 			},
 			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
+				displayName: 'Address Street 2',
+				name: 'addressStreet2',
 				type: 'string',
 				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
+				description: 'Company address street line 2',
 			},
 			{
-				displayName: 'City',
-				name: 'city',
+				displayName: 'Address City',
+				name: 'addressCity',
 				type: 'string',
 				default: '',
-				description: 'Person\'s city',
+				description: 'Company address city',
+			},
+			{
+				displayName: 'Address Postcode',
+				name: 'addressPostcode',
+				type: 'string',
+				default: '',
+				description: 'Company address postcode',
+			},
+			{
+				displayName: 'Address State',
+				name: 'addressState',
+				type: 'string',
+				default: '',
+				description: 'Company address state',
+			},
+			{
+				displayName: 'Address Country',
+				name: 'addressCountry',
+				type: 'string',
+				default: '',
+				description: 'Company address country',
+			},
+			{
+				displayName: 'Address Latitude',
+				name: 'addressLat',
+				type: 'number',
+				default: 0,
+				description: 'Company address latitude',
+			},
+			{
+				displayName: 'Address Longitude',
+				name: 'addressLng',
+				type: 'number',
+				default: 0,
+				description: 'Company address longitude',
+			},
+			{
+				displayName: 'Ideal Customer Profile',
+				name: 'idealCustomerProfile',
+				type: 'boolean',
+				default: false,
+				description: 'Whether the company is an ideal customer profile',
 			},
 
-
-
 			{
-				displayName: 'Company ID',
-				name: 'companyId',
+				displayName: 'Created By Source',
+				name: 'createdBySource',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCreatedBySourceOptions',
+				},
+				default: 'EMAIL',
+				description: 'Source of company creation',
+			},
+			{
+				displayName: 'Account Owner ID',
+				name: 'accountOwnerId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the account owner',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -226,7 +267,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -246,40 +287,40 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                               people:createMany                            */
+	/*                              company:createMany                            */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'People Data',
-		name: 'peopleData',
+		displayName: 'Companies Data',
+		name: 'companiesData',
 		type: 'json',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['createMany'],
 			},
 		},
 		default: '[]',
-		description: 'Array of people objects to create',
-		placeholder: '[{"name": {"firstName": "John", "lastName": "Doe"}, "emails": {"primaryEmail": "john@example.com"}}]',
+		description: 'Array of company objects to create',
+		placeholder: '[{"name": "Company Name", "domainName": {"primaryLinkUrl": "https://example.com"}}]',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:update                               */
+	/*                                company:update                              */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Company ID',
+		name: 'companyId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['update'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to update',
+		description: 'ID of the company to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -289,124 +330,215 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['update'],
 			},
 		},
 		options: [
 			{
-				displayName: 'First Name',
-				name: 'firstName',
+				displayName: 'Company Name',
+				name: 'name',
 				type: 'string',
 				default: '',
-				description: 'The first name of the person',
+				description: 'The company name',
 			},
 			{
-				displayName: 'Last Name',
-				name: 'lastName',
+				displayName: 'Domain Name URL',
+				name: 'domainUrl',
 				type: 'string',
 				default: '',
-				description: 'The last name of the person',
+				description: 'Company website URL',
 			},
 			{
-				displayName: 'Primary Email',
-				name: 'primaryEmail',
+				displayName: 'Domain Name Label',
+				name: 'domainLabel',
 				type: 'string',
 				default: '',
-				description: 'The primary email address',
-			},
-			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
-				type: 'string',
-				default: '',
-				description: 'URL to the person\'s avatar image',
+				description: 'Label for the domain name',
 			},
 
+
+
 			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
+				displayName: 'Industry',
+				name: 'industry',
 				type: 'string',
+				default: '',
+				description: 'The company industry',
+			},
+			{
+				displayName: 'Employees',
+				name: 'employees',
+				type: 'number',
 				typeOptions: {
-					multipleValues: true,
+					minValue: 1,
 				},
-				default: [],
-				description: 'Additional email addresses',
+				default: 1,
+				description: 'Number of employees in the company',
 			},
-
-
 			{
 				displayName: 'LinkedIn URL',
 				name: 'linkedinUrl',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile URL',
+				description: 'Company LinkedIn profile URL',
 			},
 			{
 				displayName: 'LinkedIn Label',
 				name: 'linkedinLabel',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile label',
+				description: 'Company LinkedIn profile label',
 			},
 			{
 				displayName: 'X (Twitter) URL',
 				name: 'xUrl',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile URL',
+				description: 'Company X (Twitter) profile URL',
 			},
 			{
 				displayName: 'X (Twitter) Label',
 				name: 'xLabel',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile label',
+				description: 'Company X (Twitter) profile label',
 			},
 			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
+				displayName: 'Annual Recurring Revenue Amount',
+				name: 'arrAmount',
+				type: 'number',
+				typeOptions: {
+					minValue: 0,
+				},
+				default: 0,
+				description: 'Annual Recurring Revenue amount in micros',
 			},
 			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
+				displayName: 'Currency Code',
+				name: 'currencyCode',
 				type: 'string',
 				default: '',
-				description: 'Primary phone number',
+				description: 'Currency code for ARR (e.g., USD, EUR)',
 			},
 			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
+				displayName: 'Address Street 1',
+				name: 'addressStreet1',
 				type: 'string',
 				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
+				description: 'Company address street line 1',
 			},
 			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
+				displayName: 'Address Street 2',
+				name: 'addressStreet2',
 				type: 'string',
 				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
+				description: 'Company address street line 2',
 			},
 			{
-				displayName: 'City',
-				name: 'city',
+				displayName: 'Address City',
+				name: 'addressCity',
 				type: 'string',
 				default: '',
-				description: 'Person\'s city',
+				description: 'Company address city',
+			},
+			{
+				displayName: 'Address Postcode',
+				name: 'addressPostcode',
+				type: 'string',
+				default: '',
+				description: 'Company address postcode',
+			},
+			{
+				displayName: 'Address State',
+				name: 'addressState',
+				type: 'string',
+				default: '',
+				description: 'Company address state',
+			},
+			{
+				displayName: 'Address Country',
+				name: 'addressCountry',
+				type: 'string',
+				default: '',
+				description: 'Company address country',
+			},
+			{
+				displayName: 'Address Latitude',
+				name: 'addressLat',
+				type: 'number',
+				default: 0,
+				description: 'Company address latitude',
+			},
+			{
+				displayName: 'Address Longitude',
+				name: 'addressLng',
+				type: 'number',
+				default: 0,
+				description: 'Company address longitude',
+			},
+			{
+				displayName: 'Ideal Customer Profile',
+				name: 'idealCustomerProfile',
+				type: 'boolean',
+				default: false,
+				description: 'Whether the company is an ideal customer profile',
 			},
 
-
-
 			{
-				displayName: 'Company ID',
-				name: 'companyId',
+				displayName: 'Created By Source',
+				name: 'createdBySource',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCreatedBySourceOptions',
+				},
+				default: 'EMAIL',
+				description: 'Source of company creation',
+			},
+			{
+				displayName: 'Account Owner ID',
+				name: 'accountOwnerId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the account owner',
+			},
+			{
+				displayName: 'Tagline',
+				name: 'tagline',
+				type: 'string',
+				default: '',
+				description: 'Company tagline',
+			},
+			{
+				displayName: 'Intro Video URL',
+				name: 'introVideoUrl',
+				type: 'string',
+				default: '',
+				description: 'Company intro video URL',
+			},
+			{
+				displayName: 'Intro Video Label',
+				name: 'introVideoLabel',
+				type: 'string',
+				default: '',
+				description: 'Company intro video label',
+			},
+			{
+				displayName: 'Work Policy',
+				name: 'workPolicy',
+				type: 'multiOptions',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkPolicyOptions',
+				},
+				default: [],
+				description: 'Company work policy options',
+			},
+			{
+				displayName: 'Visa Sponsorship',
+				name: 'visaSponsorship',
+				type: 'boolean',
+				default: false,
+				description: 'Whether the company offers visa sponsorship',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -427,7 +559,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -455,7 +587,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['update'],
 			},
 		},
@@ -463,39 +595,39 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:delete                               */
+	/*                                company:delete                              */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Company ID',
+		name: 'companyId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['delete'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to delete',
+		description: 'ID of the company to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:get                                  */
+	/*                                company:get                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Company ID',
+		name: 'companyId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['get'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to retrieve',
+		description: 'ID of the company to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -507,7 +639,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['get'],
 			},
 		},
@@ -515,7 +647,7 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:getAll                               */
+	/*                                company:getAll                              */
 	/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Return All',
@@ -523,7 +655,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['getAll'],
 			},
 		},
@@ -536,7 +668,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'number',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['getAll'],
 				returnAll: [false],
 			},
@@ -556,7 +688,7 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['company'],
 				operation: ['getAll'],
 			},
 		},
@@ -567,7 +699,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
-				placeholder: 'createdAt,firstName[DescNullsLast]',
+				placeholder: 'createdAt,name[DescNullsLast]',
 			},
 			{
 				displayName: 'Filter',
@@ -575,7 +707,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'firstName[eq]:John,score[gt]:5',
+				placeholder: 'name[eq]:CompanyName,score[gt]:5',
 			},
 			{
 				displayName: 'Depth',

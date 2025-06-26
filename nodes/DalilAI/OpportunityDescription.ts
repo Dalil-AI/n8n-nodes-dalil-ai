@@ -1,6 +1,6 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-export const peopleOperations: INodeProperties[] = [
+export const opportunityOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -8,97 +8,68 @@ export const peopleOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 			},
 		},
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create a new person',
-				action: 'Create a person',
+				description: 'Create a new opportunity',
+				action: 'Create an opportunity',
 			},
 			{
 				name: 'Create Many',
 				value: 'createMany',
-				description: 'Create multiple people',
-				action: 'Create many people',
+				description: 'Create multiple opportunities',
+				action: 'Create many opportunities',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete a person',
-				action: 'Delete a person',
+				description: 'Delete an opportunity',
+				action: 'Delete an opportunity',
 			},
 			{
 				name: 'Get',
 				value: 'get',
-				description: 'Get a person',
-				action: 'Get a person',
+				description: 'Get an opportunity',
+				action: 'Get an opportunity',
 			},
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Get many people',
-				action: 'Get many people',
+				description: 'Get many opportunities',
+				action: 'Get many opportunities',
 			},
 			{
 				name: 'Update',
 				value: 'update',
-				description: 'Update a person',
-				action: 'Update a person',
+				description: 'Update an opportunity',
+				action: 'Update an opportunity',
 			},
 		],
 		default: 'create',
 	},
 ];
 
-export const peopleFields: INodeProperties[] = [
+export const opportunityFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
-	/*                                people:create                               */
+	/*                               opportunity:create                           */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'First Name',
-		name: 'firstName',
+		displayName: 'Opportunity Name',
+		name: 'name',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['create'],
 			},
 		},
 		default: '',
-		description: 'The first name of the person',
-	},
-	{
-		displayName: 'Last Name',
-		name: 'lastName',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The last name of the person',
-	},
-	{
-		displayName: 'Primary Email',
-		name: 'primaryEmail',
-		type: 'string',
-		placeholder: 'name@email.com',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The primary email address of the person',
+		description: 'The opportunity name',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -108,104 +79,62 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['create'],
 			},
 		},
 		options: [
-			// Default fields (isCustom: false) from the API
 			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
-				type: 'string',
-				default: '',
-				description: 'URL to the person\'s avatar image',
-			},
-
-			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
-				type: 'string',
+				displayName: 'Amount',
+				name: 'amountMicros',
+				type: 'number',
 				typeOptions: {
-					multipleValues: true,
+					minValue: 0,
 				},
-				default: [],
-				description: 'Additional email addresses',
+				default: 0,
+				description: 'Opportunity amount in micros',
+			},
+			{
+				displayName: 'Currency Code',
+				name: 'currencyCode',
+				type: 'string',
+				default: 'USD',
+				description: 'Currency code for the amount (e.g., USD, EUR)',
 			},
 
 
 			{
-				displayName: 'LinkedIn URL',
-				name: 'linkedinUrl',
-				type: 'string',
+				displayName: 'Close Date',
+				name: 'closeDate',
+				type: 'dateTime',
 				default: '',
-				description: 'LinkedIn profile URL',
+				description: 'Opportunity close date',
 			},
 			{
-				displayName: 'LinkedIn Label',
-				name: 'linkedinLabel',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile label',
-			},
-			{
-				displayName: 'X (Twitter) URL',
-				name: 'xUrl',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile URL',
-			},
-			{
-				displayName: 'X (Twitter) Label',
-				name: 'xLabel',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile label',
-			},
-			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
-			},
-			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
-				type: 'string',
-				default: '',
-				description: 'Primary phone number',
-			},
-			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
-				type: 'string',
-				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
-			},
-			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
-				type: 'string',
-				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
-			},
-			{
-				displayName: 'City',
-				name: 'city',
-				type: 'string',
-				default: '',
-				description: 'Person\'s city',
+				displayName: 'Stage',
+				name: 'stage',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getOpportunityStageOptions',
+				},
+				default: 'DISCOVERY',
+				description: 'Opportunity stage',
 			},
 
 
-
+			{
+				displayName: 'Point of Contact ID',
+				name: 'pointOfContactId',
+				type: 'string',
+				default: '',
+				description: 'ID of the point of contact person',
+			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the associated company',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -226,7 +155,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -246,40 +175,40 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                               people:createMany                            */
+	/*                             opportunity:createMany                         */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'People Data',
-		name: 'peopleData',
+		displayName: 'Opportunities Data',
+		name: 'opportunitiesData',
 		type: 'json',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['createMany'],
 			},
 		},
 		default: '[]',
-		description: 'Array of people objects to create',
-		placeholder: '[{"name": {"firstName": "John", "lastName": "Doe"}, "emails": {"primaryEmail": "john@example.com"}}]',
+		description: 'Array of opportunity objects to create',
+		placeholder: '[{"name": "Opportunity Name", "amount": {"amountMicros": 100000, "currencyCode": "USD"}}]',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:update                               */
+	/*                               opportunity:update                           */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Opportunity ID',
+		name: 'opportunityId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['update'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to update',
+		description: 'ID of the opportunity to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -289,124 +218,70 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['update'],
 			},
 		},
 		options: [
 			{
-				displayName: 'First Name',
-				name: 'firstName',
+				displayName: 'Opportunity Name',
+				name: 'name',
 				type: 'string',
 				default: '',
-				description: 'The first name of the person',
+				description: 'The opportunity name',
 			},
 			{
-				displayName: 'Last Name',
-				name: 'lastName',
-				type: 'string',
-				default: '',
-				description: 'The last name of the person',
-			},
-			{
-				displayName: 'Primary Email',
-				name: 'primaryEmail',
-				type: 'string',
-				default: '',
-				description: 'The primary email address',
-			},
-			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
-				type: 'string',
-				default: '',
-				description: 'URL to the person\'s avatar image',
-			},
-
-			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
-				type: 'string',
+				displayName: 'Amount',
+				name: 'amountMicros',
+				type: 'number',
 				typeOptions: {
-					multipleValues: true,
+					minValue: 0,
 				},
-				default: [],
-				description: 'Additional email addresses',
-			},
-
-
-			{
-				displayName: 'LinkedIn URL',
-				name: 'linkedinUrl',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile URL',
+				default: 0,
+				description: 'Opportunity amount in micros',
 			},
 			{
-				displayName: 'LinkedIn Label',
-				name: 'linkedinLabel',
+				displayName: 'Currency Code',
+				name: 'currencyCode',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile label',
-			},
-			{
-				displayName: 'X (Twitter) URL',
-				name: 'xUrl',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile URL',
-			},
-			{
-				displayName: 'X (Twitter) Label',
-				name: 'xLabel',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile label',
-			},
-			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
-			},
-			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
-				type: 'string',
-				default: '',
-				description: 'Primary phone number',
-			},
-			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
-				type: 'string',
-				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
-			},
-			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
-				type: 'string',
-				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
-			},
-			{
-				displayName: 'City',
-				name: 'city',
-				type: 'string',
-				default: '',
-				description: 'Person\'s city',
+				description: 'Currency code for the amount (e.g., USD, EUR)',
 			},
 
 
 
+			{
+				displayName: 'Close Date',
+				name: 'closeDate',
+				type: 'dateTime',
+				default: '',
+				description: 'Opportunity close date',
+			},
+			{
+				displayName: 'Stage',
+				name: 'stage',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getOpportunityStageOptions',
+				},
+				default: 'DISCOVERY',
+				description: 'Opportunity stage',
+			},
+
+
+			{
+				displayName: 'Point of Contact ID',
+				name: 'pointOfContactId',
+				type: 'string',
+				default: '',
+				description: 'ID of the point of contact person',
+			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the associated company',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -427,7 +302,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -455,7 +330,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['update'],
 			},
 		},
@@ -463,39 +338,39 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:delete                               */
+	/*                               opportunity:delete                           */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Opportunity ID',
+		name: 'opportunityId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['delete'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to delete',
+		description: 'ID of the opportunity to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:get                                  */
+	/*                                opportunity:get                             */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Opportunity ID',
+		name: 'opportunityId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['get'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to retrieve',
+		description: 'ID of the opportunity to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -507,7 +382,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['get'],
 			},
 		},
@@ -515,7 +390,7 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:getAll                               */
+	/*                               opportunity:getAll                           */
 	/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Return All',
@@ -523,7 +398,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['getAll'],
 			},
 		},
@@ -536,7 +411,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'number',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['getAll'],
 				returnAll: [false],
 			},
@@ -556,7 +431,7 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['opportunity'],
 				operation: ['getAll'],
 			},
 		},
@@ -567,7 +442,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
-				placeholder: 'createdAt,firstName[DescNullsLast]',
+				placeholder: 'createdAt,name[DescNullsLast]',
 			},
 			{
 				displayName: 'Filter',
@@ -575,7 +450,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'firstName[eq]:John,score[gt]:5',
+				placeholder: 'name[eq]:OpportunityName,score[gt]:5',
 			},
 			{
 				displayName: 'Depth',

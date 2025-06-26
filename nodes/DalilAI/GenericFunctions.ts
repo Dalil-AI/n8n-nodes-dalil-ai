@@ -8,6 +8,14 @@ import type {
 	JsonObject,
 } from 'n8n-workflow';
 import { NodeApiError } from 'n8n-workflow';
+// Generate a simple UUID-like string
+function generateUUID(): string {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		const r = Math.random() * 16 | 0;
+		const v = c === 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
 
 export async function dalilAiApiRequest(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
@@ -89,4 +97,43 @@ export function cleanEmptyFields(obj: any): any {
 	}
 	
 	return cleaned;
+}
+
+/**
+ * Formats plain text into blocknote JSON format
+ */
+export function formatTextToBlocknote(text: string): string {
+	if (!text || text.trim() === '') {
+		return JSON.stringify([{
+			id: generateUUID(),
+			type: 'paragraph',
+			props: {
+				textColor: 'default',
+				backgroundColor: 'default',
+				textAlignment: 'left'
+			},
+			content: [],
+			children: []
+		}]);
+	}
+
+	// Split text by newlines and create a paragraph for each line
+	const lines = text.split('\n');
+	const blocks = lines.map(line => ({
+		id: generateUUID(),
+		type: 'paragraph',
+		props: {
+			textColor: 'default',
+			backgroundColor: 'default',
+			textAlignment: 'left'
+		},
+		content: line.trim() === '' ? [] : [{
+			type: 'text',
+			text: line,
+			styles: {}
+		}],
+		children: []
+	}));
+
+	return JSON.stringify(blocks);
 } 

@@ -1,6 +1,6 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-export const peopleOperations: INodeProperties[] = [
+export const taskTargetOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -8,97 +8,68 @@ export const peopleOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 			},
 		},
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create a new person',
-				action: 'Create a person',
+				description: 'Create a new task relation',
+				action: 'Create a task relation',
 			},
 			{
 				name: 'Create Many',
 				value: 'createMany',
-				description: 'Create multiple people',
-				action: 'Create many people',
+				description: 'Create multiple task relations',
+				action: 'Create many task relations',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete a person',
-				action: 'Delete a person',
+				description: 'Delete a task relation',
+				action: 'Delete a task relation',
 			},
 			{
 				name: 'Get',
 				value: 'get',
-				description: 'Get a person',
-				action: 'Get a person',
+				description: 'Get a task relation',
+				action: 'Get a task relation',
 			},
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Get many people',
-				action: 'Get many people',
+				description: 'Get many task relations',
+				action: 'Get many task relations',
 			},
 			{
 				name: 'Update',
 				value: 'update',
-				description: 'Update a person',
-				action: 'Update a person',
+				description: 'Update a task relation',
+				action: 'Update a task relation',
 			},
 		],
 		default: 'create',
 	},
 ];
 
-export const peopleFields: INodeProperties[] = [
+export const taskTargetFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
-	/*                                people:create                               */
+	/*                            taskTarget:create                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'First Name',
-		name: 'firstName',
+		displayName: 'Task ID',
+		name: 'taskId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['create'],
 			},
 		},
 		default: '',
-		description: 'The first name of the person',
-	},
-	{
-		displayName: 'Last Name',
-		name: 'lastName',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The last name of the person',
-	},
-	{
-		displayName: 'Primary Email',
-		name: 'primaryEmail',
-		type: 'string',
-		placeholder: 'name@email.com',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The primary email address of the person',
+		description: 'ID of the task to link',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -108,104 +79,31 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['create'],
 			},
 		},
 		options: [
-			// Default fields (isCustom: false) from the API
 			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
+				displayName: 'Person ID',
+				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'URL to the person\'s avatar image',
+				description: 'ID of the person to link to the task',
 			},
-
-			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
-				type: 'string',
-				typeOptions: {
-					multipleValues: true,
-				},
-				default: [],
-				description: 'Additional email addresses',
-			},
-
-
-			{
-				displayName: 'LinkedIn URL',
-				name: 'linkedinUrl',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile URL',
-			},
-			{
-				displayName: 'LinkedIn Label',
-				name: 'linkedinLabel',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile label',
-			},
-			{
-				displayName: 'X (Twitter) URL',
-				name: 'xUrl',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile URL',
-			},
-			{
-				displayName: 'X (Twitter) Label',
-				name: 'xLabel',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile label',
-			},
-			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
-			},
-			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
-				type: 'string',
-				default: '',
-				description: 'Primary phone number',
-			},
-			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
-				type: 'string',
-				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
-			},
-			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
-				type: 'string',
-				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
-			},
-			{
-				displayName: 'City',
-				name: 'city',
-				type: 'string',
-				default: '',
-				description: 'Person\'s city',
-			},
-
-
-
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the company to link to the task',
+			},
+			{
+				displayName: 'Opportunity ID',
+				name: 'opportunityId',
+				type: 'string',
+				default: '',
+				description: 'ID of the opportunity to link to the task',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -226,7 +124,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -236,7 +134,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property',
 							},
 						],
 					},
@@ -246,40 +144,40 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                               people:createMany                            */
+	/*                          taskTarget:createMany                             */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'People Data',
-		name: 'peopleData',
+		displayName: 'Task Relations Data',
+		name: 'taskTargetsData',
 		type: 'json',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['createMany'],
 			},
 		},
 		default: '[]',
-		description: 'Array of people objects to create',
-		placeholder: '[{"name": {"firstName": "John", "lastName": "Doe"}, "emails": {"primaryEmail": "john@example.com"}}]',
+		description: 'Array of task relation objects to create',
+		placeholder: '[{"taskId": "task-id-here", "personId": "person-id-here"}]',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:update                               */
+	/*                            taskTarget:update                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Task Relation ID',
+		name: 'taskTargetId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['update'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to update',
+		description: 'ID of the task relation to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -289,124 +187,38 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['update'],
 			},
 		},
 		options: [
 			{
-				displayName: 'First Name',
-				name: 'firstName',
+				displayName: 'Task ID',
+				name: 'taskId',
 				type: 'string',
 				default: '',
-				description: 'The first name of the person',
+				description: 'ID of the task to link',
 			},
 			{
-				displayName: 'Last Name',
-				name: 'lastName',
+				displayName: 'Person ID',
+				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'The last name of the person',
+				description: 'ID of the person to link to the task',
 			},
-			{
-				displayName: 'Primary Email',
-				name: 'primaryEmail',
-				type: 'string',
-				default: '',
-				description: 'The primary email address',
-			},
-			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
-				type: 'string',
-				default: '',
-				description: 'URL to the person\'s avatar image',
-			},
-
-			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
-				type: 'string',
-				typeOptions: {
-					multipleValues: true,
-				},
-				default: [],
-				description: 'Additional email addresses',
-			},
-
-
-			{
-				displayName: 'LinkedIn URL',
-				name: 'linkedinUrl',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile URL',
-			},
-			{
-				displayName: 'LinkedIn Label',
-				name: 'linkedinLabel',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile label',
-			},
-			{
-				displayName: 'X (Twitter) URL',
-				name: 'xUrl',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile URL',
-			},
-			{
-				displayName: 'X (Twitter) Label',
-				name: 'xLabel',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile label',
-			},
-			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
-			},
-			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
-				type: 'string',
-				default: '',
-				description: 'Primary phone number',
-			},
-			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
-				type: 'string',
-				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
-			},
-			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
-				type: 'string',
-				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
-			},
-			{
-				displayName: 'City',
-				name: 'city',
-				type: 'string',
-				default: '',
-				description: 'Person\'s city',
-			},
-
-
-
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the company to link to the task',
+			},
+			{
+				displayName: 'Opportunity ID',
+				name: 'opportunityId',
+				type: 'string',
+				default: '',
+				description: 'ID of the opportunity to link to the task',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -427,7 +239,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -437,7 +249,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property',
 							},
 						],
 					},
@@ -455,7 +267,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['update'],
 			},
 		},
@@ -463,39 +275,39 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:delete                               */
+	/*                            taskTarget:delete                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Task Relation ID',
+		name: 'taskTargetId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['delete'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to delete',
+		description: 'ID of the task relation to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:get                                  */
+	/*                              taskTarget:get                                */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Task Relation ID',
+		name: 'taskTargetId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['get'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to retrieve',
+		description: 'ID of the task relation to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -507,7 +319,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['get'],
 			},
 		},
@@ -515,7 +327,7 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:getAll                               */
+	/*                            taskTarget:getAll                               */
 	/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Return All',
@@ -523,7 +335,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['getAll'],
 			},
 		},
@@ -536,7 +348,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'number',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['getAll'],
 				returnAll: [false],
 			},
@@ -556,7 +368,7 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['taskTarget'],
 				operation: ['getAll'],
 			},
 		},
@@ -567,7 +379,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
-				placeholder: 'createdAt,firstName[DescNullsLast]',
+				placeholder: 'createdAt,taskId[DescNullsLast]',
 			},
 			{
 				displayName: 'Filter',
@@ -575,7 +387,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'firstName[eq]:John,score[gt]:5',
+				placeholder: 'taskId[eq]:task-id-here,personId[is]:NOT_NULL',
 			},
 			{
 				displayName: 'Depth',

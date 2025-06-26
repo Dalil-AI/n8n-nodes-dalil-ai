@@ -1,6 +1,6 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-export const peopleOperations: INodeProperties[] = [
+export const noteTargetOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -8,97 +8,68 @@ export const peopleOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 			},
 		},
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create a new person',
-				action: 'Create a person',
+				description: 'Create a new note relation',
+				action: 'Create a note relation',
 			},
 			{
 				name: 'Create Many',
 				value: 'createMany',
-				description: 'Create multiple people',
-				action: 'Create many people',
+				description: 'Create multiple note relations',
+				action: 'Create many note relations',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete a person',
-				action: 'Delete a person',
+				description: 'Delete a note relation',
+				action: 'Delete a note relation',
 			},
 			{
 				name: 'Get',
 				value: 'get',
-				description: 'Get a person',
-				action: 'Get a person',
+				description: 'Get a note relation',
+				action: 'Get a note relation',
 			},
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Get many people',
-				action: 'Get many people',
+				description: 'Get many note relations',
+				action: 'Get many note relations',
 			},
 			{
 				name: 'Update',
 				value: 'update',
-				description: 'Update a person',
-				action: 'Update a person',
+				description: 'Update a note relation',
+				action: 'Update a note relation',
 			},
 		],
 		default: 'create',
 	},
 ];
 
-export const peopleFields: INodeProperties[] = [
+export const noteTargetFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
-	/*                                people:create                               */
+	/*                            noteTarget:create                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'First Name',
-		name: 'firstName',
+		displayName: 'Note ID',
+		name: 'noteId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['create'],
 			},
 		},
 		default: '',
-		description: 'The first name of the person',
-	},
-	{
-		displayName: 'Last Name',
-		name: 'lastName',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The last name of the person',
-	},
-	{
-		displayName: 'Primary Email',
-		name: 'primaryEmail',
-		type: 'string',
-		placeholder: 'name@email.com',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The primary email address of the person',
+		description: 'ID of the note to link',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -108,104 +79,31 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['create'],
 			},
 		},
 		options: [
-			// Default fields (isCustom: false) from the API
 			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
+				displayName: 'Person ID',
+				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'URL to the person\'s avatar image',
+				description: 'ID of the person to link to the note',
 			},
-
-			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
-				type: 'string',
-				typeOptions: {
-					multipleValues: true,
-				},
-				default: [],
-				description: 'Additional email addresses',
-			},
-
-
-			{
-				displayName: 'LinkedIn URL',
-				name: 'linkedinUrl',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile URL',
-			},
-			{
-				displayName: 'LinkedIn Label',
-				name: 'linkedinLabel',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile label',
-			},
-			{
-				displayName: 'X (Twitter) URL',
-				name: 'xUrl',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile URL',
-			},
-			{
-				displayName: 'X (Twitter) Label',
-				name: 'xLabel',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile label',
-			},
-			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
-			},
-			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
-				type: 'string',
-				default: '',
-				description: 'Primary phone number',
-			},
-			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
-				type: 'string',
-				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
-			},
-			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
-				type: 'string',
-				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
-			},
-			{
-				displayName: 'City',
-				name: 'city',
-				type: 'string',
-				default: '',
-				description: 'Person\'s city',
-			},
-
-
-
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the company to link to the note',
+			},
+			{
+				displayName: 'Opportunity ID',
+				name: 'opportunityId',
+				type: 'string',
+				default: '',
+				description: 'ID of the opportunity to link to the note',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -226,7 +124,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -236,7 +134,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property',
 							},
 						],
 					},
@@ -246,40 +144,40 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                               people:createMany                            */
+	/*                          noteTarget:createMany                             */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'People Data',
-		name: 'peopleData',
+		displayName: 'Note Relations Data',
+		name: 'noteTargetsData',
 		type: 'json',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['createMany'],
 			},
 		},
 		default: '[]',
-		description: 'Array of people objects to create',
-		placeholder: '[{"name": {"firstName": "John", "lastName": "Doe"}, "emails": {"primaryEmail": "john@example.com"}}]',
+		description: 'Array of note relation objects to create',
+		placeholder: '[{"noteId": "note-id-here", "personId": "person-id-here"}]',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:update                               */
+	/*                            noteTarget:update                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Note Relation ID',
+		name: 'noteTargetId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['update'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to update',
+		description: 'ID of the note relation to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -289,125 +187,40 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['update'],
 			},
 		},
 		options: [
 			{
-				displayName: 'First Name',
-				name: 'firstName',
+				displayName: 'Note ID',
+				name: 'noteId',
 				type: 'string',
 				default: '',
-				description: 'The first name of the person',
+				description: 'ID of the note to link',
 			},
 			{
-				displayName: 'Last Name',
-				name: 'lastName',
+				displayName: 'Person ID',
+				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'The last name of the person',
+				description: 'ID of the person to link to the note',
 			},
-			{
-				displayName: 'Primary Email',
-				name: 'primaryEmail',
-				type: 'string',
-				default: '',
-				description: 'The primary email address',
-			},
-			{
-				displayName: 'Avatar URL',
-				name: 'avatarUrl',
-				type: 'string',
-				default: '',
-				description: 'URL to the person\'s avatar image',
-			},
-
-			{
-				displayName: 'Additional Emails',
-				name: 'additionalEmails',
-				type: 'string',
-				typeOptions: {
-					multipleValues: true,
-				},
-				default: [],
-				description: 'Additional email addresses',
-			},
-
-
-			{
-				displayName: 'LinkedIn URL',
-				name: 'linkedinUrl',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile URL',
-			},
-			{
-				displayName: 'LinkedIn Label',
-				name: 'linkedinLabel',
-				type: 'string',
-				default: '',
-				description: 'LinkedIn profile label',
-			},
-			{
-				displayName: 'X (Twitter) URL',
-				name: 'xUrl',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile URL',
-			},
-			{
-				displayName: 'X (Twitter) Label',
-				name: 'xLabel',
-				type: 'string',
-				default: '',
-				description: 'X (Twitter) profile label',
-			},
-			{
-				displayName: 'Job Title',
-				name: 'jobTitle',
-				type: 'string',
-				default: '',
-				description: 'Person\'s job title',
-			},
-			{
-				displayName: 'Primary Phone Number',
-				name: 'primaryPhoneNumber',
-				type: 'string',
-				default: '',
-				description: 'Primary phone number',
-			},
-			{
-				displayName: 'Primary Phone Country Code',
-				name: 'primaryPhoneCountryCode',
-				type: 'string',
-				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
-			},
-			{
-				displayName: 'Primary Phone Calling Code',
-				name: 'primaryPhoneCallingCode',
-				type: 'string',
-				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
-			},
-			{
-				displayName: 'City',
-				name: 'city',
-				type: 'string',
-				default: '',
-				description: 'Person\'s city',
-			},
-
-
-
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'ID of the company to link to the note',
 			},
+			{
+				displayName: 'Opportunity ID',
+				name: 'opportunityId',
+				type: 'string',
+				default: '',
+				description: 'ID of the opportunity to link to the note',
+			},
+
 			{
 				displayName: 'Custom Properties',
 				name: 'customPropertiesUi',
@@ -427,7 +240,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'property',
 								type: 'options',
 								typeOptions: {
-									loadOptionsMethod: 'getPeopleCustomProperties',
+									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
 								default: '',
 								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
@@ -437,7 +250,7 @@ export const peopleFields: INodeProperties[] = [
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property',
 							},
 						],
 					},
@@ -455,7 +268,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['update'],
 			},
 		},
@@ -463,39 +276,39 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:delete                               */
+	/*                            noteTarget:delete                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Note Relation ID',
+		name: 'noteTargetId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['delete'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to delete',
+		description: 'ID of the note relation to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:get                                  */
+	/*                              noteTarget:get                                */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
-		name: 'personId',
+		displayName: 'Note Relation ID',
+		name: 'noteTargetId',
 		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['get'],
 			},
 		},
 		default: '',
-		description: 'ID of the person to retrieve',
+		description: 'ID of the note relation to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -507,7 +320,7 @@ export const peopleFields: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['get'],
 			},
 		},
@@ -515,7 +328,7 @@ export const peopleFields: INodeProperties[] = [
 	},
 
 	/* -------------------------------------------------------------------------- */
-	/*                                people:getAll                               */
+	/*                            noteTarget:getAll                               */
 	/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Return All',
@@ -523,7 +336,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['getAll'],
 			},
 		},
@@ -536,7 +349,7 @@ export const peopleFields: INodeProperties[] = [
 		type: 'number',
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['getAll'],
 				returnAll: [false],
 			},
@@ -556,7 +369,7 @@ export const peopleFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['people'],
+				resource: ['noteTarget'],
 				operation: ['getAll'],
 			},
 		},
@@ -567,7 +380,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
-				placeholder: 'createdAt,firstName[DescNullsLast]',
+				placeholder: 'createdAt,noteId[DescNullsLast]',
 			},
 			{
 				displayName: 'Filter',
@@ -575,7 +388,7 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'firstName[eq]:John,score[gt]:5',
+				placeholder: 'noteId[eq]:note-id-here,personId[is]:NOT_NULL',
 			},
 			{
 				displayName: 'Depth',
