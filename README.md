@@ -163,7 +163,6 @@ Defines workflow stages and custom processes.
 Each resource supports standard CRUD operations:
 
 - **Create**: Add new records
-- **Create Many**: Bulk create multiple records  
 - **Get**: Retrieve a single record by ID
 - **Get Many**: Retrieve multiple records with filtering
 - **Update**: Modify existing records
@@ -298,50 +297,92 @@ Understanding field types is crucial for proper data entry:
 ### Creating Relationships
 
 #### Task Relations (taskTarget) - Create
-Links a task to multiple records:
+Links a task to multiple records.
 
-**Example:**
+**⚠️ Important Constraint: Single Relation Per Record**
+Each taskTarget record can only link to **ONE** relation ID at a time. You cannot add both `personId` and `companyId` in the same taskTarget record.
+
+**❌ Incorrect - Multiple Relations in One Record:**
 ```javascript
 {
   "taskId": "task-uuid-here",
-  "personId": "person-uuid-here",
-  "companyId": "company-uuid-here",
+  "personId": "person-uuid-here",      // ❌ Cannot combine
+  "companyId": "company-uuid-here"     // ❌ Cannot combine
+}
+```
+
+**✅ Correct - Separate Records for Each Relation:**
+
+**First Record (Person Relation):**
+```javascript
+{
+  "taskId": "task-uuid-here",
+  "personId": "person-uuid-here"
+}
+```
+
+**Second Record (Company Relation):**
+```javascript
+{
+  "taskId": "task-uuid-here",
+  "companyId": "company-uuid-here"
+}
+```
+
+**Third Record (Opportunity Relation):**
+```javascript
+{
+  "taskId": "task-uuid-here",
   "opportunityId": "opportunity-uuid-here"
 }
 ```
 
 #### Note Relations (noteTarget) - Create
-Links a note to multiple records:
+Links a note to multiple records.
 
-**Example:**
+**⚠️ Important Constraint: Single Relation Per Record**
+Each noteTarget record can only link to **ONE** relation ID at a time. You cannot add both `personId` and `companyId` in the same noteTarget record.
+
+**❌ Incorrect - Multiple Relations in One Record:**
 ```javascript
 {
-  "noteId": "note-uuid-here", 
-  "personId": "person-uuid-here",
+  "noteId": "note-uuid-here",
+  "personId": "person-uuid-here",      // ❌ Cannot combine
+  "companyId": "company-uuid-here"     // ❌ Cannot combine
+}
+```
+
+**✅ Correct - Separate Records for Each Relation:**
+
+**First Record (Person Relation):**
+```javascript
+{
+  "noteId": "note-uuid-here",
+  "personId": "person-uuid-here"
+}
+```
+
+**Second Record (Company Relation):**
+```javascript
+{
+  "noteId": "note-uuid-here",
   "companyId": "company-uuid-here"
 }
 ```
 
-### Bulk Operations
+**Workflow Example:**
+To link a single note to both a person and a company, create two separate n8n node executions:
 
-#### Create Many
-For bulk creation, provide an array of objects in the same format as single creation:
+1. **First Node Execution:**
+   - Operation: Create noteTarget
+   - noteId: "your-note-uuid"
+   - personId: "your-person-uuid"
 
-**Example - Create Many People:**
-```javascript
-[
-  {
-    "firstName": "John",
-    "lastName": "Smith",
-    "primaryEmail": "john@company.com"
-  },
-  {
-    "firstName": "Jane", 
-    "lastName": "Doe",
-    "primaryEmail": "jane@company.com"
-  }
-]
-```
+2. **Second Node Execution:**
+   - Operation: Create noteTarget  
+   - noteId: "your-note-uuid"
+   - companyId: "your-company-uuid"
+
 
 ### Updating Records
 
@@ -386,54 +427,6 @@ Each resource can have custom fields specific to your workspace. The node dynami
 - **Boolean Fields**: Accept true/false
 - **Rating Fields**: Accept "RATING_1" through "RATING_5"
 
-### Complex Field Examples
-
-#### Email Addresses
-```javascript
-{
-  "primaryEmail": "main@company.com",
-  "additionalEmails": ["backup@company.com", "personal@email.com"]
-}
-```
-
-#### Phone Numbers
-```javascript
-{
-  "primaryPhoneNumber": "1234567890",
-  "primaryPhoneCountryCode": "US", 
-  "primaryPhoneCallingCode": "+1"
-}
-```
-
-#### LinkedIn/Social Links
-```javascript
-{
-  "linkedinUrl": "https://linkedin.com/in/username",
-  "linkedinLabel": "Professional Profile"
-}
-```
-
-#### Address Information
-```javascript
-{
-  "addressStreet1": "123 Main Street",
-  "addressStreet2": "Suite 200",
-  "addressCity": "San Francisco",
-  "addressPostcode": "94105",
-  "addressState": "California", 
-  "addressCountry": "United States",
-  "addressLat": 37.7749,
-  "addressLng": -122.4194
-}
-```
-
-#### Money/Currency
-```javascript
-{
-  "arrAmount": 50000000, // $50.00 in micros (multiply by 1,000,000)
-  "currencyCode": "USD"
-}
-```
 
 ## Query Parameters
 
@@ -456,21 +449,54 @@ Filter results using field conditions with comparators:
 - `is`: For NULL/NOT_NULL values
 - `containsAny`: For array fields
 
-**Filter Examples:**
+**Simple Field Examples:**
 ```
-name[eq]:John Smith
-employees[gt]:50
-stage[in]:DISCOVERY,PROPOSAL
+score[gt]:5
+employees[gte]:50
+stage[in]:[DISCOVERY,PROPOSAL]
 createdAt[gte]:2024-01-01
-email[ilike]:@company.com
 city[is]:NOT_NULL
+```
+
+**Nested Field Examples:**
+For composite fields, use dot notation to access subfields:
+
+**People/Person Fields:**
+```
+name.firstName[eq]:John
+name.lastName[eq]:Smith
+emails.primaryEmail[like]:@company.com
+emails.primaryEmail[is]:NOT_NULL
+phones.primaryPhoneNumber[startsWith]:+1
+phones.primaryPhoneCountryCode[eq]:US
+linkedinLink.primaryLinkUrl[like]:linkedin.com
+whatsapp.primaryPhoneNumber[startsWith]:+1
+```
+
+**Company Fields:**
+```
+name[eq]:Acme Corp
+domainName.primaryLinkUrl[eq]:acme.com
+address.addressCity[eq]:New York
+address.addressCountry[eq]:USA
+annualRecurringRevenue.amountMicros[gt]:1000000
+linkedinLink.primaryLinkUrl[like]:linkedin.com
+```
+
+**Opportunity Fields:**
+```
+name[eq]:Big Deal
+amount.amountMicros[gt]:500000
+amount.currencyCode[eq]:USD
 ```
 
 **Complex Filters with Conjunctions:**
 Use `and`, `or`, `not` to combine conditions:
 ```
-name[eq]:John Smith and (city[eq]:NYC or city[eq]:SF)
-not email[is]:NULL
+and(name.firstName[eq]:John,name.lastName[eq]:Smith)
+or(emails.primaryEmail[like]:@company.com,phones.primaryPhoneNumber[startsWith]:+1)
+not(emails.primaryEmail[is]:NULL)
+and(score[gt]:5,or(name.firstName[eq]:John,name.firstName[eq]:Jane))
 ```
 
 ### Sorting (Order By)
@@ -484,19 +510,38 @@ Sort results by one or more fields:
 - `DescNullsFirst`: Descending, nulls first  
 - `DescNullsLast`: Descending, nulls last
 
-**Examples:**
+**Simple Field Examples:**
 ```
 createdAt[DescNullsLast]
-name,createdAt[DescNullsFirst]
-score[DescNullsLast],name[AscNullsLast]
+score[DescNullsFirst]
+position[AscNullsLast]
 ```
 
-### Pagination
-Control result pagination:
+**Nested Field Examples:**
+For composite fields, use dot notation to access subfields:
 
-- **Limit**: 1-60 records per request (default: 60)
-- **Starting After**: Cursor for next page
-- **Ending Before**: Cursor for previous page
+**People/Person Sorting:**
+```
+name.firstName[AscNullsFirst]
+name.lastName[DescNullsLast]
+emails.primaryEmail[AscNullsLast]
+phones.primaryPhoneNumber[DescNullsFirst]
+```
+
+**Company Sorting:**
+```
+name[AscNullsFirst]
+domainName.primaryLinkUrl[AscNullsLast]
+address.addressCity[DescNullsFirst]
+annualRecurringRevenue.amountMicros[DescNullsLast]
+```
+
+**Multiple Field Sorting:**
+```
+name.firstName,name.lastName[DescNullsFirst]
+score[DescNullsLast],name.firstName[AscNullsLast]
+createdAt[DescNullsFirst],name.firstName[AscNullsFirst]
+```
 
 ### Depth Levels
 Control how much related data to include:
@@ -616,44 +661,13 @@ if (entity === 'company' && action === 'created') {
 }
 ```
 
-## Advanced Features
-
-### Custom Properties
-Each resource supports workspace-specific custom fields:
-
-1. **Dynamic Loading**: The node automatically loads available custom properties
-2. **Type Awareness**: Shows expected format for each field type
-3. **Validation**: Helps prevent format errors
-
-### Batch Operations  
-Efficiently process multiple records:
-
-1. **Create Many**: Bulk insert up to the API limit
-2. **Consistent Format**: Same structure as single operations, but in arrays
-3. **Error Handling**: Partial success handling for batch operations
-
-### Relationship Management
-Link records across different resources:
-
-1. **Task Relations**: Associate tasks with multiple people/companies/opportunities
-2. **Note Relations**: Associate notes with multiple records
-3. **Flexible Linking**: One-to-many and many-to-many relationships
-
-### Pipeline Management
-Create custom workflows beyond standard CRM:
-
-1. **Custom Stages**: Define your own process stages
-2. **Custom Fields**: Add fields specific to your workflow
-3. **Status Tracking**: Monitor progress through your pipeline
-
 ## Troubleshooting
 
 ### Common Issues
 
 #### Authentication Errors
 - **Symptom**: "Unauthorized" or credential errors
-- **Solution**: Verify API key and base URL in credentials
-- **Check**: Ensure API key has required permissions
+- **Solution**: Verify API key
 
 #### Field Value Errors  
 - **Symptom**: "Invalid value" errors for select fields
@@ -675,34 +689,6 @@ Create custom workflows beyond standard CRM:
 - **Solution**: Check comparator syntax and field names
 - **Example**: `name[eq]:value` not `name=value`
 
-### Best Practices
-
-#### Error Handling
-1. **Validation**: Check required fields before API calls
-2. **Retry Logic**: Implement retries for transient failures  
-3. **Logging**: Log API responses for debugging
-
-#### Performance
-1. **Batch Operations**: Use Create Many for multiple records
-2. **Appropriate Depth**: Only request needed relationship data
-3. **Filtering**: Use filters to reduce data transfer
-
-#### Data Integrity  
-1. **ID Validation**: Verify UUIDs before relation creation
-2. **Field Formats**: Follow documented field type requirements
-3. **Custom Properties**: Understand workspace-specific field types
-
-#### Webhook Processing
-1. **Event Filtering**: Process only relevant events using eventName
-2. **Field Filtering**: Use updatedFields to process specific changes
-3. **Idempotency**: Handle duplicate webhook deliveries gracefully
-
-### Getting Help
-
-1. **API Documentation**: Reference the Dalil AI API docs
-2. **n8n Community**: Ask questions in n8n community forums  
-3. **Testing**: Use n8n's execution view to debug API calls
-4. **Logs**: Check n8n logs for detailed error messages
 
 ---
 
