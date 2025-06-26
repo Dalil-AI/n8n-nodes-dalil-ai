@@ -100,7 +100,6 @@ Before using the Dalil AI node, you need to configure your API credentials:
 1. **Create Credentials**: In your n8n instance, go to Settings > Credentials
 2. **Add New Credential**: Select "Dalil AI API"
 3. **Configure**:
-   - **Base URL**: Your Dalil AI instance URL (e.g., `https://your-instance.dalil.ai`)
    - **API Key**: Your authentication token from Dalil AI settings
 
 ## Understanding Resources
