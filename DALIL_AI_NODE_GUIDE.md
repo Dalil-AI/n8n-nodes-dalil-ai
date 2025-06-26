@@ -1,67 +1,3 @@
-# n8n-nodes-dalil-ai
-
-This is an n8n community node. It lets you use Dalil AI in your n8n workflows.
-
-Dalil AI is a CRM platform that helps you manage your customer relationships and sales pipeline.
-
-[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
-
-[Installation](#installation)  
-[Operations](#operations)  
-[Credentials](#credentials)  
-[Compatibility](#compatibility)  
-[Usage](#usage)  
-[Resources](#resources)  
-
-## Installation
-
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
-
-## Operations
-
-**People:**
-- Create, Update, Delete, Get, Get Many
-
-**Company:**
-- Create, Update, Delete, Get, Get Many
-
-**Opportunity:**
-- Create, Update, Delete, Get, Get Many
-
-**Task:**
-- Create, Update, Delete, Get, Get Many
-
-**Note:**
-- Create, Update, Delete, Get, Get Many
-
-**Task Target (Relations):**
-- Create, Update, Delete, Get, Get Many
-
-**Note Target (Relations):**
-- Create, Update, Delete, Get, Get Many
-
-**Pipeline:**
-- Create, Update, Delete, Get, Get Many
-
-## Credentials
-
-You'll need to create Dalil AI API credentials. You can find these in your Dalil AI account settings.
-
-## Compatibility
-
-This was tested against n8n version 1.0+.
-
-## Usage
-
-This node allows you to interact with Dalil AI's CRM system to manage contacts, companies, opportunities, tasks, and notes.
-
-## Resources
-
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-* [Dalil AI](https://dalil.ai)
-
----
-
 # Dalil AI n8n Node - Complete User Guide
 
 Welcome to the comprehensive guide for using the Dalil AI n8n node. This documentation will help users of all experience levels - from beginners to advanced developers - understand and effectively use the DalilAI n8n node.
@@ -706,4 +642,4 @@ Create custom workflows beyond standard CRM:
 
 ---
 
-This guide provides comprehensive coverage of the Dalil AI n8n node. For specific use cases or advanced configurations, refer to the API documentation or reach out to the support team.
+This guide provides comprehensive coverage of the Dalil AI n8n node. For specific use cases or advanced configurations, refer to the API documentation or reach out to the support team. 
