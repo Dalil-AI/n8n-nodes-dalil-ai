@@ -19,12 +19,6 @@ export const peopleOperations: INodeProperties[] = [
 				action: 'Create a person',
 			},
 			{
-				name: 'Create Many',
-				value: 'createMany',
-				description: 'Create multiple people',
-				action: 'Create many people',
-			},
-			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a person',
@@ -69,36 +63,7 @@ export const peopleFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'The first name of the person',
-	},
-	{
-		displayName: 'Last Name',
-		name: 'lastName',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The last name of the person',
-	},
-	{
-		displayName: 'Primary Email',
-		name: 'primaryEmail',
-		type: 'string',
-		placeholder: 'name@email.com',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['create'],
-			},
-		},
-		default: '',
-		description: 'The primary email address of the person',
+		description: 'The first name of the person (e.g., "John")',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -113,13 +78,28 @@ export const peopleFields: INodeProperties[] = [
 			},
 		},
 		options: [
+			{
+				displayName: 'Last Name',
+				name: 'lastName',
+				type: 'string',
+				default: '',
+				description: 'The last name of the person (e.g., "Smith")',
+			},
+			{
+				displayName: 'Primary Email',
+				name: 'primaryEmail',
+				type: 'string',
+				placeholder: 'name@email.com',
+				default: '',
+				description: 'The primary email address of the person (must be a valid email format)',
+			},
 			// Default fields (isCustom: false) from the API
 			{
 				displayName: 'Avatar URL',
 				name: 'avatarUrl',
 				type: 'string',
 				default: '',
-				description: 'URL to the person\'s avatar image',
+				description: 'URL to the person\'s avatar image (must be a valid URL starting with http:// or https://)',
 			},
 
 			{
@@ -130,7 +110,7 @@ export const peopleFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: [],
-				description: 'Additional email addresses',
+				description: 'Additional email addresses for the person (each must be a valid email format)',
 			},
 
 
@@ -139,63 +119,63 @@ export const peopleFields: INodeProperties[] = [
 				name: 'linkedinUrl',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile URL',
+				description: 'LinkedIn profile URL (e.g., "https://linkedin.com/in/username")',
 			},
 			{
 				displayName: 'LinkedIn Label',
 				name: 'linkedinLabel',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile label',
+				description: 'Display label for the LinkedIn profile (e.g., "Professional Profile")',
 			},
 			{
 				displayName: 'X (Twitter) URL',
 				name: 'xUrl',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile URL',
+				description: 'X (Twitter) profile URL (e.g., "https://x.com/username")',
 			},
 			{
 				displayName: 'X (Twitter) Label',
 				name: 'xLabel',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile label',
+				description: 'Display label for the X (Twitter) profile (e.g., "Twitter Handle")',
 			},
 			{
 				displayName: 'Job Title',
 				name: 'jobTitle',
 				type: 'string',
 				default: '',
-				description: 'Person\'s job title',
+				description: 'Person\'s job title or position (e.g., "Software Engineer", "Marketing Manager")',
 			},
 			{
 				displayName: 'Primary Phone Number',
 				name: 'primaryPhoneNumber',
 				type: 'string',
 				default: '',
-				description: 'Primary phone number',
+				description: 'Primary phone number without country code (e.g., "1234567890")',
 			},
 			{
 				displayName: 'Primary Phone Country Code',
 				name: 'primaryPhoneCountryCode',
 				type: 'string',
 				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
+				description: 'Two-letter country code for primary phone (e.g., "US", "FR", "GB")',
 			},
 			{
 				displayName: 'Primary Phone Calling Code',
 				name: 'primaryPhoneCallingCode',
 				type: 'string',
 				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
+				description: 'International calling code with + prefix (e.g., "+1", "+33", "+44")',
 			},
 			{
 				displayName: 'City',
 				name: 'city',
 				type: 'string',
 				default: '',
-				description: 'Person\'s city',
+				description: 'Person\'s city of residence or work location (e.g., "New York", "London")',
 			},
 
 
@@ -205,7 +185,7 @@ export const peopleFields: INodeProperties[] = [
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'UUID string of the associated company',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -216,6 +196,7 @@ export const peopleFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, rating fields accept "RATING_1" to "RATING_5", multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK"',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -229,39 +210,20 @@ export const peopleFields: INodeProperties[] = [
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "NEW_CUSTOMER"), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
 				],
 			},
 		],
-	},
-
-	/* -------------------------------------------------------------------------- */
-	/*                               people:createMany                            */
-	/* -------------------------------------------------------------------------- */
-	{
-		displayName: 'People Data',
-		name: 'peopleData',
-		type: 'json',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['people'],
-				operation: ['createMany'],
-			},
-		},
-		default: '[]',
-		description: 'Array of people objects to create',
-		placeholder: '[{"name": {"firstName": "John", "lastName": "Doe"}, "emails": {"primaryEmail": "john@example.com"}}]',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -279,7 +241,7 @@ export const peopleFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the person to update',
+		description: 'UUID string of the person to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -299,28 +261,28 @@ export const peopleFields: INodeProperties[] = [
 				name: 'firstName',
 				type: 'string',
 				default: '',
-				description: 'The first name of the person',
+				description: 'The first name of the person (e.g., "John")',
 			},
 			{
 				displayName: 'Last Name',
 				name: 'lastName',
 				type: 'string',
 				default: '',
-				description: 'The last name of the person',
+				description: 'The last name of the person (e.g., "Smith")',
 			},
 			{
 				displayName: 'Primary Email',
 				name: 'primaryEmail',
 				type: 'string',
 				default: '',
-				description: 'The primary email address',
+				description: 'The primary email address (must be a valid email format)',
 			},
 			{
 				displayName: 'Avatar URL',
 				name: 'avatarUrl',
 				type: 'string',
 				default: '',
-				description: 'URL to the person\'s avatar image',
+				description: 'URL to the person\'s avatar image (must be a valid URL starting with http:// or https://)',
 			},
 
 			{
@@ -331,7 +293,7 @@ export const peopleFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: [],
-				description: 'Additional email addresses',
+				description: 'Additional email addresses for the person (each must be a valid email format)',
 			},
 
 
@@ -340,63 +302,63 @@ export const peopleFields: INodeProperties[] = [
 				name: 'linkedinUrl',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile URL',
+				description: 'LinkedIn profile URL (e.g., "https://linkedin.com/in/username")',
 			},
 			{
 				displayName: 'LinkedIn Label',
 				name: 'linkedinLabel',
 				type: 'string',
 				default: '',
-				description: 'LinkedIn profile label',
+				description: 'Display label for the LinkedIn profile (e.g., "Professional Profile")',
 			},
 			{
 				displayName: 'X (Twitter) URL',
 				name: 'xUrl',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile URL',
+				description: 'X (Twitter) profile URL (e.g., "https://x.com/username")',
 			},
 			{
 				displayName: 'X (Twitter) Label',
 				name: 'xLabel',
 				type: 'string',
 				default: '',
-				description: 'X (Twitter) profile label',
+				description: 'Display label for the X (Twitter) profile (e.g., "Twitter Handle")',
 			},
 			{
 				displayName: 'Job Title',
 				name: 'jobTitle',
 				type: 'string',
 				default: '',
-				description: 'Person\'s job title',
+				description: 'Person\'s job title or position (e.g., "Software Engineer", "Marketing Manager")',
 			},
 			{
 				displayName: 'Primary Phone Number',
 				name: 'primaryPhoneNumber',
 				type: 'string',
 				default: '',
-				description: 'Primary phone number',
+				description: 'Primary phone number without country code (e.g., "1234567890")',
 			},
 			{
 				displayName: 'Primary Phone Country Code',
 				name: 'primaryPhoneCountryCode',
 				type: 'string',
 				default: '',
-				description: 'Country code for primary phone (e.g., FR)',
+				description: 'Two-letter country code for primary phone (e.g., "US", "FR", "GB")',
 			},
 			{
 				displayName: 'Primary Phone Calling Code',
 				name: 'primaryPhoneCallingCode',
 				type: 'string',
 				default: '',
-				description: 'Calling code for primary phone (e.g., +33)',
+				description: 'International calling code with + prefix (e.g., "+1", "+33", "+44")',
 			},
 			{
 				displayName: 'City',
 				name: 'city',
 				type: 'string',
 				default: '',
-				description: 'Person\'s city',
+				description: 'Person\'s city of residence or work location (e.g., "New York", "London")',
 			},
 
 
@@ -406,7 +368,7 @@ export const peopleFields: INodeProperties[] = [
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of associated company',
+				description: 'UUID string of the associated company',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -417,6 +379,7 @@ export const peopleFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, rating fields accept "RATING_1" to "RATING_5", multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK"',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -430,14 +393,14 @@ export const peopleFields: INodeProperties[] = [
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "NEW_CUSTOMER"), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
@@ -459,7 +422,7 @@ export const peopleFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (person only), 1 (person + direct relations), 2 (person + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -477,7 +440,7 @@ export const peopleFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the person to delete',
+		description: 'UUID string of the person to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -495,7 +458,7 @@ export const peopleFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the person to retrieve',
+		description: 'UUID string of the person to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -511,7 +474,7 @@ export const peopleFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (person only), 1 (person + direct relations), 2 (person + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -528,7 +491,7 @@ export const peopleFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to a given limit',
+		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
 	},
 	{
 		displayName: 'Limit',
@@ -546,7 +509,7 @@ export const peopleFields: INodeProperties[] = [
 			maxValue: 60,
 		},
 		default: 60,
-		description: 'Max number of results to return',
+		description: 'Maximum number of people to return (1-60)',
 	},
 	{
 		displayName: 'Options',
@@ -566,7 +529,7 @@ export const peopleFields: INodeProperties[] = [
 				name: 'orderBy',
 				type: 'string',
 				default: '',
-				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
+				description: 'Sort results by field(s). Format: "field1,field2[Direction]". Directions: AscNullsFirst, AscNullsLast, DescNullsFirst, DescNullsLast. Example: "createdAt,firstName[DescNullsLast]"',
 				placeholder: 'createdAt,firstName[DescNullsLast]',
 			},
 			{
@@ -574,7 +537,7 @@ export const peopleFields: INodeProperties[] = [
 				name: 'filter',
 				type: 'string',
 				default: '',
-				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
+				description: 'Filter results using field conditions. Format: "field[comparator]:value". Comparators: eq, neq, in, gt, gte, lt, lte, startsWith, like, ilike, is (for NULL/NOT_NULL). Example: "firstName[eq]:John,score[gt]:5"',
 				placeholder: 'firstName[eq]:John,score[gt]:5',
 			},
 			{
@@ -585,21 +548,7 @@ export const peopleFields: INodeProperties[] = [
 					loadOptionsMethod: 'getDepthOptions',
 				},
 				default: 1,
-				description: 'Determines the level of nested related objects to include in the response',
-			},
-			{
-				displayName: 'Starting After',
-				name: 'startingAfter',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - start after this ID',
-			},
-			{
-				displayName: 'Ending Before',
-				name: 'endingBefore',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - end before this ID',
+				description: 'Level of nested related objects to include: 0 (people only), 1 (people + direct relations), 2 (people + relations + their relations)',
 			},
 		],
 	},

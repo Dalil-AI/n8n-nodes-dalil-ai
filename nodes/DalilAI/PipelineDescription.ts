@@ -19,12 +19,6 @@ export const pipelineOperations: INodeProperties[] = [
 				action: 'Create a pipeline record',
 			},
 			{
-				name: 'Create Many',
-				value: 'createMany',
-				description: 'Create multiple pipeline records',
-				action: 'Create many pipeline records',
-			},
-			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a pipeline record',
@@ -72,7 +66,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Select the pipeline to create a record in',
+		description: 'Choose which pipeline to create a record in (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
 	},
 	{
 		displayName: 'Custom Properties',
@@ -89,6 +83,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: {},
+		description: 'Pipeline-specific fields that vary by pipeline type. Each pipeline has unique properties like stage, status, amounts, dates, and custom fields based on the pipeline template.',
 		options: [
 			{
 				name: 'customPropertiesValues',
@@ -103,55 +98,20 @@ export const pipelineFields: INodeProperties[] = [
 							loadOptionsDependsOn: ['selectedPipeline'],
 						},
 						default: '',
-						description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+						description: 'Select a property specific to this pipeline. Properties vary by pipeline type and include stages, statuses, amounts, dates, and other custom fields.',
 					},
 					{
 						displayName: 'Value',
 						name: 'value',
 						type: 'string',
 						default: '',
-						description: 'Value for the custom property',
+						description: 'Value for the property. Format depends on field type: text (plain text), select fields (e.g., "FUNDED", "DEMO", "SERIES_A"), currency amounts (micros), dates (ISO format), booleans (true/false)',
 					},
 				],
 			},
 		],
 	},
 
-	/* -------------------------------------------------------------------------- */
-	/*                             pipeline:createMany                            */
-	/* -------------------------------------------------------------------------- */
-	{
-		displayName: 'Select Pipeline',
-		name: 'selectedPipeline',
-		type: 'options',
-		typeOptions: {
-			loadOptionsMethod: 'getPipelines',
-		},
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['pipeline'],
-				operation: ['createMany'],
-			},
-		},
-		default: '',
-		description: 'Select the pipeline to create records in',
-	},
-	{
-		displayName: 'Pipeline Records Data',
-		name: 'pipelineRecordsData',
-		type: 'json',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['pipeline'],
-				operation: ['createMany'],
-			},
-		},
-		default: '[]',
-		description: 'Array of pipeline record objects to create',
-		placeholder: '[{"fieldName": "value1"}, {"fieldName": "value2"}]',
-	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                              pipeline:update                               */
@@ -171,7 +131,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Select the pipeline to update a record in',
+		description: 'Choose which pipeline contains the record to update (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
 	},
 	{
 		displayName: 'ID',
@@ -185,7 +145,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the pipeline record to update',
+		description: 'UUID string of the pipeline record to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -209,6 +169,7 @@ export const pipelineFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Pipeline-specific fields to update. Each pipeline has unique properties like stage, status, amounts, dates, and custom fields based on the pipeline template.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -223,14 +184,14 @@ export const pipelineFields: INodeProperties[] = [
 									loadOptionsDependsOn: ['selectedPipeline'],
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select a property specific to this pipeline. Properties vary by pipeline type and include stages, statuses, amounts, dates, and other custom fields.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property',
+								description: 'Value for the property. Format depends on field type: text (plain text), select fields (e.g., "FUNDED", "DEMO", "SERIES_A"), currency amounts (micros), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
@@ -252,7 +213,7 @@ export const pipelineFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (record only), 1 (record + direct relations), 2 (record + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -273,7 +234,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Select the pipeline to delete a record from',
+		description: 'Choose which pipeline contains the record to delete (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
 	},
 	{
 		displayName: 'ID',
@@ -287,7 +248,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the pipeline record to delete',
+		description: 'UUID string of the pipeline record to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -308,7 +269,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Select the pipeline to get a record from',
+		description: 'Choose which pipeline contains the record to retrieve (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
 	},
 	{
 		displayName: 'ID',
@@ -322,7 +283,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the pipeline record to retrieve',
+		description: 'UUID string of the pipeline record to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -338,7 +299,7 @@ export const pipelineFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (record only), 1 (record + direct relations), 2 (record + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -359,7 +320,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Select the pipeline to get records from',
+		description: 'Choose which pipeline to retrieve records from (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
 	},
 	{
 		displayName: 'Return All',
@@ -372,7 +333,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to a given limit',
+		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
 	},
 	{
 		displayName: 'Limit',
@@ -390,7 +351,7 @@ export const pipelineFields: INodeProperties[] = [
 			maxValue: 60,
 		},
 		default: 60,
-		description: 'Max number of results to return',
+		description: 'Maximum number of pipeline records to return (1-60)',
 	},
 	{
 		displayName: 'Options',
@@ -410,7 +371,7 @@ export const pipelineFields: INodeProperties[] = [
 				name: 'orderBy',
 				type: 'string',
 				default: '',
-				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
+				description: 'Sort results by field(s). Format: "field1,field2[Direction]". Directions: AscNullsFirst, AscNullsLast, DescNullsFirst, DescNullsLast. Example: "createdAt,position[DescNullsLast]"',
 				placeholder: 'createdAt,position[DescNullsLast]',
 			},
 			{
@@ -418,7 +379,7 @@ export const pipelineFields: INodeProperties[] = [
 				name: 'filter',
 				type: 'string',
 				default: '',
-				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
+				description: 'Filter results using field conditions. Format: "field[comparator]:value". Comparators: eq, neq, in, gt, gte, lt, lte, startsWith, like, ilike, is (for NULL/NOT_NULL). Example: "status[eq]:FUNDED,stage[eq]:DEMO"',
 				placeholder: 'status[eq]:FUNDED,stage[eq]:DEMO',
 			},
 			{
@@ -429,21 +390,7 @@ export const pipelineFields: INodeProperties[] = [
 					loadOptionsMethod: 'getDepthOptions',
 				},
 				default: 1,
-				description: 'Determines the level of nested related objects to include in the response',
-			},
-			{
-				displayName: 'Starting After',
-				name: 'startingAfter',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - start after this ID',
-			},
-			{
-				displayName: 'Ending Before',
-				name: 'endingBefore',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - end before this ID',
+				description: 'Level of nested related objects to include: 0 (records only), 1 (records + direct relations), 2 (records + relations + their relations)',
 			},
 		],
 	},

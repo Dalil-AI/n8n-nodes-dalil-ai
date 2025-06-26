@@ -19,12 +19,6 @@ export const noteOperations: INodeProperties[] = [
 				action: 'Create a note',
 			},
 			{
-				name: 'Create Many',
-				value: 'createMany',
-				description: 'Create multiple notes',
-				action: 'Create many notes',
-			},
-			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a note',
@@ -69,7 +63,7 @@ export const noteFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'The title of the note',
+		description: 'Title of the note (e.g., "Meeting Notes", "Project Update", "Call Summary")',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -92,29 +86,11 @@ export const noteFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Note content (will be formatted for bodyV2)',
+				description: 'Note content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
 			},
 		],
 	},
 
-	/* -------------------------------------------------------------------------- */
-	/*                               note:createMany                              */
-	/* -------------------------------------------------------------------------- */
-	{
-		displayName: 'Notes Data',
-		name: 'notesData',
-		type: 'json',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['note'],
-				operation: ['createMany'],
-			},
-		},
-		default: '[]',
-		description: 'Array of note objects to create',
-		placeholder: '[{"title": "Meeting notes", "body": "Discussion about project timeline"}]',
-	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                                note:update                                 */
@@ -131,7 +107,7 @@ export const noteFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the note to update',
+		description: 'UUID string of the note to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -151,7 +127,7 @@ export const noteFields: INodeProperties[] = [
 				name: 'title',
 				type: 'string',
 				default: '',
-				description: 'The title of the note',
+				description: 'Title of the note (e.g., "Meeting Notes", "Project Update", "Call Summary")',
 			},
 
 
@@ -164,7 +140,7 @@ export const noteFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Note content (will be formatted for bodyV2)',
+				description: 'Note content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
 			},
 
 		],
@@ -183,7 +159,7 @@ export const noteFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (note only), 1 (note + direct relations), 2 (note + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -201,7 +177,7 @@ export const noteFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the note to delete',
+		description: 'UUID string of the note to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -219,7 +195,7 @@ export const noteFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the note to retrieve',
+		description: 'UUID string of the note to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -235,7 +211,7 @@ export const noteFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (note only), 1 (note + direct relations), 2 (note + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -252,7 +228,7 @@ export const noteFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to a given limit',
+		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
 	},
 	{
 		displayName: 'Limit',
@@ -270,7 +246,7 @@ export const noteFields: INodeProperties[] = [
 			maxValue: 60,
 		},
 		default: 60,
-		description: 'Max number of results to return',
+		description: 'Maximum number of notes to return (1-60)',
 	},
 	{
 		displayName: 'Options',
@@ -290,7 +266,7 @@ export const noteFields: INodeProperties[] = [
 				name: 'orderBy',
 				type: 'string',
 				default: '',
-				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
+				description: 'Sort results by field(s). Format: "field1,field2[Direction]". Directions: AscNullsFirst, AscNullsLast, DescNullsFirst, DescNullsLast. Example: "createdAt,title[DescNullsLast]"',
 				placeholder: 'createdAt,title[DescNullsLast]',
 			},
 			{
@@ -298,8 +274,8 @@ export const noteFields: INodeProperties[] = [
 				name: 'filter',
 				type: 'string',
 				default: '',
-				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'title[eq]:Meeting notes,visibilityLevel[gte]:2',
+				description: 'Filter results using field conditions. Format: "field[comparator]:value". Comparators: eq, neq, in, gt, gte, lt, lte, startsWith, like, ilike, is (for NULL/NOT_NULL). Example: "title[like]:Meeting,visibilityLevel[gte]:2"',
+				placeholder: 'title[like]:Meeting,visibilityLevel[gte]:2',
 			},
 			{
 				displayName: 'Depth',
@@ -309,21 +285,7 @@ export const noteFields: INodeProperties[] = [
 					loadOptionsMethod: 'getDepthOptions',
 				},
 				default: 1,
-				description: 'Determines the level of nested related objects to include in the response',
-			},
-			{
-				displayName: 'Starting After',
-				name: 'startingAfter',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - start after this ID',
-			},
-			{
-				displayName: 'Ending Before',
-				name: 'endingBefore',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - end before this ID',
+				description: 'Level of nested related objects to include: 0 (notes only), 1 (notes + direct relations), 2 (notes + relations + their relations)',
 			},
 		],
 	},

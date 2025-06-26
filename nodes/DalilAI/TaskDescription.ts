@@ -19,12 +19,6 @@ export const taskOperations: INodeProperties[] = [
 				action: 'Create a task',
 			},
 			{
-				name: 'Create Many',
-				value: 'createMany',
-				description: 'Create multiple tasks',
-				action: 'Create many tasks',
-			},
-			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a task',
@@ -69,7 +63,7 @@ export const taskFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'The title of the task',
+		description: 'Title of the task (e.g., "Complete project proposal", "Call client", "Review documents")',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -92,14 +86,14 @@ export const taskFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Task content (will be formatted for bodyV2)',
+				description: 'Task content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
 			},
 			{
 				displayName: 'Due Date',
 				name: 'dueAt',
 				type: 'dateTime',
 				default: '',
-				description: 'When the task is due',
+				description: 'When the task is due (ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
 				displayName: 'Status',
@@ -109,7 +103,7 @@ export const taskFields: INodeProperties[] = [
 					loadOptionsMethod: 'getTaskStatusOptions',
 				},
 				default: 'TODO',
-				description: 'Task status',
+				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done)',
 			},
 			{
 				displayName: 'Assignee Name or ID',
@@ -119,29 +113,11 @@ export const taskFields: INodeProperties[] = [
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
 				default: '',
-				description: 'ID of the task assignee (workspace member). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
 
-	/* -------------------------------------------------------------------------- */
-	/*                              task:createMany                               */
-	/* -------------------------------------------------------------------------- */
-	{
-		displayName: 'Tasks Data',
-		name: 'tasksData',
-		type: 'json',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['task'],
-				operation: ['createMany'],
-			},
-		},
-		default: '[]',
-		description: 'Array of task objects to create',
-		placeholder: '[{"title": "Complete project", "status": "TODO", "dueAt": "2024-01-01T10:00:00Z"}]',
-	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                                task:update                                 */
@@ -158,7 +134,7 @@ export const taskFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the task to update',
+		description: 'UUID string of the task to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -178,7 +154,7 @@ export const taskFields: INodeProperties[] = [
 				name: 'title',
 				type: 'string',
 				default: '',
-				description: 'The title of the task',
+				description: 'Title of the task (e.g., "Complete project proposal", "Call client", "Review documents")',
 			},
 			{
 				displayName: 'Body',
@@ -188,14 +164,14 @@ export const taskFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Task content (will be formatted for bodyV2)',
+				description: 'Task content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
 			},
 			{
 				displayName: 'Due Date',
 				name: 'dueAt',
 				type: 'dateTime',
 				default: '',
-				description: 'When the task is due',
+				description: 'When the task is due (ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
 				displayName: 'Status',
@@ -205,7 +181,7 @@ export const taskFields: INodeProperties[] = [
 					loadOptionsMethod: 'getTaskStatusOptions',
 				},
 				default: 'TODO',
-				description: 'Task status',
+				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done)',
 			},
 			{
 				displayName: 'Assignee Name or ID',
@@ -215,7 +191,7 @@ export const taskFields: INodeProperties[] = [
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
 				default: '',
-				description: 'ID of the task assignee (workspace member). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
@@ -233,7 +209,7 @@ export const taskFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (task only), 1 (task + direct relations), 2 (task + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -251,7 +227,7 @@ export const taskFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the task to delete',
+		description: 'UUID string of the task to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -269,7 +245,7 @@ export const taskFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the task to retrieve',
+		description: 'UUID string of the task to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -285,7 +261,7 @@ export const taskFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (task only), 1 (task + direct relations), 2 (task + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -302,7 +278,7 @@ export const taskFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to a given limit',
+		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
 	},
 	{
 		displayName: 'Limit',
@@ -320,7 +296,7 @@ export const taskFields: INodeProperties[] = [
 			maxValue: 60,
 		},
 		default: 60,
-		description: 'Max number of results to return',
+		description: 'Maximum number of tasks to return (1-60)',
 	},
 	{
 		displayName: 'Options',
@@ -340,7 +316,7 @@ export const taskFields: INodeProperties[] = [
 				name: 'orderBy',
 				type: 'string',
 				default: '',
-				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
+				description: 'Sort results by field(s). Format: "field1,field2[Direction]". Directions: AscNullsFirst, AscNullsLast, DescNullsFirst, DescNullsLast. Example: "createdAt,title[DescNullsLast]"',
 				placeholder: 'createdAt,title[DescNullsLast]',
 			},
 			{
@@ -348,8 +324,8 @@ export const taskFields: INodeProperties[] = [
 				name: 'filter',
 				type: 'string',
 				default: '',
-				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'title[eq]:Complete project,status[eq]:TODO',
+				description: 'Filter results using field conditions. Format: "field[comparator]:value". Comparators: eq, neq, in, gt, gte, lt, lte, startsWith, like, ilike, is (for NULL/NOT_NULL). Example: "status[eq]:TODO,dueAt[gte]:2024-01-01"',
+				placeholder: 'status[eq]:TODO,dueAt[gte]:2024-01-01',
 			},
 			{
 				displayName: 'Depth',
@@ -359,21 +335,7 @@ export const taskFields: INodeProperties[] = [
 					loadOptionsMethod: 'getDepthOptions',
 				},
 				default: 1,
-				description: 'Determines the level of nested related objects to include in the response',
-			},
-			{
-				displayName: 'Starting After',
-				name: 'startingAfter',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - start after this ID',
-			},
-			{
-				displayName: 'Ending Before',
-				name: 'endingBefore',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - end before this ID',
+				description: 'Level of nested related objects to include: 0 (tasks only), 1 (tasks + direct relations), 2 (tasks + relations + their relations)',
 			},
 		],
 	},

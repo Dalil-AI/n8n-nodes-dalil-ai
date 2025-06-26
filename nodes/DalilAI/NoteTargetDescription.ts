@@ -19,12 +19,6 @@ export const noteTargetOperations: INodeProperties[] = [
 				action: 'Create a note relation',
 			},
 			{
-				name: 'Create Many',
-				value: 'createMany',
-				description: 'Create multiple note relations',
-				action: 'Create many note relations',
-			},
-			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a note relation',
@@ -69,7 +63,7 @@ export const noteTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the note to link',
+		description: 'UUID string of the note to link to a record (person, company, or opportunity)',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -89,21 +83,21 @@ export const noteTargetFields: INodeProperties[] = [
 				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'ID of the person to link to the note',
+				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity.',
 			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of the company to link to the note',
+				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity.',
 			},
 			{
 				displayName: 'Opportunity ID',
 				name: 'opportunityId',
 				type: 'string',
 				default: '',
-				description: 'ID of the opportunity to link to the note',
+				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -114,6 +108,7 @@ export const noteTargetFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Additional custom fields specific to note targets. These vary based on your workspace configuration.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -127,14 +122,14 @@ export const noteTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
@@ -143,24 +138,6 @@ export const noteTargetFields: INodeProperties[] = [
 		],
 	},
 
-	/* -------------------------------------------------------------------------- */
-	/*                          noteTarget:createMany                             */
-	/* -------------------------------------------------------------------------- */
-	{
-		displayName: 'Note Relations Data',
-		name: 'noteTargetsData',
-		type: 'json',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['noteTarget'],
-				operation: ['createMany'],
-			},
-		},
-		default: '[]',
-		description: 'Array of note relation objects to create',
-		placeholder: '[{"noteId": "note-id-here", "personId": "person-id-here"}]',
-	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                            noteTarget:update                               */
@@ -177,7 +154,7 @@ export const noteTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the note relation to update',
+		description: 'UUID string of the note relation to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -197,28 +174,28 @@ export const noteTargetFields: INodeProperties[] = [
 				name: 'noteId',
 				type: 'string',
 				default: '',
-				description: 'ID of the note to link',
+				description: 'UUID string of the note to link to a record (person, company, or opportunity)',
 			},
 			{
 				displayName: 'Person ID',
 				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'ID of the person to link to the note',
+				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity.',
 			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of the company to link to the note',
+				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity.',
 			},
 			{
 				displayName: 'Opportunity ID',
 				name: 'opportunityId',
 				type: 'string',
 				default: '',
-				description: 'ID of the opportunity to link to the note',
+				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company.',
 			},
 
 			{
@@ -230,6 +207,7 @@ export const noteTargetFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Additional custom fields specific to note targets. These vary based on your workspace configuration.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -243,14 +221,14 @@ export const noteTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
@@ -272,7 +250,7 @@ export const noteTargetFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (note relation only), 1 (note relation + direct relations), 2 (note relation + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -290,7 +268,7 @@ export const noteTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the note relation to delete',
+		description: 'UUID string of the note relation to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -308,7 +286,7 @@ export const noteTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the note relation to retrieve',
+		description: 'UUID string of the note relation to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -324,7 +302,7 @@ export const noteTargetFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (note relation only), 1 (note relation + direct relations), 2 (note relation + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -341,7 +319,7 @@ export const noteTargetFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to a given limit',
+		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
 	},
 	{
 		displayName: 'Limit',
@@ -359,7 +337,7 @@ export const noteTargetFields: INodeProperties[] = [
 			maxValue: 60,
 		},
 		default: 60,
-		description: 'Max number of results to return',
+		description: 'Maximum number of note relations to return (1-60)',
 	},
 	{
 		displayName: 'Options',
@@ -379,7 +357,7 @@ export const noteTargetFields: INodeProperties[] = [
 				name: 'orderBy',
 				type: 'string',
 				default: '',
-				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
+				description: 'Sort results by field(s). Format: "field1,field2[Direction]". Directions: AscNullsFirst, AscNullsLast, DescNullsFirst, DescNullsLast. Example: "createdAt,noteId[DescNullsLast]"',
 				placeholder: 'createdAt,noteId[DescNullsLast]',
 			},
 			{
@@ -387,8 +365,8 @@ export const noteTargetFields: INodeProperties[] = [
 				name: 'filter',
 				type: 'string',
 				default: '',
-				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'noteId[eq]:note-id-here,personId[is]:NOT_NULL',
+				description: 'Filter results using field conditions. Format: "field[comparator]:value". Comparators: eq, neq, in, gt, gte, lt, lte, startsWith, like, ilike, is (for NULL/NOT_NULL). Example: "noteId[eq]:note-uuid,personId[is]:NOT_NULL"',
+				placeholder: 'noteId[eq]:note-uuid,personId[is]:NOT_NULL',
 			},
 			{
 				displayName: 'Depth',
@@ -398,21 +376,7 @@ export const noteTargetFields: INodeProperties[] = [
 					loadOptionsMethod: 'getDepthOptions',
 				},
 				default: 1,
-				description: 'Determines the level of nested related objects to include in the response',
-			},
-			{
-				displayName: 'Starting After',
-				name: 'startingAfter',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - start after this ID',
-			},
-			{
-				displayName: 'Ending Before',
-				name: 'endingBefore',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - end before this ID',
+				description: 'Level of nested related objects to include: 0 (note relations only), 1 (note relations + direct relations), 2 (note relations + relations + their relations)',
 			},
 		],
 	},

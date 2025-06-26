@@ -19,12 +19,6 @@ export const opportunityOperations: INodeProperties[] = [
 				action: 'Create an opportunity',
 			},
 			{
-				name: 'Create Many',
-				value: 'createMany',
-				description: 'Create multiple opportunities',
-				action: 'Create many opportunities',
-			},
-			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete an opportunity',
@@ -69,7 +63,7 @@ export const opportunityFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'The opportunity name',
+		description: 'The opportunity name (e.g., "Q1 Software License Deal", "Enterprise Implementation Project")',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -92,14 +86,14 @@ export const opportunityFields: INodeProperties[] = [
 					minValue: 0,
 				},
 				default: 0,
-				description: 'Opportunity amount in micros',
+				description: 'Opportunity amount in micros (e.g., 50000000 for $50.00, 1000000 for $1.00)',
 			},
 			{
 				displayName: 'Currency Code',
 				name: 'currencyCode',
 				type: 'string',
 				default: 'USD',
-				description: 'Currency code for the amount (e.g., USD, EUR)',
+				description: 'Three-letter currency code for the amount (e.g., "USD", "EUR", "GBP")',
 			},
 
 
@@ -108,7 +102,7 @@ export const opportunityFields: INodeProperties[] = [
 				name: 'closeDate',
 				type: 'dateTime',
 				default: '',
-				description: 'Opportunity close date',
+				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
 				displayName: 'Stage',
@@ -118,7 +112,7 @@ export const opportunityFields: INodeProperties[] = [
 					loadOptionsMethod: 'getOpportunityStageOptions',
 				},
 				default: 'DISCOVERY',
-				description: 'Opportunity stage',
+				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST"',
 			},
 
 
@@ -127,14 +121,14 @@ export const opportunityFields: INodeProperties[] = [
 				name: 'pointOfContactId',
 				type: 'string',
 				default: '',
-				description: 'ID of the point of contact person',
+				description: 'UUID string of the person who is the main point of contact for this opportunity',
 			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of the associated company',
+				description: 'UUID string of the company associated with this opportunity',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -145,6 +139,7 @@ export const opportunityFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, select fields accept specific option values, boolean fields accept true/false',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -158,39 +153,20 @@ export const opportunityFields: INodeProperties[] = [
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "HIGH_PRIORITY"), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
 				],
 			},
 		],
-	},
-
-	/* -------------------------------------------------------------------------- */
-	/*                             opportunity:createMany                         */
-	/* -------------------------------------------------------------------------- */
-	{
-		displayName: 'Opportunities Data',
-		name: 'opportunitiesData',
-		type: 'json',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['opportunity'],
-				operation: ['createMany'],
-			},
-		},
-		default: '[]',
-		description: 'Array of opportunity objects to create',
-		placeholder: '[{"name": "Opportunity Name", "amount": {"amountMicros": 100000, "currencyCode": "USD"}}]',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -208,7 +184,7 @@ export const opportunityFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the opportunity to update',
+		description: 'UUID string of the opportunity to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -228,7 +204,7 @@ export const opportunityFields: INodeProperties[] = [
 				name: 'name',
 				type: 'string',
 				default: '',
-				description: 'The opportunity name',
+				description: 'The opportunity name (e.g., "Q1 Software License Deal", "Enterprise Implementation Project")',
 			},
 			{
 				displayName: 'Amount',
@@ -238,14 +214,14 @@ export const opportunityFields: INodeProperties[] = [
 					minValue: 0,
 				},
 				default: 0,
-				description: 'Opportunity amount in micros',
+				description: 'Opportunity amount in micros (e.g., 50000000 for $50.00, 1000000 for $1.00)',
 			},
 			{
 				displayName: 'Currency Code',
 				name: 'currencyCode',
 				type: 'string',
 				default: '',
-				description: 'Currency code for the amount (e.g., USD, EUR)',
+				description: 'Three-letter currency code for the amount (e.g., "USD", "EUR", "GBP")',
 			},
 
 
@@ -255,7 +231,7 @@ export const opportunityFields: INodeProperties[] = [
 				name: 'closeDate',
 				type: 'dateTime',
 				default: '',
-				description: 'Opportunity close date',
+				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
 				displayName: 'Stage',
@@ -265,7 +241,7 @@ export const opportunityFields: INodeProperties[] = [
 					loadOptionsMethod: 'getOpportunityStageOptions',
 				},
 				default: 'DISCOVERY',
-				description: 'Opportunity stage',
+				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST"',
 			},
 
 
@@ -274,14 +250,14 @@ export const opportunityFields: INodeProperties[] = [
 				name: 'pointOfContactId',
 				type: 'string',
 				default: '',
-				description: 'ID of the point of contact person',
+				description: 'UUID string of the person who is the main point of contact for this opportunity',
 			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of the associated company',
+				description: 'UUID string of the company associated with this opportunity',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -292,6 +268,7 @@ export const opportunityFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, select fields accept specific option values, boolean fields accept true/false',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -305,14 +282,14 @@ export const opportunityFields: INodeProperties[] = [
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Text value for the custom property',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "HIGH_PRIORITY"), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
@@ -334,7 +311,7 @@ export const opportunityFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (opportunity only), 1 (opportunity + direct relations), 2 (opportunity + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -352,7 +329,7 @@ export const opportunityFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the opportunity to delete',
+		description: 'UUID string of the opportunity to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -370,7 +347,7 @@ export const opportunityFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the opportunity to retrieve',
+		description: 'UUID string of the opportunity to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -386,7 +363,7 @@ export const opportunityFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (opportunity only), 1 (opportunity + direct relations), 2 (opportunity + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -403,7 +380,7 @@ export const opportunityFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to a given limit',
+		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
 	},
 	{
 		displayName: 'Limit',
@@ -421,7 +398,7 @@ export const opportunityFields: INodeProperties[] = [
 			maxValue: 60,
 		},
 		default: 60,
-		description: 'Max number of results to return',
+		description: 'Maximum number of opportunities to return (1-60)',
 	},
 	{
 		displayName: 'Options',
@@ -441,16 +418,16 @@ export const opportunityFields: INodeProperties[] = [
 				name: 'orderBy',
 				type: 'string',
 				default: '',
-				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
-				placeholder: 'createdAt,name[DescNullsLast]',
+				description: 'Sort results by field(s). Format: "field1,field2[Direction]". Directions: AscNullsFirst, AscNullsLast, DescNullsFirst, DescNullsLast. Example: "closeDate,name[DescNullsLast]"',
+				placeholder: 'closeDate,name[DescNullsLast]',
 			},
 			{
 				displayName: 'Filter',
 				name: 'filter',
 				type: 'string',
 				default: '',
-				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'name[eq]:OpportunityName,score[gt]:5',
+				description: 'Filter results using field conditions. Format: "field[comparator]:value". Comparators: eq, neq, in, gt, gte, lt, lte, startsWith, like, ilike, is (for NULL/NOT_NULL). Example: "stage[eq]:DISCOVERY,amount.amountMicros[gt]:1000000"',
+				placeholder: 'stage[eq]:DISCOVERY,amount.amountMicros[gt]:1000000',
 			},
 			{
 				displayName: 'Depth',
@@ -460,21 +437,7 @@ export const opportunityFields: INodeProperties[] = [
 					loadOptionsMethod: 'getDepthOptions',
 				},
 				default: 1,
-				description: 'Determines the level of nested related objects to include in the response',
-			},
-			{
-				displayName: 'Starting After',
-				name: 'startingAfter',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - start after this ID',
-			},
-			{
-				displayName: 'Ending Before',
-				name: 'endingBefore',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - end before this ID',
+				description: 'Level of nested related objects to include: 0 (opportunities only), 1 (opportunities + direct relations), 2 (opportunities + relations + their relations)',
 			},
 		],
 	},

@@ -985,24 +985,6 @@ export class DalilAI implements INodeType {
 							pairedItem: { item: i },
 						});
 
-					} else if (operation === 'createMany') {
-						// Create many people
-						const peopleData = this.getNodeParameter('peopleData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(peopleData);
-						} catch (error) {
-							throw new Error('Invalid JSON in people data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/batch/people', parsedData);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
 					} else if (operation === 'update') {
 						// Update person
 						const personId = this.getNodeParameter('personId', i) as string;
@@ -1297,24 +1279,6 @@ export class DalilAI implements INodeType {
 							pairedItem: { item: i },
 						});
 
-					} else if (operation === 'createMany') {
-						// Create many companies
-						const companiesData = this.getNodeParameter('companiesData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(companiesData);
-						} catch (error) {
-							throw new Error('Invalid JSON in companies data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/batch/companies', parsedData);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
 					} else if (operation === 'update') {
 						// Update company
 						const companyId = this.getNodeParameter('companyId', i) as string;
@@ -1546,24 +1510,6 @@ export class DalilAI implements INodeType {
 							pairedItem: { item: i },
 						});
 
-					} else if (operation === 'createMany') {
-						// Create many notes
-						const notesData = this.getNodeParameter('notesData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(notesData);
-						} catch (error) {
-							throw new Error('Invalid JSON in notes data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/batch/notes', parsedData);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
 					} else if (operation === 'update') {
 						// Update note
 						const noteId = this.getNodeParameter('noteId', i) as string;
@@ -1716,24 +1662,6 @@ export class DalilAI implements INodeType {
 						}
 
 						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/noteTargets', body);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
-					} else if (operation === 'createMany') {
-						// Create many note relations
-						const noteTargetsData = this.getNodeParameter('noteTargetsData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(noteTargetsData);
-						} catch (error) {
-							throw new Error('Invalid JSON in note relations data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/batch/noteTargets', parsedData);
 						
 						returnData.push({
 							json: responseData,
@@ -1901,24 +1829,6 @@ export class DalilAI implements INodeType {
 							pairedItem: { item: i },
 						});
 
-					} else if (operation === 'createMany') {
-						// Create many tasks
-						const tasksData = this.getNodeParameter('tasksData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(tasksData);
-						} catch (error) {
-							throw new Error('Invalid JSON in tasks data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/batch/tasks', parsedData);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
 					} else if (operation === 'update') {
 						// Update task
 						const taskId = this.getNodeParameter('taskId', i) as string;
@@ -2074,24 +1984,6 @@ export class DalilAI implements INodeType {
 						}
 
 						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/taskTargets', body);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
-					} else if (operation === 'createMany') {
-						// Create many task relations
-						const taskTargetsData = this.getNodeParameter('taskTargetsData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(taskTargetsData);
-						} catch (error) {
-							throw new Error('Invalid JSON in task relations data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/batch/taskTargets', parsedData);
 						
 						returnData.push({
 							json: responseData,
@@ -2284,24 +2176,6 @@ export class DalilAI implements INodeType {
 							pairedItem: { item: i },
 						});
 
-					} else if (operation === 'createMany') {
-						// Create many opportunities
-						const opportunitiesData = this.getNodeParameter('opportunitiesData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(opportunitiesData);
-						} catch (error) {
-							throw new Error('Invalid JSON in opportunities data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/batch/opportunities', parsedData);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
 					} else if (operation === 'update') {
 						// Update opportunity
 						const opportunityId = this.getNodeParameter('opportunityId', i) as string;
@@ -2450,7 +2324,6 @@ export class DalilAI implements INodeType {
 					
 					const namePlural = pipelineMetadata.namePlural;
 					const pipelineEndpoint = `/rest/${namePlural}`;
-					const batchEndpoint = `/rest/batch/${namePlural}`;
 
 					if (operation === 'create') {
 						// Create pipeline record
@@ -2484,24 +2357,6 @@ export class DalilAI implements INodeType {
 						}
 
 						const responseData = await dalilAiApiRequest.call(this, 'POST', pipelineEndpoint, body);
-						
-						returnData.push({
-							json: responseData,
-							pairedItem: { item: i },
-						});
-
-					} else if (operation === 'createMany') {
-						// Create many pipeline records
-						const pipelineRecordsData = this.getNodeParameter('pipelineRecordsData', i) as string;
-						let parsedData;
-						
-						try {
-							parsedData = JSON.parse(pipelineRecordsData);
-						} catch (error) {
-							throw new Error('Invalid JSON in pipeline records data');
-						}
-
-						const responseData = await dalilAiApiRequest.call(this, 'POST', batchEndpoint, parsedData);
 						
 						returnData.push({
 							json: responseData,

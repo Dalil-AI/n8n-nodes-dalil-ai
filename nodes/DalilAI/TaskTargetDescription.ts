@@ -19,12 +19,6 @@ export const taskTargetOperations: INodeProperties[] = [
 				action: 'Create a task relation',
 			},
 			{
-				name: 'Create Many',
-				value: 'createMany',
-				description: 'Create multiple task relations',
-				action: 'Create many task relations',
-			},
-			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a task relation',
@@ -69,7 +63,7 @@ export const taskTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the task to link',
+		description: 'UUID string of the task to link to a record (person, company, or opportunity)',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -89,21 +83,21 @@ export const taskTargetFields: INodeProperties[] = [
 				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'ID of the person to link to the task',
+				description: 'UUID string of the person to link to the task. Leave empty if linking to company or opportunity.',
 			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of the company to link to the task',
+				description: 'UUID string of the company to link to the task. Leave empty if linking to person or opportunity.',
 			},
 			{
 				displayName: 'Opportunity ID',
 				name: 'opportunityId',
 				type: 'string',
 				default: '',
-				description: 'ID of the opportunity to link to the task',
+				description: 'UUID string of the opportunity to link to the task. Leave empty if linking to person or company.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -114,6 +108,7 @@ export const taskTargetFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Additional custom fields specific to task targets. These vary based on your workspace configuration.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -127,14 +122,14 @@ export const taskTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
@@ -143,24 +138,6 @@ export const taskTargetFields: INodeProperties[] = [
 		],
 	},
 
-	/* -------------------------------------------------------------------------- */
-	/*                          taskTarget:createMany                             */
-	/* -------------------------------------------------------------------------- */
-	{
-		displayName: 'Task Relations Data',
-		name: 'taskTargetsData',
-		type: 'json',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['taskTarget'],
-				operation: ['createMany'],
-			},
-		},
-		default: '[]',
-		description: 'Array of task relation objects to create',
-		placeholder: '[{"taskId": "task-id-here", "personId": "person-id-here"}]',
-	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                            taskTarget:update                               */
@@ -177,7 +154,7 @@ export const taskTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the task relation to update',
+		description: 'UUID string of the task relation to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -197,28 +174,28 @@ export const taskTargetFields: INodeProperties[] = [
 				name: 'taskId',
 				type: 'string',
 				default: '',
-				description: 'ID of the task to link',
+				description: 'UUID string of the task to link to a record (person, company, or opportunity)',
 			},
 			{
 				displayName: 'Person ID',
 				name: 'personId',
 				type: 'string',
 				default: '',
-				description: 'ID of the person to link to the task',
+				description: 'UUID string of the person to link to the task. Leave empty if linking to company or opportunity.',
 			},
 			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
-				description: 'ID of the company to link to the task',
+				description: 'UUID string of the company to link to the task. Leave empty if linking to person or opportunity.',
 			},
 			{
 				displayName: 'Opportunity ID',
 				name: 'opportunityId',
 				type: 'string',
 				default: '',
-				description: 'ID of the opportunity to link to the task',
+				description: 'UUID string of the opportunity to link to the task. Leave empty if linking to person or company.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -229,6 +206,7 @@ export const taskTargetFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
+				description: 'Additional custom fields specific to task targets. These vary based on your workspace configuration.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -242,14 +220,14 @@ export const taskTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
 								default: '',
-								description: 'Name of the custom property. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
 							},
 						],
 					},
@@ -271,7 +249,7 @@ export const taskTargetFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (task relation only), 1 (task relation + direct relations), 2 (task relation + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -289,7 +267,7 @@ export const taskTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the task relation to delete',
+		description: 'UUID string of the task relation to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -307,7 +285,7 @@ export const taskTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'ID of the task relation to retrieve',
+		description: 'UUID string of the task relation to retrieve',
 	},
 	{
 		displayName: 'Depth',
@@ -323,7 +301,7 @@ export const taskTargetFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		description: 'Determines the level of nested related objects to include in the response',
+		description: 'Level of nested related objects to include: 0 (task relation only), 1 (task relation + direct relations), 2 (task relation + relations + their relations)',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -340,7 +318,7 @@ export const taskTargetFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to a given limit',
+		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
 	},
 	{
 		displayName: 'Limit',
@@ -358,7 +336,7 @@ export const taskTargetFields: INodeProperties[] = [
 			maxValue: 60,
 		},
 		default: 60,
-		description: 'Max number of results to return',
+		description: 'Maximum number of task relations to return (1-60)',
 	},
 	{
 		displayName: 'Options',
@@ -378,40 +356,8 @@ export const taskTargetFields: INodeProperties[] = [
 				name: 'orderBy',
 				type: 'string',
 				default: '',
-				description: 'Sorts objects returned. Format: field_name_1,field_name_2[DIRECTION_2]',
+				description: 'Sort results by field(s). Format: "field1,field2[Direction]". Directions: AscNullsFirst, AscNullsLast, DescNullsFirst, DescNullsLast. Example: "createdAt,taskId[DescNullsLast]"',
 				placeholder: 'createdAt,taskId[DescNullsLast]',
-			},
-			{
-				displayName: 'Filter',
-				name: 'filter',
-				type: 'string',
-				default: '',
-				description: 'Filters objects returned. Format: field_1[COMPARATOR]:value_1,field_2[COMPARATOR]:value_2',
-				placeholder: 'taskId[eq]:task-id-here,personId[is]:NOT_NULL',
-			},
-			{
-				displayName: 'Depth',
-				name: 'depth',
-				type: 'options',
-				typeOptions: {
-					loadOptionsMethod: 'getDepthOptions',
-				},
-				default: 1,
-				description: 'Determines the level of nested related objects to include in the response',
-			},
-			{
-				displayName: 'Starting After',
-				name: 'startingAfter',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - start after this ID',
-			},
-			{
-				displayName: 'Ending Before',
-				name: 'endingBefore',
-				type: 'string',
-				default: '',
-				description: 'Cursor for pagination - end before this ID',
 			},
 		],
 	},
