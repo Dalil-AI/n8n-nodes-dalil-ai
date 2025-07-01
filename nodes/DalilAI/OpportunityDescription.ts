@@ -131,6 +131,13 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'UUID string of the company associated with this opportunity',
 			},
 			{
+				displayName: 'Owner ID',
+				name: 'ownerId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the team member responsible for managing this opportunity',
+			},
+			{
 				displayName: 'Custom Properties',
 				name: 'customPropertiesUi',
 				placeholder: 'Add Custom Property',
@@ -258,6 +265,13 @@ export const opportunityFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'UUID string of the company associated with this opportunity',
+			},
+			{
+				displayName: 'Owner ID',
+				name: 'ownerId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the team member responsible for managing this opportunity',
 			},
 			{
 				displayName: 'Custom Properties',

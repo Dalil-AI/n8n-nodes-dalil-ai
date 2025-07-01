@@ -188,6 +188,13 @@ export const peopleFields: INodeProperties[] = [
 				description: 'UUID string of the associated company',
 			},
 			{
+				displayName: 'Owner ID',
+				name: 'ownerId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the team member responsible for managing this person',
+			},
+			{
 				displayName: 'Custom Properties',
 				name: 'customPropertiesUi',
 				placeholder: 'Add Custom Property',
@@ -369,6 +376,13 @@ export const peopleFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'UUID string of the associated company',
+			},
+			{
+				displayName: 'Owner ID',
+				name: 'ownerId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the team member responsible for managing this person',
 			},
 			{
 				displayName: 'Custom Properties',

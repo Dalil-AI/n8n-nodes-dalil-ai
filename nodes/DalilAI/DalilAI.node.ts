@@ -889,20 +889,24 @@ export class DalilAI implements INodeType {
 					if (operation === 'create') {
 						// Create person
 						const firstName = this.getNodeParameter('firstName', i) as string;
-						const lastName = this.getNodeParameter('lastName', i) as string;
-						const primaryEmail = this.getNodeParameter('primaryEmail', i) as string;
 						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as any;
 
 						const body: any = {
 							name: {
 								firstName,
-								lastName,
-							},
-							emails: {
-								primaryEmail,
-								additionalEmails: additionalFields.additionalEmails || [],
 							},
 						};
+
+						if (additionalFields.lastName) {
+							body.name.lastName = additionalFields.lastName;
+						}
+
+						if (additionalFields.primaryEmail || (additionalFields.additionalEmails && additionalFields.additionalEmails.length > 0)) {
+							body.emails = {
+								primaryEmail: additionalFields.primaryEmail || '',
+								additionalEmails: additionalFields.additionalEmails || [],
+							};
+						}
 
 						// Add standard fields
 						if (additionalFields.avatarUrl) body.avatarUrl = additionalFields.avatarUrl;
@@ -914,6 +918,7 @@ export class DalilAI implements INodeType {
 						if (additionalFields.position !== undefined) body.position = additionalFields.position;
 						if (additionalFields.lastContactedAt) body.lastContactedAt = additionalFields.lastContactedAt;
 						if (additionalFields.companyId) body.companyId = additionalFields.companyId;
+						if (additionalFields.ownerId) body.ownerId = additionalFields.ownerId;
 
 						// Handle LinkedIn
 						if (additionalFields.linkedinUrl || additionalFields.linkedinLabel) {
@@ -1015,6 +1020,7 @@ export class DalilAI implements INodeType {
 						if (updateFields.position !== undefined) body.position = updateFields.position;
 						if (updateFields.lastContactedAt !== undefined) body.lastContactedAt = updateFields.lastContactedAt;
 						if (updateFields.companyId !== undefined) body.companyId = updateFields.companyId;
+						if (updateFields.ownerId !== undefined) body.ownerId = updateFields.ownerId;
 
 						// Handle LinkedIn
 						if (updateFields.linkedinUrl || updateFields.linkedinLabel) {
@@ -1161,17 +1167,20 @@ export class DalilAI implements INodeType {
 					if (operation === 'create') {
 						// Create company
 						const name = this.getNodeParameter('name', i) as string;
-						const domainUrl = this.getNodeParameter('domainUrl', i) as string;
 						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as any;
 
 						const body: any = {
 							name,
-							domainName: {
-								primaryLinkUrl: domainUrl,
+						};
+
+						// Handle domain name
+						if (additionalFields.domainUrl || additionalFields.domainLabel) {
+							body.domainName = {
+								primaryLinkUrl: additionalFields.domainUrl || '',
 								primaryLinkLabel: additionalFields.domainLabel || '',
 								secondaryLinks: [],
-							},
-						};
+							};
+						}
 
 						// Add standard fields
 						if (additionalFields.score !== undefined) body.score = additionalFields.score;
@@ -1531,7 +1540,7 @@ export class DalilAI implements INodeType {
 								markdown: bodyText,
 								blocknote: formatTextToBlocknote(bodyText),
 							};
-						}
+						} 
 
 						// Handle created by
 						if (updateFields.createdBySource) {
@@ -2135,6 +2144,7 @@ export class DalilAI implements INodeType {
 						if (additionalFields.position !== undefined) body.position = additionalFields.position;
 						if (additionalFields.pointOfContactId) body.pointOfContactId = additionalFields.pointOfContactId;
 						if (additionalFields.companyId) body.companyId = additionalFields.companyId;
+						if (additionalFields.ownerId) body.ownerId = additionalFields.ownerId;
 
 						// Handle created by
 						if (additionalFields.createdBySource) {
@@ -2200,6 +2210,7 @@ export class DalilAI implements INodeType {
 						if (updateFields.position !== undefined) body.position = updateFields.position;
 						if (updateFields.pointOfContactId !== undefined) body.pointOfContactId = updateFields.pointOfContactId;
 						if (updateFields.companyId !== undefined) body.companyId = updateFields.companyId;
+						if (updateFields.ownerId !== undefined) body.ownerId = updateFields.ownerId;
 
 						// Handle created by
 						if (updateFields.createdBySource) {

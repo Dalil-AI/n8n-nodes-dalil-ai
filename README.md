@@ -122,7 +122,7 @@ Represents businesses and organizations.
 Represents sales deals and revenue opportunities.
 - **Use Case**: Track sales pipeline, deals, revenue forecasts
 - **Key Fields**: Name, Amount, Stage, Close Date, Company ID
-- **Relationships**: Belongs to Company, has Tasks/Notes
+- **Relationships**: Belongs to Company and people, has Tasks/Notes
 
 #### Task
 Represents actionable items and assignments.
