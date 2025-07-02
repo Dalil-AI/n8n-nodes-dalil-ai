@@ -105,14 +105,14 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
-				displayName: 'Stage',
+				displayName: 'Stage Name or ID',
 				name: 'stage',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getOpportunityStageOptions',
 				},
-				default: 'DISCOVERY',
-				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST"',
+				default: '',
+				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 
 
@@ -146,7 +146,7 @@ export const opportunityFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
-				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, select fields accept specific option values, boolean fields accept true/false',
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, select fields accept specific option values, boolean fields accept true/false.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -160,14 +160,14 @@ export const opportunityFields: INodeProperties[] = [
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
 								default: '',
-								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "HIGH_PRIORITY"), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "HIGH_PRIORITY"), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -241,14 +241,14 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
-				displayName: 'Stage',
+				displayName: 'Stage Name or ID',
 				name: 'stage',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getOpportunityStageOptions',
 				},
-				default: 'DISCOVERY',
-				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST"',
+				default: '',
+				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 
 
@@ -282,7 +282,7 @@ export const opportunityFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
-				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, select fields accept specific option values, boolean fields accept true/false',
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, select fields accept specific option values, boolean fields accept true/false.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -296,14 +296,14 @@ export const opportunityFields: INodeProperties[] = [
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
 								default: '',
-								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "HIGH_PRIORITY"), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "HIGH_PRIORITY"), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -312,20 +312,20 @@ export const opportunityFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['opportunity'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (opportunity only), 1 (opportunity + direct relations), 2 (opportunity + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (opportunity only), 1 (opportunity + direct relations), 2 (opportunity + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -364,20 +364,20 @@ export const opportunityFields: INodeProperties[] = [
 		description: 'UUID string of the opportunity to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['opportunity'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (opportunity only), 1 (opportunity + direct relations), 2 (opportunity + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (opportunity only), 1 (opportunity + direct relations), 2 (opportunity + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -394,7 +394,7 @@ export const opportunityFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -409,10 +409,10 @@ export const opportunityFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of opportunities to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -444,14 +444,14 @@ export const opportunityFields: INodeProperties[] = [
 				placeholder: 'stage[eq]:DISCOVERY,amount.amountMicros[gt]:1000000',
 			},
 			{
-				displayName: 'Depth',
+				displayName: 'Depth Name or ID',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: 1,
-				description: 'Level of nested related objects to include: 0 (opportunities only), 1 (opportunities + direct relations), 2 (opportunities + relations + their relations)',
+				default: '',
+				description: 'Level of nested related objects to include: 0 (opportunities only), 1 (opportunities + direct relations), 2 (opportunities + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

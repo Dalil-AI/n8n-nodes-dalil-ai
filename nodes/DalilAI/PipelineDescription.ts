@@ -52,7 +52,7 @@ export const pipelineFields: INodeProperties[] = [
 	/*                               pipeline:create                              */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Select Pipeline',
+		displayName: 'Select Pipeline Name or ID',
 		name: 'selectedPipeline',
 		type: 'options',
 		typeOptions: {
@@ -66,7 +66,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose which pipeline to create a record in (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
+		description: 'Choose which pipeline to create a record in (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Custom Properties',
@@ -98,14 +98,14 @@ export const pipelineFields: INodeProperties[] = [
 							loadOptionsDependsOn: ['selectedPipeline'],
 						},
 						default: '',
-						description: 'Select a property specific to this pipeline. Properties vary by pipeline type and include stages, statuses, amounts, dates, and other custom fields.',
+						description: 'Select a property specific to this pipeline. Properties vary by pipeline type and include stages, statuses, amounts, dates, and other custom fields. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 					},
 					{
 						displayName: 'Value',
 						name: 'value',
 						type: 'string',
 						default: '',
-						description: 'Value for the property. Format depends on field type: text (plain text), select fields (e.g., "FUNDED", "DEMO", "SERIES_A"), currency amounts (micros), dates (ISO format), booleans (true/false)',
+						description: 'Value for the property. Format depends on field type: text (plain text), select fields (e.g., "FUNDED", "DEMO", "SERIES_A"), currency amounts (micros), dates (ISO format), booleans (true/false).',
 					},
 				],
 			},
@@ -117,7 +117,7 @@ export const pipelineFields: INodeProperties[] = [
 	/*                              pipeline:update                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Select Pipeline',
+		displayName: 'Select Pipeline Name or ID',
 		name: 'selectedPipeline',
 		type: 'options',
 		typeOptions: {
@@ -131,7 +131,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose which pipeline contains the record to update (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
+		description: 'Choose which pipeline contains the record to update (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'ID',
@@ -184,14 +184,14 @@ export const pipelineFields: INodeProperties[] = [
 									loadOptionsDependsOn: ['selectedPipeline'],
 								},
 								default: '',
-								description: 'Select a property specific to this pipeline. Properties vary by pipeline type and include stages, statuses, amounts, dates, and other custom fields.',
+								description: 'Select a property specific to this pipeline. Properties vary by pipeline type and include stages, statuses, amounts, dates, and other custom fields. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the property. Format depends on field type: text (plain text), select fields (e.g., "FUNDED", "DEMO", "SERIES_A"), currency amounts (micros), dates (ISO format), booleans (true/false)',
+								description: 'Value for the property. Format depends on field type: text (plain text), select fields (e.g., "FUNDED", "DEMO", "SERIES_A"), currency amounts (micros), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -200,27 +200,27 @@ export const pipelineFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['pipeline'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (record only), 1 (record + direct relations), 2 (record + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (record only), 1 (record + direct relations), 2 (record + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                              pipeline:delete                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Select Pipeline',
+		displayName: 'Select Pipeline Name or ID',
 		name: 'selectedPipeline',
 		type: 'options',
 		typeOptions: {
@@ -234,7 +234,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose which pipeline contains the record to delete (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
+		description: 'Choose which pipeline contains the record to delete (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'ID',
@@ -255,7 +255,7 @@ export const pipelineFields: INodeProperties[] = [
 	/*                                pipeline:get                                */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Select Pipeline',
+		displayName: 'Select Pipeline Name or ID',
 		name: 'selectedPipeline',
 		type: 'options',
 		typeOptions: {
@@ -269,7 +269,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose which pipeline contains the record to retrieve (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
+		description: 'Choose which pipeline contains the record to retrieve (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'ID',
@@ -286,27 +286,27 @@ export const pipelineFields: INodeProperties[] = [
 		description: 'UUID string of the pipeline record to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['pipeline'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (record only), 1 (record + direct relations), 2 (record + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (record only), 1 (record + direct relations), 2 (record + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                              pipeline:getAll                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Select Pipeline',
+		displayName: 'Select Pipeline Name or ID',
 		name: 'selectedPipeline',
 		type: 'options',
 		typeOptions: {
@@ -320,7 +320,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Choose which pipeline to retrieve records from (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process")',
+		description: 'Choose which pipeline to retrieve records from (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Return All',
@@ -333,7 +333,7 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -348,10 +348,10 @@ export const pipelineFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of pipeline records to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -383,14 +383,14 @@ export const pipelineFields: INodeProperties[] = [
 				placeholder: 'status[eq]:FUNDED,stage[eq]:DEMO',
 			},
 			{
-				displayName: 'Depth',
+				displayName: 'Depth Name or ID',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: 1,
-				description: 'Level of nested related objects to include: 0 (records only), 1 (records + direct relations), 2 (records + relations + their relations)',
+				default: '',
+				description: 'Level of nested related objects to include: 0 (records only), 1 (records + direct relations), 2 (records + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

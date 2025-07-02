@@ -86,7 +86,7 @@ export const noteFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Note content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
+				description: 'Note content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2).',
 			},
 		],
 	},
@@ -140,26 +140,26 @@ export const noteFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Note content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
+				description: 'Note content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2).',
 			},
 
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['note'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (note only), 1 (note + direct relations), 2 (note + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (note only), 1 (note + direct relations), 2 (note + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -198,20 +198,20 @@ export const noteFields: INodeProperties[] = [
 		description: 'UUID string of the note to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['note'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (note only), 1 (note + direct relations), 2 (note + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (note only), 1 (note + direct relations), 2 (note + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -228,7 +228,7 @@ export const noteFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -243,10 +243,10 @@ export const noteFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of notes to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -278,14 +278,14 @@ export const noteFields: INodeProperties[] = [
 				placeholder: 'title[like]:Meeting,visibilityLevel[gte]:2',
 			},
 			{
-				displayName: 'Depth',
+				displayName: 'Depth Name or ID',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: 1,
-				description: 'Level of nested related objects to include: 0 (notes only), 1 (notes + direct relations), 2 (notes + relations + their relations)',
+				default: '',
+				description: 'Level of nested related objects to include: 0 (notes only), 1 (notes + direct relations), 2 (notes + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

@@ -34,9 +34,9 @@ export class DalilAiApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'http://localhost:3000', //Todo:
+			baseURL: 'https://app.usedalil.ai/', //Todo:
 			url: '/rest/people',
-			method: 'GET',
+			method: 'GET',	
 		},
 	};
 } 

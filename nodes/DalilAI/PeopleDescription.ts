@@ -203,7 +203,7 @@ export const peopleFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
-				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, rating fields accept "RATING_1" to "RATING_5", multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK"',
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, rating fields accept "RATING_1" to "RATING_5", multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK".',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -217,14 +217,14 @@ export const peopleFields: INodeProperties[] = [
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
 								default: '',
-								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "NEW_CUSTOMER"), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "NEW_CUSTOMER"), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -393,7 +393,7 @@ export const peopleFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
-				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, rating fields accept "RATING_1" to "RATING_5", multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK"',
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, rating fields accept "RATING_1" to "RATING_5", multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK".',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -407,14 +407,14 @@ export const peopleFields: INodeProperties[] = [
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
 								default: '',
-								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "NEW_CUSTOMER"), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "NEW_CUSTOMER"), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -423,20 +423,20 @@ export const peopleFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['people'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (person only), 1 (person + direct relations), 2 (person + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (person only), 1 (person + direct relations), 2 (person + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -475,20 +475,20 @@ export const peopleFields: INodeProperties[] = [
 		description: 'UUID string of the person to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['people'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (person only), 1 (person + direct relations), 2 (person + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (person only), 1 (person + direct relations), 2 (person + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -505,7 +505,7 @@ export const peopleFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -520,10 +520,10 @@ export const peopleFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of people to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -555,14 +555,14 @@ export const peopleFields: INodeProperties[] = [
 				placeholder: 'firstName[eq]:John,score[gt]:5',
 			},
 			{
-				displayName: 'Depth',
+				displayName: 'Depth Name or ID',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: 1,
-				description: 'Level of nested related objects to include: 0 (people only), 1 (people + direct relations), 2 (people + relations + their relations)',
+				default: '',
+				description: 'Level of nested related objects to include: 0 (people only), 1 (people + direct relations), 2 (people + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

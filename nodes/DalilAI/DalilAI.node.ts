@@ -20,10 +20,10 @@ import { taskTargetFields, taskTargetOperations } from './TaskTargetDescription'
 import { pipelineFields, pipelineOperations } from './PipelineDescription';
 import { processFieldValue, parseFieldMetadata, filterFieldMetadata } from './FieldTypeHelper';
 
-export class DalilAI implements INodeType {
+export class DalilAi implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Dalil AI',
-		name: 'dalilAI',
+		name: 'dalilAi',
 		icon: 'file:dalil-ai.svg',
 		group: ['output'],
 		version: 1,
@@ -64,7 +64,7 @@ export class DalilAI implements INodeType {
 						value: 'opportunity',
 					},
 					{
-						name: 'People',
+						name: 'Person',
 						value: 'people',
 					},
 					{
@@ -537,12 +537,12 @@ export class DalilAI implements INodeType {
 				// Fallback to hardcoded values
 				return [
 					{
-						name: 'To do',
+						name: 'To Do',
 						value: 'TODO',
 						description: 'Task is pending',
 					},
 					{
-						name: 'In progress',
+						name: 'In Progress',
 						value: 'IN_PROGRESS',
 						description: 'Task is being worked on',
 					},

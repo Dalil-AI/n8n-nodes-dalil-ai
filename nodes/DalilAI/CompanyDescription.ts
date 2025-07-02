@@ -166,7 +166,7 @@ export const companyFields: INodeProperties[] = [
 				name: 'addressStreet2',
 				type: 'string',
 				default: '',
-				description: 'Secondary street address line for suite, floor, etc. (e.g., "Suite 200", "Floor 5")',
+				description: 'Secondary street address line for suite, floor, etc. (e.g., "Suite 200", "Floor 5").',
 			},
 			{
 				displayName: 'Address City',
@@ -219,14 +219,14 @@ export const companyFields: INodeProperties[] = [
 			},
 
 			{
-				displayName: 'Created By Source',
+				displayName: 'Created By Source Name or ID',
 				name: 'createdBySource',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getCreatedBySourceOptions',
 				},
-				default: 'EMAIL',
-				description: 'Source indicating how the company was created (e.g., "EMAIL", "MANUAL", "IMPORT")',
+				default: '',
+				description: 'Source indicating how the company was created (e.g., "EMAIL", "MANUAL", "IMPORT"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Account Owner ID',
@@ -244,7 +244,7 @@ export const companyFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
-				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK", boolean fields accept true/false',
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK", boolean fields accept true/false.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -258,14 +258,14 @@ export const companyFields: INodeProperties[] = [
 									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
 								default: '',
-								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "ENTERPRISE_CLIENT"), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "ENTERPRISE_CLIENT"), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -402,7 +402,7 @@ export const companyFields: INodeProperties[] = [
 				name: 'addressStreet2',
 				type: 'string',
 				default: '',
-				description: 'Secondary street address line for suite, floor, etc. (e.g., "Suite 200", "Floor 5")',
+				description: 'Secondary street address line for suite, floor, etc. (e.g., "Suite 200", "Floor 5").',
 			},
 			{
 				displayName: 'Address City',
@@ -455,14 +455,14 @@ export const companyFields: INodeProperties[] = [
 			},
 
 			{
-				displayName: 'Created By Source',
+				displayName: 'Created By Source Name or ID',
 				name: 'createdBySource',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getCreatedBySourceOptions',
 				},
-				default: 'EMAIL',
-				description: 'Source indicating how the company was created (e.g., "EMAIL", "MANUAL", "IMPORT")',
+				default: '',
+				description: 'Source indicating how the company was created (e.g., "EMAIL", "MANUAL", "IMPORT"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Account Owner ID',
@@ -493,14 +493,14 @@ export const companyFields: INodeProperties[] = [
 				description: 'Display label for the intro video (e.g., "Company Overview", "Welcome Video")',
 			},
 			{
-				displayName: 'Work Policy',
+				displayName: 'Work Policy Names or IDs',
 				name: 'workPolicy',
 				type: 'multiOptions',
 				typeOptions: {
 					loadOptionsMethod: 'getWorkPolicyOptions',
 				},
 				default: [],
-				description: 'Company work policy options. Select multiple values like "ON_SITE", "HYBRID", "REMOTE_WORK"',
+				description: 'Company work policy options. Select multiple values like "ON_SITE", "HYBRID", "REMOTE_WORK". Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Visa Sponsorship',
@@ -518,7 +518,7 @@ export const companyFields: INodeProperties[] = [
 					multipleValues: true,
 				},
 				default: {},
-				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK", boolean fields accept true/false',
+				description: 'Custom fields specific to your workspace. Values depend on field type: text fields accept strings, multi-select fields accept values like "ON_SITE", "HYBRID", "REMOTE_WORK", boolean fields accept true/false.',
 				options: [
 					{
 						name: 'customPropertiesValues',
@@ -532,14 +532,14 @@ export const companyFields: INodeProperties[] = [
 									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
 								default: '',
-								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format.',
+								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "ENTERPRISE_CLIENT"), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on property type: text/number (plain text), select options (e.g., "ENTERPRISE_CLIENT"), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -548,20 +548,20 @@ export const companyFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['company'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (company only), 1 (company + direct relations), 2 (company + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (company only), 1 (company + direct relations), 2 (company + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -600,20 +600,20 @@ export const companyFields: INodeProperties[] = [
 		description: 'UUID string of the company to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['company'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (company only), 1 (company + direct relations), 2 (company + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (company only), 1 (company + direct relations), 2 (company + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -630,7 +630,7 @@ export const companyFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -645,10 +645,10 @@ export const companyFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of companies to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -680,14 +680,14 @@ export const companyFields: INodeProperties[] = [
 				placeholder: 'name[eq]:CompanyName,employees[gt]:50',
 			},
 			{
-				displayName: 'Depth',
+				displayName: 'Depth Name or ID',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: 1,
-				description: 'Level of nested related objects to include: 0 (companies only), 1 (companies + direct relations), 2 (companies + relations + their relations)',
+				default: '',
+				description: 'Level of nested related objects to include: 0 (companies only), 1 (companies + direct relations), 2 (companies + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

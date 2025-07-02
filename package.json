@@ -13,7 +13,7 @@
   "homepage": "https://github.com/dalil-ai/n8n-nodes-dalil-ai",
   "author": {
     "name": "Dalil AI",
-    "email": "support@dalil-ai.com"
+    "email": "abdullah.n@usedalil.ai"
   },
   "repository": {
     "type": "git",
@@ -40,8 +40,8 @@
       "dist/credentials/DalilAiApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/DalilAI/DalilAI.node.js",
-      "dist/nodes/DalilAI/DalilAITrigger.node.js"
+      "dist/nodes/DalilAi/DalilAi.node.js",
+      "dist/nodes/DalilAi/DalilAiTrigger.node.js"
     ]
   },
   "devDependencies": {

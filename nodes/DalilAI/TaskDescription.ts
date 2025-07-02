@@ -86,7 +86,7 @@ export const taskFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Task content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
+				description: 'Task content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2).',
 			},
 			{
 				displayName: 'Due Date',
@@ -96,14 +96,14 @@ export const taskFields: INodeProperties[] = [
 				description: 'When the task is due (ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
-				displayName: 'Status',
+				displayName: 'Status Name or ID',
 				name: 'status',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getTaskStatusOptions',
 				},
-				default: 'TODO',
-				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done)',
+				default: '',
+				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Assignee Name or ID',
@@ -164,7 +164,7 @@ export const taskFields: INodeProperties[] = [
 					rows: 4,
 				},
 				default: '',
-				description: 'Task content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2)',
+				description: 'Task content in plain text or markdown format. Will be automatically formatted for rich text display (bodyV2).',
 			},
 			{
 				displayName: 'Due Date',
@@ -174,14 +174,14 @@ export const taskFields: INodeProperties[] = [
 				description: 'When the task is due (ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
-				displayName: 'Status',
+				displayName: 'Status Name or ID',
 				name: 'status',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getTaskStatusOptions',
 				},
-				default: 'TODO',
-				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done)',
+				default: '',
+				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Assignee Name or ID',
@@ -196,20 +196,20 @@ export const taskFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['task'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (task only), 1 (task + direct relations), 2 (task + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (task only), 1 (task + direct relations), 2 (task + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -248,20 +248,20 @@ export const taskFields: INodeProperties[] = [
 		description: 'UUID string of the task to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['task'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (task only), 1 (task + direct relations), 2 (task + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (task only), 1 (task + direct relations), 2 (task + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -278,7 +278,7 @@ export const taskFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -293,10 +293,10 @@ export const taskFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of tasks to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -328,14 +328,14 @@ export const taskFields: INodeProperties[] = [
 				placeholder: 'status[eq]:TODO,dueAt[gte]:2024-01-01',
 			},
 			{
-				displayName: 'Depth',
+				displayName: 'Depth Name or ID',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: 1,
-				description: 'Level of nested related objects to include: 0 (tasks only), 1 (tasks + direct relations), 2 (tasks + relations + their relations)',
+				default: '',
+				description: 'Level of nested related objects to include: 0 (tasks only), 1 (tasks + direct relations), 2 (tasks + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
