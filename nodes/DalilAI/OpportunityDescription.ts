@@ -89,39 +89,11 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'Opportunity amount in micros (e.g., 50000000 for $50.00, 1000000 for $1.00)',
 			},
 			{
-				displayName: 'Currency Code',
-				name: 'currencyCode',
-				type: 'string',
-				default: 'USD',
-				description: 'Three-letter currency code for the amount (e.g., "USD", "EUR", "GBP")',
-			},
-
-
-			{
 				displayName: 'Close Date',
 				name: 'closeDate',
 				type: 'dateTime',
 				default: '',
 				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
-			},
-			{
-				displayName: 'Stage Name or ID',
-				name: 'stage',
-				type: 'options',
-				typeOptions: {
-					loadOptionsMethod: 'getOpportunityStageOptions',
-				},
-				default: '',
-				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
-			},
-
-
-			{
-				displayName: 'Point of Contact ID',
-				name: 'pointOfContactId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the person who is the main point of contact for this opportunity',
 			},
 			{
 				displayName: 'Company ID',
@@ -131,11 +103,11 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'UUID string of the company associated with this opportunity',
 			},
 			{
-				displayName: 'Owner ID',
-				name: 'ownerId',
+				displayName: 'Currency Code',
+				name: 'currencyCode',
 				type: 'string',
-				default: '',
-				description: 'UUID string of the team member responsible for managing this opportunity',
+				default: 'USD',
+				description: 'Three-letter currency code for the amount (e.g., "USD", "EUR", "GBP")',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -172,6 +144,30 @@ export const opportunityFields: INodeProperties[] = [
 						],
 					},
 				],
+			},
+			{
+				displayName: 'Owner ID',
+				name: 'ownerId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the team member responsible for managing this opportunity',
+			},
+			{
+				displayName: 'Point of Contact ID',
+				name: 'pointOfContactId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the person who is the main point of contact for this opportunity',
+			},
+			{
+				displayName: 'Stage Name or ID',
+				name: 'stage',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getOpportunityStageOptions',
+				},
+				default: '',
+				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
@@ -207,13 +203,6 @@ export const opportunityFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Opportunity Name',
-				name: 'name',
-				type: 'string',
-				default: '',
-				description: 'The opportunity name (e.g., "Q1 Software License Deal", "Enterprise Implementation Project")',
-			},
-			{
 				displayName: 'Amount',
 				name: 'amountMicros',
 				type: 'number',
@@ -224,40 +213,11 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'Opportunity amount in micros (e.g., 50000000 for $50.00, 1000000 for $1.00)',
 			},
 			{
-				displayName: 'Currency Code',
-				name: 'currencyCode',
-				type: 'string',
-				default: '',
-				description: 'Three-letter currency code for the amount (e.g., "USD", "EUR", "GBP")',
-			},
-
-
-
-			{
 				displayName: 'Close Date',
 				name: 'closeDate',
 				type: 'dateTime',
 				default: '',
 				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
-			},
-			{
-				displayName: 'Stage Name or ID',
-				name: 'stage',
-				type: 'options',
-				typeOptions: {
-					loadOptionsMethod: 'getOpportunityStageOptions',
-				},
-				default: '',
-				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
-			},
-
-
-			{
-				displayName: 'Point of Contact ID',
-				name: 'pointOfContactId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the person who is the main point of contact for this opportunity',
 			},
 			{
 				displayName: 'Company ID',
@@ -267,11 +227,11 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'UUID string of the company associated with this opportunity',
 			},
 			{
-				displayName: 'Owner ID',
-				name: 'ownerId',
+				displayName: 'Currency Code',
+				name: 'currencyCode',
 				type: 'string',
 				default: '',
-				description: 'UUID string of the team member responsible for managing this opportunity',
+				description: 'Three-letter currency code for the amount (e.g., "USD", "EUR", "GBP")',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -308,6 +268,37 @@ export const opportunityFields: INodeProperties[] = [
 						],
 					},
 				],
+			},
+			{
+				displayName: 'Opportunity Name',
+				name: 'name',
+				type: 'string',
+				default: '',
+				description: 'The opportunity name (e.g., "Q1 Software License Deal", "Enterprise Implementation Project")',
+			},
+			{
+				displayName: 'Owner ID',
+				name: 'ownerId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the team member responsible for managing this opportunity',
+			},
+			{
+				displayName: 'Point of Contact ID',
+				name: 'pointOfContactId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the person who is the main point of contact for this opportunity',
+			},
+			{
+				displayName: 'Stage Name or ID',
+				name: 'stage',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getOpportunityStageOptions',
+				},
+				default: '',
+				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

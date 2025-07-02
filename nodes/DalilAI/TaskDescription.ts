@@ -79,6 +79,16 @@ export const taskFields: INodeProperties[] = [
 		},
 		options: [
 			{
+				displayName: 'Assignee Name or ID',
+				name: 'assigneeId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
+				default: '',
+				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+			},
+			{
 				displayName: 'Body',
 				name: 'body',
 				type: 'string',
@@ -104,16 +114,6 @@ export const taskFields: INodeProperties[] = [
 				},
 				default: '',
 				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
-			},
-			{
-				displayName: 'Assignee Name or ID',
-				name: 'assigneeId',
-				type: 'options',
-				typeOptions: {
-					loadOptionsMethod: 'getWorkspaceMembers',
-				},
-				default: '',
-				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
@@ -150,11 +150,14 @@ export const taskFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Title',
-				name: 'title',
-				type: 'string',
+				displayName: 'Assignee Name or ID',
+				name: 'assigneeId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
 				default: '',
-				description: 'Title of the task (e.g., "Complete project proposal", "Call client", "Review documents")',
+				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Body',
@@ -184,14 +187,11 @@ export const taskFields: INodeProperties[] = [
 				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Assignee Name or ID',
-				name: 'assigneeId',
-				type: 'options',
-				typeOptions: {
-					loadOptionsMethod: 'getWorkspaceMembers',
-				},
+				displayName: 'Title',
+				name: 'title',
+				type: 'string',
 				default: '',
-				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				description: 'Title of the task (e.g., "Complete project proposal", "Call client", "Review documents")',
 			},
 		],
 	},

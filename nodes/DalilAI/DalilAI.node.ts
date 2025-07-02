@@ -7,7 +7,7 @@ import type {
 	INodeTypeDescription,
 	JsonObject,
 } from 'n8n-workflow';
-import { NodeConnectionType } from 'n8n-workflow';
+import { NodeConnectionType, ApplicationError, NodeApiError, NodeOperationError } from 'n8n-workflow';
 
 import { dalilAiApiRequest, formatTextToBlocknote } from './GenericFunctions';
 import { peopleFields, peopleOperations } from './PeopleDescription';
@@ -113,13 +113,13 @@ export class DalilAi implements INodeType {
 					
 					// Check if response has the expected structure
 					if (!response || !response.data || !response.data.getObjectMetadataByStandardId) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const fields = response.data.getObjectMetadataByStandardId.fields;
 					
 					if (!Array.isArray(fields)) {
-						throw new Error(`Fields is not an array: ${JSON.stringify(fields)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Fields is not an array: ${JSON.stringify(fields)}` });
 					}
 					
 					for (const field of fields) {
@@ -185,7 +185,7 @@ export class DalilAi implements INodeType {
 					
 				} catch (error) {
 					// Re-throw the error so user can see what's wrong in n8n UI
-					throw new Error(`Failed to load custom properties: ${error}`);
+					throw new ApplicationError(`Failed to load custom properties: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -272,13 +272,13 @@ export class DalilAi implements INodeType {
 					const response = await dalilAiApiRequest.call(this, 'GET', endpoint, {});
 					
 					if (!response || !response.data || !response.data.getObjectMetadataByStandardId) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const fields = response.data.getObjectMetadataByStandardId.fields;
 					
 					if (!Array.isArray(fields)) {
-						throw new Error(`Fields is not an array: ${JSON.stringify(fields)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Fields is not an array: ${JSON.stringify(fields)}` });
 					}
 					
 					for (const field of fields) {
@@ -326,7 +326,7 @@ export class DalilAi implements INodeType {
 					}
 					
 				} catch (error) {
-					throw new Error(`Failed to load company custom properties: ${error}`);
+					throw new ApplicationError(`Failed to load company custom properties: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -388,13 +388,13 @@ export class DalilAi implements INodeType {
 					const response = await dalilAiApiRequest.call(this, 'GET', endpoint, {});
 					
 					if (!response || !response.data || !response.data.getObjectMetadataByStandardId) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const fields = response.data.getObjectMetadataByStandardId.fields;
 					
 					if (!Array.isArray(fields)) {
-						throw new Error(`Fields is not an array: ${JSON.stringify(fields)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Fields is not an array: ${JSON.stringify(fields)}` });
 					}
 					
 					for (const field of fields) {
@@ -442,7 +442,7 @@ export class DalilAi implements INodeType {
 					}
 					
 				} catch (error) {
-					throw new Error(`Failed to load opportunity custom properties: ${error}`);
+					throw new ApplicationError(`Failed to load opportunity custom properties: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -563,13 +563,13 @@ export class DalilAi implements INodeType {
 					const response = await dalilAiApiRequest.call(this, 'GET', endpoint, {});
 					
 					if (!response || !response.data || !response.data.getObjectMetadataByStandardId) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const fields = response.data.getObjectMetadataByStandardId.fields;
 					
 					if (!Array.isArray(fields)) {
-						throw new Error(`Fields is not an array: ${JSON.stringify(fields)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Fields is not an array: ${JSON.stringify(fields)}` });
 					}
 					
 					for (const field of fields) {
@@ -614,7 +614,7 @@ export class DalilAi implements INodeType {
 					}
 					
 				} catch (error) {
-					throw new Error(`Failed to load note custom properties: ${error}`);
+					throw new ApplicationError(`Failed to load note custom properties: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -629,13 +629,13 @@ export class DalilAi implements INodeType {
 					const response = await dalilAiApiRequest.call(this, 'GET', endpoint, {});
 					
 					if (!response || !response.data || !response.data.getObjectMetadataByStandardId) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const fields = response.data.getObjectMetadataByStandardId.fields;
 					
 					if (!Array.isArray(fields)) {
-						throw new Error(`Fields is not an array: ${JSON.stringify(fields)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Fields is not an array: ${JSON.stringify(fields)}` });
 					}
 					
 					for (const field of fields) {
@@ -664,7 +664,7 @@ export class DalilAi implements INodeType {
 					}
 					
 				} catch (error) {
-					throw new Error(`Failed to load note relation custom properties: ${error}`);
+					throw new ApplicationError(`Failed to load note relation custom properties: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -679,13 +679,13 @@ export class DalilAi implements INodeType {
 					const response = await dalilAiApiRequest.call(this, 'GET', endpoint, {});
 					
 					if (!response || !response.data || !response.data.getObjectMetadataByStandardId) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const fields = response.data.getObjectMetadataByStandardId.fields;
 					
 					if (!Array.isArray(fields)) {
-						throw new Error(`Fields is not an array: ${JSON.stringify(fields)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Fields is not an array: ${JSON.stringify(fields)}` });
 					}
 					
 					for (const field of fields) {
@@ -714,7 +714,7 @@ export class DalilAi implements INodeType {
 					}
 					
 				} catch (error) {
-					throw new Error(`Failed to load task relation custom properties: ${error}`);
+					throw new ApplicationError(`Failed to load task relation custom properties: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -727,13 +727,13 @@ export class DalilAi implements INodeType {
 					const response = await dalilAiApiRequest.call(this, 'GET', '/rest/metadata/pipelines', {});
 					
 					if (!response || !response.data || !response.data.pipelines) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const pipelines = response.data.pipelines;
 					
 					if (!Array.isArray(pipelines)) {
-						throw new Error(`Pipelines is not an array: ${JSON.stringify(pipelines)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Pipelines is not an array: ${JSON.stringify(pipelines)}` });
 					}
 					
 					for (const pipeline of pipelines) {
@@ -757,7 +757,7 @@ export class DalilAi implements INodeType {
 					}
 					
 				} catch (error) {
-					throw new Error(`Failed to load pipelines: ${error}`);
+					throw new ApplicationError(`Failed to load pipelines: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -780,13 +780,13 @@ export class DalilAi implements INodeType {
 					const response = await dalilAiApiRequest.call(this, 'GET', `/rest/metadata/pipelines/${pipelineId}`, {});
 					
 					if (!response || !response.data || !response.data.pipeline) {
-						throw new Error(`Unexpected API response structure: ${JSON.stringify(response)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Unexpected API response structure: ${JSON.stringify(response)}` });
 					}
 					
 					const fields = response.data.pipeline.fields;
 					
 					if (!Array.isArray(fields)) {
-						throw new Error(`Fields is not an array: ${JSON.stringify(fields)}`);
+						throw new NodeApiError(this.getNode(), response as JsonObject, { message: `Fields is not an array: ${JSON.stringify(fields)}` });
 					}
 					
 					for (const field of fields) {
@@ -846,7 +846,7 @@ export class DalilAi implements INodeType {
 					}
 					
 				} catch (error) {
-					throw new Error(`Failed to load pipeline custom properties: ${error}`);
+					throw new ApplicationError(`Failed to load pipeline custom properties: ${error}`);
 				}
 				
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
@@ -963,7 +963,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -978,7 +978,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -1065,7 +1065,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -1080,7 +1080,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -1263,7 +1263,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -1276,7 +1276,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -1385,7 +1385,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -1398,7 +1398,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -1652,7 +1652,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -1665,7 +1665,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -1701,7 +1701,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -1714,7 +1714,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -1974,7 +1974,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -1987,7 +1987,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -2023,7 +2023,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -2036,7 +2036,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -2161,7 +2161,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -2174,7 +2174,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -2227,7 +2227,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -2240,7 +2240,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -2330,7 +2330,7 @@ export class DalilAi implements INodeType {
 					try {
 						pipelineMetadata = JSON.parse(selectedPipelineStr);
 					} catch (error) {
-						throw new Error('Invalid pipeline selection');
+						throw new NodeOperationError(this.getNode(), 'Invalid pipeline selection');
 					}
 					
 					const namePlural = pipelineMetadata.namePlural;
@@ -2349,7 +2349,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -2362,7 +2362,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
@@ -2390,7 +2390,7 @@ export class DalilAi implements INodeType {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
-										throw new Error(`Invalid property metadata: ${customProp.property}`);
+										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
 									
 									const fieldName = propertyMetadata.name;
@@ -2403,7 +2403,7 @@ export class DalilAi implements INodeType {
 									}
 									
 								} catch (error) {
-									throw new Error(`Failed to process custom property: ${error}`);
+									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
 						}
