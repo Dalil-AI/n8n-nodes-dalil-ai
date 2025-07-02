@@ -1,4 +1,5 @@
 // Helper functions for handling dynamic field types in Dalil AI
+import { NodeOperationError, INode } from 'n8n-workflow';
 
 // System fields that should be filtered out from user input
 export const SYSTEM_FIELDS = [
@@ -46,7 +47,7 @@ export function parseFieldMetadata(propertyString: string): FieldMetadata | null
 	}
 }
 
-export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any): any {
+export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any, node: INode): any {
 	const fieldType = fieldMetadata.type;
 	let fieldValue: any;
 
@@ -63,14 +64,14 @@ export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any)
 				? customProp.value
 				: parseFloat(customProp.value as string) || 0;
 			if (!fieldMetadata.isNullable && isNaN(fieldValue)) {
-				throw new Error(`Invalid number value for field ${fieldMetadata.name}`);
+				throw new NodeOperationError(node, `Invalid number value for field ${fieldMetadata.name}`);
 			}
 			break;
 
 		case 'DATE_TIME':
 			fieldValue = customProp.value;
 			if (!fieldMetadata.isNullable && !fieldValue) {
-				throw new Error(`Date is required for field ${fieldMetadata.name}`);
+				throw new NodeOperationError(node, `Date is required for field ${fieldMetadata.name}`);
 			}
 			break;
 
@@ -84,7 +85,7 @@ export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any)
 			// The API expects the option value (e.g., 'RATING_1') not the ID
 			fieldValue = customProp.value;
 			if (!fieldMetadata.isNullable && !fieldValue) {
-				throw new Error(`Selection is required for field ${fieldMetadata.name}`);
+				throw new NodeOperationError(node, `Selection is required for field ${fieldMetadata.name}`);
 			}
 			break;
 
@@ -92,7 +93,7 @@ export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any)
 			// Multi-select expects an array of option values
 			fieldValue = Array.isArray(customProp.value) ? customProp.value : [];
 			if (!fieldMetadata.isNullable && fieldValue.length === 0) {
-				throw new Error(`At least one selection is required for field ${fieldMetadata.name}`);
+				throw new NodeOperationError(node, `At least one selection is required for field ${fieldMetadata.name}`);
 			}
 			break;
 
@@ -102,7 +103,7 @@ export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any)
 				additionalEmails: customProp.emails_additionalEmails || []
 			};
 			if (!fieldMetadata.isNullable && !fieldValue.primaryEmail) {
-				throw new Error(`Primary email is required for field ${fieldMetadata.name}`);
+				throw new NodeOperationError(node, `Primary email is required for field ${fieldMetadata.name}`);
 			}
 			break;
 
@@ -114,7 +115,7 @@ export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any)
 				additionalPhones: []
 			};
 			if (!fieldMetadata.isNullable && !fieldValue.primaryPhoneNumber) {
-				throw new Error(`Primary phone number is required for field ${fieldMetadata.name}`);
+				throw new NodeOperationError(node, `Primary phone number is required for field ${fieldMetadata.name}`);
 			}
 			break;
 

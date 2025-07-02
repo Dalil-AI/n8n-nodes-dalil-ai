@@ -122,14 +122,14 @@ export const noteTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
 								default: '',
-								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration.',
+								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -170,34 +170,12 @@ export const noteTargetFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Note ID',
-				name: 'noteId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the note to link to a record (person, company, or opportunity)',
-			},
-			{
-				displayName: 'Person ID',
-				name: 'personId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity.',
-			},
-			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
 				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity.',
 			},
-			{
-				displayName: 'Opportunity ID',
-				name: 'opportunityId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company.',
-			},
-
 			{
 				displayName: 'Custom Properties',
 				name: 'customPropertiesUi',
@@ -221,36 +199,57 @@ export const noteTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
 								default: '',
-								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration.',
+								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
 				],
 			},
+			{
+				displayName: 'Note ID',
+				name: 'noteId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the note to link to a record (person, company, or opportunity)',
+			},
+			{
+				displayName: 'Opportunity ID',
+				name: 'opportunityId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company.',
+			},
+			{
+				displayName: 'Person ID',
+				name: 'personId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity.',
+			},
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['noteTarget'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (note relation only), 1 (note relation + direct relations), 2 (note relation + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (note relation only), 1 (note relation + direct relations), 2 (note relation + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -289,20 +288,20 @@ export const noteTargetFields: INodeProperties[] = [
 		description: 'UUID string of the note relation to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['noteTarget'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (note relation only), 1 (note relation + direct relations), 2 (note relation + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (note relation only), 1 (note relation + direct relations), 2 (note relation + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -319,7 +318,7 @@ export const noteTargetFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -334,10 +333,10 @@ export const noteTargetFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of note relations to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -369,14 +368,14 @@ export const noteTargetFields: INodeProperties[] = [
 				placeholder: 'noteId[eq]:note-uuid,personId[is]:NOT_NULL',
 			},
 			{
-				displayName: 'Depth',
+				displayName: 'Depth Name or ID',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: 1,
-				description: 'Level of nested related objects to include: 0 (note relations only), 1 (note relations + direct relations), 2 (note relations + relations + their relations)',
+				default: '',
+				description: 'Level of nested related objects to include: 0 (note relations only), 1 (note relations + direct relations), 2 (note relations + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

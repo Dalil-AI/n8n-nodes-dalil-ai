@@ -122,14 +122,14 @@ export const taskTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
 								default: '',
-								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration.',
+								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
@@ -170,32 +170,11 @@ export const taskTargetFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Task ID',
-				name: 'taskId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the task to link to a record (person, company, or opportunity)',
-			},
-			{
-				displayName: 'Person ID',
-				name: 'personId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the person to link to the task. Leave empty if linking to company or opportunity.',
-			},
-			{
 				displayName: 'Company ID',
 				name: 'companyId',
 				type: 'string',
 				default: '',
 				description: 'UUID string of the company to link to the task. Leave empty if linking to person or opportunity.',
-			},
-			{
-				displayName: 'Opportunity ID',
-				name: 'opportunityId',
-				type: 'string',
-				default: '',
-				description: 'UUID string of the opportunity to link to the task. Leave empty if linking to person or company.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -220,36 +199,57 @@ export const taskTargetFields: INodeProperties[] = [
 									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
 								default: '',
-								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration.',
+								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false)',
+								description: 'Value for the custom property. Format depends on field type: text (plain text), select fields (specific values), dates (ISO format), booleans (true/false).',
 							},
 						],
 					},
 				],
 			},
+			{
+				displayName: 'Opportunity ID',
+				name: 'opportunityId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the opportunity to link to the task. Leave empty if linking to person or company.',
+			},
+			{
+				displayName: 'Person ID',
+				name: 'personId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the person to link to the task. Leave empty if linking to company or opportunity.',
+			},
+			{
+				displayName: 'Task ID',
+				name: 'taskId',
+				type: 'string',
+				default: '',
+				description: 'UUID string of the task to link to a record (person, company, or opportunity)',
+			},
 		],
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['taskTarget'],
 				operation: ['update'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (task relation only), 1 (task relation + direct relations), 2 (task relation + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (task relation only), 1 (task relation + direct relations), 2 (task relation + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -288,20 +288,20 @@ export const taskTargetFields: INodeProperties[] = [
 		description: 'UUID string of the task relation to retrieve',
 	},
 	{
-		displayName: 'Depth',
+		displayName: 'Depth Name or ID',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: 1,
+		default: '',
 		displayOptions: {
 			show: {
 				resource: ['taskTarget'],
 				operation: ['get'],
 			},
 		},
-		description: 'Level of nested related objects to include: 0 (task relation only), 1 (task relation + direct relations), 2 (task relation + relations + their relations)',
+		description: 'Level of nested related objects to include: 0 (task relation only), 1 (task relation + direct relations), 2 (task relation + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -318,7 +318,7 @@ export const taskTargetFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-		description: 'Whether to return all results or only up to the specified limit (maximum 60 per request)',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -333,10 +333,10 @@ export const taskTargetFields: INodeProperties[] = [
 		},
 		typeOptions: {
 			minValue: 1,
-			maxValue: 60,
+
 		},
-		default: 60,
-		description: 'Maximum number of task relations to return (1-60)',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',

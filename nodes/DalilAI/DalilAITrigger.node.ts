@@ -59,7 +59,7 @@ const actionOptions = [
 export class DalilAITrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Dalil AI Trigger',
-		name: 'dalilAITrigger',
+		name: 'dalilAiTrigger',
 		icon: 'file:dalil-ai.svg',
 		group: ['trigger'],
 		version: 1,

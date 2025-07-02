@@ -25,7 +25,7 @@ export async function dalilAiApiRequest(
 	query: IDataObject = {},
 	uri?: string,
 ): Promise<any> {
-	const baseUrl = 'http://localhost:3000';
+	const baseUrl = 'https://app.usedalil.ai/';
 	
 	const options = {
 		method,
