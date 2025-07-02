@@ -56,7 +56,7 @@ const actionOptions = [
 	},
 ];
 
-export class DalilAITrigger implements INodeType {
+export class DalilAiTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Dalil AI Trigger',
 		name: 'dalilAiTrigger',
