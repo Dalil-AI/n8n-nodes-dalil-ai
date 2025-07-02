@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-dalil-ai.dalilAITrigger",
+	"node": "n8n-nodes-base.dalilAITrigger",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["CRM", "Sales"],
