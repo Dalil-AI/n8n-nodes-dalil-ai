@@ -25,8 +25,8 @@ export async function dalilAiApiRequest(
 	query: IDataObject = {},
 	uri?: string,
 ): Promise<any> {
-	const baseUrl = 'https://app.usedalil.ai/';
-	
+	const baseUrl = 'http://localhost:3000';
+
 	const options = {
 		method,
 		qs: query,
@@ -40,6 +40,37 @@ export async function dalilAiApiRequest(
 
 	try {
 		return await this.helpers.requestWithAuthentication.call(this, 'dalilAiApi', options);
+	} catch (error) {
+		throw new NodeApiError(this.getNode(), error as JsonObject);
+	}
+}
+
+export async function dalilAiGraphqlRequest(
+	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
+	query: string,
+	variables: any = {},
+): Promise<any> {
+	const baseUrl = 'http://localhost:3000/';
+
+	const options = {
+		method: 'POST' as IHttpRequestMethods,
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		uri: `${baseUrl}graphql`,
+		body: {
+			query,
+			variables,
+		},
+		json: true,
+	} satisfies IRequestOptions;
+
+	try {
+		const response = await this.helpers.requestWithAuthentication.call(this, 'dalilAiApi', options);
+		if (response.errors) {
+			throw new NodeApiError(this.getNode(), { errors: response.errors } as JsonObject);
+		}
+		return response.data;
 	} catch (error) {
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}

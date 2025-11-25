@@ -42,6 +42,12 @@ export const noteOperations: INodeProperties[] = [
 				description: 'Update a note',
 				action: 'Update a note',
 			},
+			{
+				name: 'Search',
+				value: 'search',
+				description: 'Search for notes by title',
+				action: 'Search for notes',
+			},
 		],
 		default: 'create',
 	},
@@ -289,4 +295,48 @@ export const noteFields: INodeProperties[] = [
 			},
 		],
 	},
-]; 
+
+	/* -------------------------------------------------------------------------- */
+	/*                                note:search                                 */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Note Title',
+		name: 'searchTitle',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['note'],
+				operation: ['search'],
+			},
+		},
+		default: '',
+		description: 'Title of the note to search for (e.g., "Meeting Notes", "Project Update")',
+	},
+	{
+		displayName: 'Depth',
+		name: 'depth',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['note'],
+				operation: ['search'],
+			},
+		},
+		default: 0,
+		description: 'Depth of the search query',
+	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['note'],
+				operation: ['search'],
+			},
+		},
+		default: 1,
+		description: 'Maximum number of results to return',
+	},
+];

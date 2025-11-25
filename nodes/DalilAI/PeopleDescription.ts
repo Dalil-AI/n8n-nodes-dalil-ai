@@ -42,6 +42,12 @@ export const peopleOperations: INodeProperties[] = [
 				description: 'Update a person',
 				action: 'Update a person',
 			},
+			{
+				name: 'Search',
+				value: 'search',
+				description: 'Search for people by name or email',
+				action: 'Search for people',
+			},
 		],
 		default: 'create',
 	},
@@ -553,4 +559,89 @@ export const peopleFields: INodeProperties[] = [
 			},
 		],
 	},
-]; 
+
+	/* -------------------------------------------------------------------------- */
+	/*                                people:search                               */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Search By',
+		name: 'searchBy',
+		type: 'options',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['people'],
+				operation: ['search'],
+			},
+		},
+		options: [
+			{
+				name: 'Name',
+				value: 'name',
+			},
+			{
+				name: 'Email',
+				value: 'email',
+			},
+		],
+		default: 'name',
+		description: 'Field to search by',
+	},
+	{
+		displayName: 'Name',
+		name: 'searchName',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['people'],
+				operation: ['search'],
+				searchBy: ['name'],
+			},
+		},
+		default: '',
+		description: 'Name of the person to search for (e.g., "John Smith", "Jane")',
+	},
+	{
+		displayName: 'Email',
+		name: 'searchEmail',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['people'],
+				operation: ['search'],
+				searchBy: ['email'],
+			},
+		},
+		default: '',
+		placeholder: 'name@email.com',
+		description: 'Email address to search for',
+	},
+	{
+		displayName: 'Depth',
+		name: 'depth',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['people'],
+				operation: ['search'],
+			},
+		},
+		default: 0,
+		description: 'Depth of the search query',
+	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['people'],
+				operation: ['search'],
+			},
+		},
+		default: 1,
+		description: 'Maximum number of results to return',
+	},
+];

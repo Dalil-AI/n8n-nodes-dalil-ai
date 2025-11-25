@@ -9,7 +9,7 @@ import type {
 } from 'n8n-workflow';
 import { NodeConnectionType, ApplicationError, NodeApiError, NodeOperationError } from 'n8n-workflow';
 
-import { dalilAiApiRequest, formatTextToBlocknote } from './GenericFunctions';
+import { dalilAiApiRequest, dalilAiGraphqlRequest, formatTextToBlocknote } from './GenericFunctions';
 import { peopleFields, peopleOperations } from './PeopleDescription';
 import { companyFields, companyOperations } from './CompanyDescription';
 import { opportunityFields, opportunityOperations } from './OpportunityDescription';
@@ -742,6 +742,7 @@ export class DalilAi implements INodeType {
 							const pipelineMetadata = {
 								id: pipeline.id,
 								namePlural: pipeline.namePlural,
+								nameSingular: pipeline.nameSingular,
 								labelSingular: pipeline.labelSingular,
 								labelPlural: pipeline.labelPlural
 							};
@@ -1162,6 +1163,96 @@ export class DalilAi implements INodeType {
 								pairedItem: { item: i },
 							});
 						}
+					} else if (operation === 'search') {
+						// Search people
+						const searchBy = this.getNodeParameter('searchBy', i) as string;
+						const depth = this.getNodeParameter('depth', i, 0) as number;
+						const limit = this.getNodeParameter('limit', i, 1) as number;
+
+						if (searchBy === 'email') {
+							// Search by email using REST API with filter
+							const searchEmail = this.getNodeParameter('searchEmail', i) as string;
+							const filter = `emails.primaryEmail[eq]:${searchEmail}`;
+							const query: any = {
+								filter,
+								limit,
+								depth,
+							};
+
+							const responseData = await dalilAiApiRequest.call(this, 'GET', '/rest/people', {}, query);
+
+							if (Array.isArray(responseData)) {
+								responseData.forEach((person) => {
+									returnData.push({
+										json: person,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: responseData,
+									pairedItem: { item: i },
+								});
+							}
+						} else {
+							// Search by name using GraphQL search API
+							const searchName = this.getNodeParameter('searchName', i) as string;
+
+							const searchQuery = `
+								query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+									search(
+										searchInput: $searchInput
+										includedObjectNameSingulars: $includedObjectNameSingulars
+										limit: $limit
+									) {
+										edges {
+											node {
+												recordId
+												objectNameSingular
+												label
+												imageUrl
+											}
+										}
+									}
+								}
+							`;
+
+							const variables = {
+								searchInput: searchName,
+								includedObjectNameSingulars: ['person'],
+								limit,
+								depth,
+							};
+
+							const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
+							const recordIds = searchResponse.search.edges.map((edge: any) => edge.node.recordId);
+
+							if (recordIds.length > 0) {
+								// Get full details using REST API with ID filter
+								const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+								const query: any = {
+									filter: idsFilter,
+									limit,
+									depth,
+								};
+
+								const detailsResponse = await dalilAiApiRequest.call(this, 'GET', '/rest/people', {}, query);
+
+								if (Array.isArray(detailsResponse)) {
+									detailsResponse.forEach((person) => {
+										returnData.push({
+											json: person,
+											pairedItem: { item: i },
+										});
+									});
+								} else {
+									returnData.push({
+										json: detailsResponse,
+										pairedItem: { item: i },
+									});
+								}
+							}
+						}
 					}
 				} else if (resource === 'company') {
 					if (operation === 'create') {
@@ -1480,6 +1571,66 @@ export class DalilAi implements INodeType {
 								pairedItem: { item: i },
 							});
 						}
+					} else if (operation === 'search') {
+						// Search companies by name
+						const searchName = this.getNodeParameter('searchName', i) as string;
+						const depth = this.getNodeParameter('depth', i, 0) as number;
+						const limit = this.getNodeParameter('limit', i, 1) as number;
+
+						const searchQuery = `
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+								search(
+									searchInput: $searchInput
+									includedObjectNameSingulars: $includedObjectNameSingulars
+									limit: $limit
+								) {
+									edges {
+										node {
+											recordId
+											objectNameSingular
+											label
+											imageUrl
+										}
+									}
+								}
+							}
+						`;
+
+						const variables = {
+							searchInput: searchName,
+							includedObjectNameSingulars: ['company'],
+							limit,
+							depth,
+						};
+
+						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
+						const recordIds = searchResponse.search.edges.map((edge: any) => edge.node.recordId);
+
+						if (recordIds.length > 0) {
+							// Get full details using REST API with ID filter
+							const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+							const query: any = {
+								filter: idsFilter,
+								limit,
+								depth,
+							};
+
+							const detailsResponse = await dalilAiApiRequest.call(this, 'GET', '/rest/companies', {}, query);
+
+							if (Array.isArray(detailsResponse)) {
+								detailsResponse.forEach((company) => {
+									returnData.push({
+										json: company,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: detailsResponse,
+									pairedItem: { item: i },
+								});
+							}
+						}
 					}
 				} else if (resource === 'note') {
 					if (operation === 'create') {
@@ -1625,6 +1776,66 @@ export class DalilAi implements INodeType {
 								json: responseData,
 								pairedItem: { item: i },
 							});
+						}
+					} else if (operation === 'search') {
+						// Search notes by title
+						const searchTitle = this.getNodeParameter('searchTitle', i) as string;
+						const depth = this.getNodeParameter('depth', i, 0) as number;
+						const limit = this.getNodeParameter('limit', i, 1) as number;
+
+						const searchQuery = `
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+								search(
+									searchInput: $searchInput
+									includedObjectNameSingulars: $includedObjectNameSingulars
+									limit: $limit
+								) {
+									edges {
+										node {
+											recordId
+											objectNameSingular
+											label
+											imageUrl
+										}
+									}
+								}
+							}
+						`;
+
+						const variables = {
+							searchInput: searchTitle,
+							includedObjectNameSingulars: ['note'],
+							limit,
+							depth,
+						};
+
+						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
+						const recordIds = searchResponse.search.edges.map((edge: any) => edge.node.recordId);
+
+						if (recordIds.length > 0) {
+							// Get full details using REST API with ID filter
+							const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+							const query: any = {
+								filter: idsFilter,
+								limit,
+								depth,
+							};
+
+							const detailsResponse = await dalilAiApiRequest.call(this, 'GET', '/rest/notes', {}, query);
+
+							if (Array.isArray(detailsResponse)) {
+								detailsResponse.forEach((note) => {
+									returnData.push({
+										json: note,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: detailsResponse,
+									pairedItem: { item: i },
+								});
+							}
 						}
 					}
 				} else if (resource === 'noteTarget') {
@@ -1947,6 +2158,66 @@ export class DalilAi implements INodeType {
 								json: responseData,
 								pairedItem: { item: i },
 							});
+						}
+					} else if (operation === 'search') {
+						// Search tasks by title
+						const searchTitle = this.getNodeParameter('searchTitle', i) as string;
+						const depth = this.getNodeParameter('depth', i, 0) as number;
+						const limit = this.getNodeParameter('limit', i, 1) as number;
+
+						const searchQuery = `
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+								search(
+									searchInput: $searchInput
+									includedObjectNameSingulars: $includedObjectNameSingulars
+									limit: $limit
+								) {
+									edges {
+										node {
+											recordId
+											objectNameSingular
+											label
+											imageUrl
+										}
+									}
+								}
+							}
+						`;
+
+						const variables = {
+							searchInput: searchTitle,
+							includedObjectNameSingulars: ['task'],
+							limit,
+							depth,
+						};
+
+						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
+						const recordIds = searchResponse.search.edges.map((edge: any) => edge.node.recordId);
+
+						if (recordIds.length > 0) {
+							// Get full details using REST API with ID filter
+							const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+							const query: any = {
+								filter: idsFilter,
+								limit,
+								depth,
+							};
+
+							const detailsResponse = await dalilAiApiRequest.call(this, 'GET', '/rest/tasks', {}, query);
+
+							if (Array.isArray(detailsResponse)) {
+								detailsResponse.forEach((task) => {
+									returnData.push({
+										json: task,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: detailsResponse,
+									pairedItem: { item: i },
+								});
+							}
 						}
 					}
 				} else if (resource === 'taskTarget') {
@@ -2322,6 +2593,67 @@ export class DalilAi implements INodeType {
 								pairedItem: { item: i },
 							});
 						}
+					} else if (operation === 'search') {
+						// Search opportunities by name
+						const searchName = this.getNodeParameter('searchName', i) as string;
+						const depth = this.getNodeParameter('depth', i, 0) as number;
+						const limit = this.getNodeParameter('limit', i, 1) as number;
+
+						const searchQuery = `
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+								search(
+									searchInput: $searchInput
+									includedObjectNameSingulars: $includedObjectNameSingulars
+									limit: $limit
+									depth: $depth
+								) {
+									edges {
+										node {
+											recordId
+											objectNameSingular
+											label
+											imageUrl
+										}
+									}
+								}
+							}
+						`;
+
+						const variables = {
+							searchInput: searchName,
+							includedObjectNameSingulars: ['opportunity'],
+							limit,
+							depth,
+						};
+
+						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
+						const recordIds = searchResponse.search.edges.map((edge: any) => edge.node.recordId);
+
+						if (recordIds.length > 0) {
+							// Get full details using REST API with ID filter
+							const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+							const query: any = {
+								filter: idsFilter,
+								limit,
+								depth,
+							};
+
+							const detailsResponse = await dalilAiApiRequest.call(this, 'GET', '/rest/opportunities', {}, query);
+
+							if (Array.isArray(detailsResponse)) {
+								detailsResponse.forEach((opportunity) => {
+									returnData.push({
+										json: opportunity,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: detailsResponse,
+									pairedItem: { item: i },
+								});
+							}
+						}
 					}
 				} else if (resource === 'pipeline') {
 					// Get pipeline metadata from selected pipeline
@@ -2484,6 +2816,66 @@ export class DalilAi implements INodeType {
 								json: responseData,
 								pairedItem: { item: i },
 							});
+						}
+					} else if (operation === 'search') {
+						// Search pipeline records by name
+						const searchName = this.getNodeParameter('searchName', i) as string;
+						const depth = this.getNodeParameter('depth', i, 0) as number;
+						const limit = this.getNodeParameter('limit', i, 1) as number;
+
+						// Validate pipeline metadata
+						if (!pipelineMetadata.nameSingular) {
+							throw new NodeOperationError(this.getNode(), 'Pipeline metadata is missing nameSingular property');
+						}
+
+						const searchQuery = `
+							query SearchPipeline($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
+								searchPipeline(
+									searchInput: $searchInput
+									includedObjectNameSingulars: $includedObjectNameSingulars
+									limit: $limit
+								) {
+									recordId
+									pipelineNameSingular
+									label
+									imageUrl
+								}
+							}
+						`;
+
+						const variables = {
+							searchInput: searchName,
+							includedObjectNameSingulars: [pipelineMetadata.nameSingular],
+							limit,
+						};
+
+						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
+						const recordIds = searchResponse.searchPipeline.map((record: any) => record.recordId);
+
+						if (recordIds.length > 0) {
+							// Get full details using REST API with ID filter
+							const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+							const query: any = {
+								filter: idsFilter,
+								limit,
+								depth
+							};
+
+							const detailsResponse = await dalilAiApiRequest.call(this, 'GET', pipelineEndpoint, {}, query);
+
+							if (Array.isArray(detailsResponse)) {
+								detailsResponse.forEach((record) => {
+									returnData.push({
+										json: record,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: detailsResponse,
+									pairedItem: { item: i },
+								});
+							}
 						}
 					}
 				}

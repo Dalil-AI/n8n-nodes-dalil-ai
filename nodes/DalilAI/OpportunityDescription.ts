@@ -42,6 +42,12 @@ export const opportunityOperations: INodeProperties[] = [
 				description: 'Update an opportunity',
 				action: 'Update an opportunity',
 			},
+			{
+				name: 'Search',
+				value: 'search',
+				description: 'Search for opportunities by name',
+				action: 'Search for opportunities',
+			},
 		],
 		default: 'create',
 	},
@@ -446,4 +452,48 @@ export const opportunityFields: INodeProperties[] = [
 			},
 		],
 	},
-]; 
+
+	/* -------------------------------------------------------------------------- */
+	/*                               opportunity:search                           */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Opportunity Name',
+		name: 'searchName',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['opportunity'],
+				operation: ['search'],
+			},
+		},
+		default: '',
+		description: 'Name of the opportunity to search for (e.g., "Q1 Deal", "Enterprise Sale")',
+	},
+	{
+		displayName: 'Depth',
+		name: 'depth',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['opportunity'],
+				operation: ['search'],
+			},
+		},
+		default: 0,
+		description: 'Depth of the search query',
+	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['opportunity'],
+				operation: ['search'],
+			},
+		},
+		default: 1,
+		description: 'Maximum number of results to return',
+	},
+];

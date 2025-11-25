@@ -42,6 +42,12 @@ export const taskOperations: INodeProperties[] = [
 				description: 'Update a task',
 				action: 'Update a task',
 			},
+			{
+				name: 'Search',
+				value: 'search',
+				description: 'Search for tasks by title',
+				action: 'Search for tasks',
+			},
 		],
 		default: 'create',
 	},
@@ -339,4 +345,48 @@ export const taskFields: INodeProperties[] = [
 			},
 		],
 	},
-]; 
+
+	/* -------------------------------------------------------------------------- */
+	/*                                task:search                                 */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Task Title',
+		name: 'searchTitle',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['task'],
+				operation: ['search'],
+			},
+		},
+		default: '',
+		description: 'Title of the task to search for (e.g., "Complete proposal", "Call client")',
+	},
+	{
+		displayName: 'Depth',
+		name: 'depth',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['task'],
+				operation: ['search'],
+			},
+		},
+		default: 0,
+		description: 'Depth of the search query',
+	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['task'],
+				operation: ['search'],
+			},
+		},
+		default: 1,
+		description: 'Maximum number of results to return',
+	},
+];

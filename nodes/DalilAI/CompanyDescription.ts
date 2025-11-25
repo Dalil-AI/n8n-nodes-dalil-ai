@@ -42,6 +42,12 @@ export const companyOperations: INodeProperties[] = [
 				description: 'Update a company',
 				action: 'Update a company',
 			},
+			{
+				name: 'Search',
+				value: 'search',
+				description: 'Search for companies by name',
+				action: 'Search for companies',
+			},
 		],
 		default: 'create',
 	},
@@ -686,4 +692,48 @@ export const companyFields: INodeProperties[] = [
 			},
 		],
 	},
-]; 
+
+	/* -------------------------------------------------------------------------- */
+	/*                                company:search                              */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Company Name',
+		name: 'searchName',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['search'],
+			},
+		},
+		default: '',
+		description: 'Name of the company to search for (e.g., "Acme Corp", "TechStart")',
+	},
+	{
+		displayName: 'Depth',
+		name: 'depth',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['search'],
+			},
+		},
+		default: 0,
+		description: 'Depth of the search query',
+	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['search'],
+			},
+		},
+		default: 1,
+		description: 'Maximum number of results to return',
+	},
+];

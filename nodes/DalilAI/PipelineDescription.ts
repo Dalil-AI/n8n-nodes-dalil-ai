@@ -42,6 +42,12 @@ export const pipelineOperations: INodeProperties[] = [
 				description: 'Update a pipeline record',
 				action: 'Update a pipeline record',
 			},
+			{
+				name: 'Search',
+				value: 'search',
+				description: 'Search for pipeline records by name',
+				action: 'Search for pipeline records',
+			},
 		],
 		default: 'create',
 	},
@@ -394,4 +400,65 @@ export const pipelineFields: INodeProperties[] = [
 			},
 		],
 	},
-]; 
+
+	/* -------------------------------------------------------------------------- */
+	/*                               pipeline:search                              */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Select Pipeline Name or ID',
+		name: 'selectedPipeline',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getPipelines',
+		},
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['pipeline'],
+				operation: ['search'],
+			},
+		},
+		default: '',
+		description: 'Choose which pipeline to search in (e.g., "Startup Fundraising", "Sales Pipeline", "Recruitment Process"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+	},
+	{
+		displayName: 'Name',
+		name: 'searchName',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['pipeline'],
+				operation: ['search'],
+			},
+		},
+		default: '',
+		description: 'Name to search for in the pipeline records',
+	},
+	{
+		displayName: 'Depth',
+		name: 'depth',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['pipeline'],
+				operation: ['search'],
+			},
+		},
+		default: 0,
+		description: 'Depth of the search query',
+	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['pipeline'],
+				operation: ['search'],
+			},
+		},
+		default: 1,
+		description: 'Maximum number of results to return',
+	},
+];
