@@ -85,11 +85,14 @@ export const companyFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Account Owner ID',
+				displayName: 'Account Owner Name or ID',
 				name: 'accountOwnerId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
 				default: '',
-				description: 'UUID string of the team member responsible for managing this company account',
+				description: 'UUID string of the team member responsible for managing this company account. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Address City',
@@ -310,11 +313,14 @@ export const companyFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Account Owner ID',
+				displayName: 'Account Owner Name or ID',
 				name: 'accountOwnerId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
 				default: '',
-				description: 'UUID string of the team member responsible for managing this company account',
+				description: 'UUID string of the team member responsible for managing this company account. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Address City',

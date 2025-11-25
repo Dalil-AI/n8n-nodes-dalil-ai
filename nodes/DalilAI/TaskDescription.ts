@@ -91,6 +91,7 @@ export const taskFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},

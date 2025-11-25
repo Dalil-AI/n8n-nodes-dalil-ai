@@ -109,11 +109,14 @@ export const peopleFields: INodeProperties[] = [
 				description: 'Person\'s city of residence or work location (e.g., "New York", "London")',
 			},
 			{
-				displayName: 'Company ID',
+				displayName: 'Company Name or ID',
 				name: 'companyId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCompanies',
+				},
 				default: '',
-				description: 'UUID string of the associated company',
+				description: 'UUID string of the associated company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -180,11 +183,14 @@ export const peopleFields: INodeProperties[] = [
 				description: 'LinkedIn profile URL (e.g., "https://linkedin.com/in/username")',
 			},
 			{
-				displayName: 'Owner ID',
+				displayName: 'Owner Name or ID',
 				name: 'ownerId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
 				default: '',
-				description: 'UUID string of the team member responsible for managing this person',
+				description: 'UUID string of the team member responsible for managing this person. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Primary Email',
@@ -287,11 +293,14 @@ export const peopleFields: INodeProperties[] = [
 				description: 'Person\'s city of residence or work location (e.g., "New York", "London")',
 			},
 			{
-				displayName: 'Company ID',
+				displayName: 'Company Name or ID',
 				name: 'companyId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCompanies',
+				},
 				default: '',
-				description: 'UUID string of the associated company',
+				description: 'UUID string of the associated company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -365,11 +374,14 @@ export const peopleFields: INodeProperties[] = [
 				description: 'LinkedIn profile URL (e.g., "https://linkedin.com/in/username")',
 			},
 			{
-				displayName: 'Owner ID',
+				displayName: 'Owner Name or ID',
 				name: 'ownerId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
 				default: '',
-				description: 'UUID string of the team member responsible for managing this person',
+				description: 'UUID string of the team member responsible for managing this person. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Primary Email',

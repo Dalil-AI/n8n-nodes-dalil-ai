@@ -102,11 +102,14 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
-				displayName: 'Company ID',
+				displayName: 'Company Name or ID',
 				name: 'companyId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCompanies',
+				},
 				default: '',
-				description: 'UUID string of the company associated with this opportunity',
+				description: 'UUID string of the company associated with this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Currency Code',
@@ -152,18 +155,24 @@ export const opportunityFields: INodeProperties[] = [
 				],
 			},
 			{
-				displayName: 'Owner ID',
+				displayName: 'Owner Name or ID',
 				name: 'ownerId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
 				default: '',
-				description: 'UUID string of the team member responsible for managing this opportunity',
+				description: 'UUID string of the team member responsible for managing this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Point of Contact ID',
+				displayName: 'Point of Contact Name or ID',
 				name: 'pointOfContactId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getPeople',
+				},
 				default: '',
-				description: 'UUID string of the person who is the main point of contact for this opportunity',
+				description: 'UUID string of the person who is the main point of contact for this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Stage Name or ID',
@@ -226,11 +235,14 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'Expected or actual opportunity close date (ISO format: YYYY-MM-DDTHH:mm:ss.sssZ)',
 			},
 			{
-				displayName: 'Company ID',
+				displayName: 'Company Name or ID',
 				name: 'companyId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCompanies',
+				},
 				default: '',
-				description: 'UUID string of the company associated with this opportunity',
+				description: 'UUID string of the company associated with this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Currency Code',
@@ -283,18 +295,24 @@ export const opportunityFields: INodeProperties[] = [
 				description: 'The opportunity name (e.g., "Q1 Software License Deal", "Enterprise Implementation Project")',
 			},
 			{
-				displayName: 'Owner ID',
+				displayName: 'Owner Name or ID',
 				name: 'ownerId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getWorkspaceMembers',
+				},
 				default: '',
-				description: 'UUID string of the team member responsible for managing this opportunity',
+				description: 'UUID string of the team member responsible for managing this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Point of Contact ID',
+				displayName: 'Point of Contact Name or ID',
 				name: 'pointOfContactId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getPeople',
+				},
 				default: '',
-				description: 'UUID string of the person who is the main point of contact for this opportunity',
+				description: 'UUID string of the person who is the main point of contact for this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Stage Name or ID',

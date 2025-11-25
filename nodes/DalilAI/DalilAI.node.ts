@@ -8,7 +8,6 @@ import type {
 	JsonObject,
 } from 'n8n-workflow';
 import { NodeConnectionType, ApplicationError, NodeApiError, NodeOperationError } from 'n8n-workflow';
-
 import { dalilAiApiRequest, dalilAiGraphqlRequest, formatTextToBlocknote } from './GenericFunctions';
 import { peopleFields, peopleOperations } from './PeopleDescription';
 import { companyFields, companyOperations } from './CompanyDescription';
@@ -853,8 +852,141 @@ export class DalilAi implements INodeType {
 				return returnData.sort((a, b) => a.name.localeCompare(b.name));
 			},
 
+			async getWorkspaceMembers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				try {
+					const response = await dalilAiApiRequest.call(this, 'GET', '/rest/workspaceMembers', {}, { limit: 100 });
+					const members = Array.isArray(response) ? response : response.data.workspaceMembers || [];
+
+					for (const member of members) {
+						const displayName = member.name?.firstName && member.name?.lastName
+							? `${member.name.firstName} ${member.name.lastName}`.trim()
+							: member.name?.firstName || member.userEmail || member.id;
+
+						returnData.push({
+							name: displayName,
+							value: member.id,
+							description: member.userEmail || undefined,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load workspace members: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
+			},
+
+			async getCompanies(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				try {
+					const response = await dalilAiApiRequest.call(this, 'GET', '/rest/companies', {}, { limit: 100 });
+					const companies = Array.isArray(response) ? response : response.data.companies || [];
+
+					for (const company of companies) {
+						returnData.push({
+							name: company.name || company.id,
+							value: company.id,
+							description: company.domainName?.primaryLinkUrl || undefined,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load companies: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
+			},
+
+			async getPeople(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				try {
+					const response = await dalilAiApiRequest.call(this, 'GET', '/rest/people', {}, { limit: 100 });
+					const people = Array.isArray(response) ? response : response.data.people || [];
+
+					for (const person of people) {
+						const displayName = person.name?.firstName && person.name?.lastName
+							? `${person.name.firstName} ${person.name.lastName}`.trim()
+							: person.name?.firstName || person.emails?.primaryEmail || person.id;
+
+						returnData.push({
+							name: displayName,
+							value: person.id,
+							description: person.emails?.primaryEmail || undefined,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load people: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
+			},
+
+			async getOpportunities(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				try {
+					const response = await dalilAiApiRequest.call(this, 'GET', '/rest/opportunities', {}, { limit: 100 });
+					const opportunities = Array.isArray(response) ? response : response.data.opportunities || [];
+
+					for (const opportunity of opportunities) {
+						returnData.push({
+							name: opportunity.name || opportunity.id,
+							value: opportunity.id,
+							description: opportunity.stage || undefined,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load opportunities: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
+			},
+
+			async getNotes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				try {
+					const response = await dalilAiApiRequest.call(this, 'GET', '/rest/notes', {}, { limit: 100 });
+					const notes = Array.isArray(response) ? response : response.data.notes || [];
+
+					for (const note of notes) {
+						const displayName = note.title || note.id;
+						returnData.push({
+							name: displayName,
+							value: note.id,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load notes: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
+			},
+
+			async getTasks(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				try {
+					const response = await dalilAiApiRequest.call(this, 'GET', '/rest/tasks', {}, { limit: 100 });
+					const tasks = Array.isArray(response) ? response : response.data.tasks || [];
+
+					for (const task of tasks) {
+						returnData.push({
+							name: task.title || task.id,
+							value: task.id,
+							description: task.status || undefined,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load tasks: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
+			},
+
 			async getDepthOptions(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				// Depth options are typically standard across the API
 				return [
 					{
 						name: '0',
@@ -862,7 +994,7 @@ export class DalilAi implements INodeType {
 						description: 'Returns only the primary object information',
 					},
 					{
-						name: '1', 
+						name: '1',
 						value: 1,
 						description: 'Returns the primary object along with its directly related objects',
 					},
@@ -959,17 +1091,15 @@ export class DalilAi implements INodeType {
 						// Handle custom properties
 						if (additionalFields.customPropertiesUi?.customPropertiesValues) {
 							const customProperties = additionalFields.customPropertiesUi.customPropertiesValues as Array<any>;
-							
+
 							for (const customProp of customProperties) {
 								try {
 									const propertyMetadata = parseFieldMetadata(customProp.property);
 									if (!propertyMetadata) {
 										throw new NodeOperationError(this.getNode(), `Invalid property metadata: ${customProp.property}`);
 									}
-									
 									const fieldName = propertyMetadata.name;
 									const fieldValue = processFieldValue(propertyMetadata, customProp);
-									
 									// Only add the field if it has a value or is nullable
 									if (fieldValue !== undefined && fieldValue !== null && fieldValue !== '') {
 										body[fieldName] = fieldValue;
@@ -977,13 +1107,11 @@ export class DalilAi implements INodeType {
 										// Use default value if available
 										body[fieldName] = propertyMetadata.defaultValue;
 									}
-									
 								} catch (error) {
 									throw new ApplicationError(`Failed to process custom property: ${error}`);
 								}
 							}
-						}
-
+						}						
 						const responseData = await dalilAiApiRequest.call(this, 'POST', '/rest/people', body);
 						
 						returnData.push({
@@ -1199,7 +1327,7 @@ export class DalilAi implements INodeType {
 							const searchName = this.getNodeParameter('searchName', i) as string;
 
 							const searchQuery = `
-								query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+								query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
 									search(
 										searchInput: $searchInput
 										includedObjectNameSingulars: $includedObjectNameSingulars
@@ -1221,7 +1349,6 @@ export class DalilAi implements INodeType {
 								searchInput: searchName,
 								includedObjectNameSingulars: ['person'],
 								limit,
-								depth,
 							};
 
 							const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
@@ -1578,7 +1705,7 @@ export class DalilAi implements INodeType {
 						const limit = this.getNodeParameter('limit', i, 1) as number;
 
 						const searchQuery = `
-							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
 								search(
 									searchInput: $searchInput
 									includedObjectNameSingulars: $includedObjectNameSingulars
@@ -1600,7 +1727,6 @@ export class DalilAi implements INodeType {
 							searchInput: searchName,
 							includedObjectNameSingulars: ['company'],
 							limit,
-							depth,
 						};
 
 						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
@@ -1784,7 +1910,7 @@ export class DalilAi implements INodeType {
 						const limit = this.getNodeParameter('limit', i, 1) as number;
 
 						const searchQuery = `
-							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
 								search(
 									searchInput: $searchInput
 									includedObjectNameSingulars: $includedObjectNameSingulars
@@ -1806,7 +1932,6 @@ export class DalilAi implements INodeType {
 							searchInput: searchTitle,
 							includedObjectNameSingulars: ['note'],
 							limit,
-							depth,
 						};
 
 						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
@@ -2166,7 +2291,7 @@ export class DalilAi implements INodeType {
 						const limit = this.getNodeParameter('limit', i, 1) as number;
 
 						const searchQuery = `
-							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
 								search(
 									searchInput: $searchInput
 									includedObjectNameSingulars: $includedObjectNameSingulars
@@ -2188,7 +2313,6 @@ export class DalilAi implements INodeType {
 							searchInput: searchTitle,
 							includedObjectNameSingulars: ['task'],
 							limit,
-							depth,
 						};
 
 						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
@@ -2600,12 +2724,11 @@ export class DalilAi implements INodeType {
 						const limit = this.getNodeParameter('limit', i, 1) as number;
 
 						const searchQuery = `
-							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int, $depth: Int) {
+							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
 								search(
 									searchInput: $searchInput
 									includedObjectNameSingulars: $includedObjectNameSingulars
 									limit: $limit
-									depth: $depth
 								) {
 									edges {
 										node {
@@ -2623,7 +2746,6 @@ export class DalilAi implements INodeType {
 							searchInput: searchName,
 							includedObjectNameSingulars: ['opportunity'],
 							limit,
-							depth,
 						};
 
 						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);

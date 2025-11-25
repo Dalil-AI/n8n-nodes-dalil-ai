@@ -52,9 +52,12 @@ export const noteTargetFields: INodeProperties[] = [
 	/*                            noteTarget:create                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Note ID',
+		displayName: 'Note Name or ID',
 		name: 'noteId',
-		type: 'string',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getNotes',
+		},
 		required: true,
 		displayOptions: {
 			show: {
@@ -63,7 +66,7 @@ export const noteTargetFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'UUID string of the note to link to a record (person, company, or opportunity)',
+		description: 'UUID string of the note to link to a record (person, company, or opportunity). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -79,11 +82,14 @@ export const noteTargetFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Company ID',
+				displayName: 'Company Name or ID',
 				name: 'companyId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCompanies',
+				},
 				default: '',
-				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity.',
+				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -122,18 +128,24 @@ export const noteTargetFields: INodeProperties[] = [
 				],
 			},
 			{
-				displayName: 'Opportunity ID',
+				displayName: 'Opportunity Name or ID',
 				name: 'opportunityId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getOpportunities',
+				},
 				default: '',
-				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company.',
+				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Person ID',
+				displayName: 'Person Name or ID',
 				name: 'personId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getPeople',
+				},
 				default: '',
-				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity.',
+				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
@@ -170,11 +182,14 @@ export const noteTargetFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Company ID',
+				displayName: 'Company Name or ID',
 				name: 'companyId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getCompanies',
+				},
 				default: '',
-				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity.',
+				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Custom Properties',
@@ -213,25 +228,34 @@ export const noteTargetFields: INodeProperties[] = [
 				],
 			},
 			{
-				displayName: 'Note ID',
+				displayName: 'Note Name or ID',
 				name: 'noteId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getNotes',
+				},
 				default: '',
-				description: 'UUID string of the note to link to a record (person, company, or opportunity)',
+				description: 'UUID string of the note to link to a record (person, company, or opportunity). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Opportunity ID',
+				displayName: 'Opportunity Name or ID',
 				name: 'opportunityId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getOpportunities',
+				},
 				default: '',
-				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company.',
+				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Person ID',
+				displayName: 'Person Name or ID',
 				name: 'personId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getPeople',
+				},
 				default: '',
-				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity.',
+				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},

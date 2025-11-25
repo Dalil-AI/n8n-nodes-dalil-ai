@@ -89,8 +89,24 @@ export function processFieldValue(fieldMetadata: FieldMetadata, customProp: any)
 			break;
 
 		case 'MULTI_SELECT':
-			// Multi-select expects an array of option values
-			fieldValue = Array.isArray(customProp.value) ? customProp.value : [];
+
+			if (Array.isArray(customProp.value)) {
+				fieldValue = customProp.value;
+			} else if (typeof customProp.value === 'string') {
+				try {
+					const parsed = JSON.parse(customProp.value);
+					if (Array.isArray(parsed)) {
+						fieldValue = parsed;
+					} else {
+						fieldValue = customProp.value.split(',').map((v: string) => v.trim()).filter((v: string) => v !== '');
+					}
+				} catch (e) {
+					fieldValue = customProp.value.split(',').map((v: string) => v.trim()).filter((v: string) => v !== '');
+				}
+			} else {
+				fieldValue = [];
+			}
+
 			if (!fieldMetadata.isNullable && fieldValue.length === 0) {
 				throw new Error(`At least one selection is required for field ${fieldMetadata.name}`);
 			}
