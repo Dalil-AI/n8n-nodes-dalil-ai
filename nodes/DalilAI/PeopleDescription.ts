@@ -141,7 +141,6 @@ export const peopleFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -332,7 +331,6 @@ export const peopleFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -616,6 +614,14 @@ export const peopleFields: INodeProperties[] = [
 				name: 'Email',
 				value: 'email',
 			},
+			{
+				name: 'LinkedIn',
+				value: 'linkedin',
+			},
+			{
+				name: 'Phone',
+				value: 'phone',
+			},
 		],
 		default: 'name',
 		description: 'Field to search by',
@@ -650,6 +656,38 @@ export const peopleFields: INodeProperties[] = [
 		default: '',
 		placeholder: 'name@email.com',
 		description: 'Email address to search for',
+	},
+	{
+		displayName: 'LinkedIn URL',
+		name: 'searchLinkedin',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['people'],
+				operation: ['search'],
+				searchBy: ['linkedin'],
+			},
+		},
+		default: '',
+		placeholder: 'https://linkedin.com/in/username',
+		description: 'LinkedIn profile URL to search for',
+	},
+	{
+		displayName: 'Phone Number',
+		name: 'searchPhone',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['people'],
+				operation: ['search'],
+				searchBy: ['phone'],
+			},
+		},
+		default: '',
+		placeholder: '+1234567890 or 1234567890',
+		description: 'Phone number to search for (with or without country code)',
 	},
 	{
 		displayName: 'Depth',

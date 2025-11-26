@@ -141,7 +141,6 @@ export const opportunityFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -283,7 +282,6 @@ export const opportunityFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},

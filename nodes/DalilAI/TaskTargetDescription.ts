@@ -115,7 +115,6 @@ export const taskTargetFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -219,7 +218,6 @@ export const taskTargetFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getTaskTargetCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select a custom property for task targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},

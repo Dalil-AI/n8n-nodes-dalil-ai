@@ -18,6 +18,7 @@ import { taskFields, taskOperations } from './TaskDescription';
 import { taskTargetFields, taskTargetOperations } from './TaskTargetDescription';
 import { pipelineFields, pipelineOperations } from './PipelineDescription';
 import { processFieldValue, parseFieldMetadata, filterFieldMetadata } from './FieldTypeHelper';
+import countryCallingCodes from './CountryCodeUtil';
 
 export class DalilAi implements INodeType {
 	description: INodeTypeDescription = {
@@ -1403,9 +1404,87 @@ export class DalilAi implements INodeType {
 						const limit = this.getNodeParameter('limit', i, 1) as number;
 
 						if (searchBy === 'email') {
-							// Search by email using REST API with filter
+							// Search by email using REST API with filter (using ilike)
 							const searchEmail = this.getNodeParameter('searchEmail', i) as string;
-							const filter = `emails.primaryEmail[eq]:${searchEmail}`;
+							const filter = `emails.primaryEmail[ilike]:${searchEmail}`;
+							const query: any = {
+								filter,
+								limit,
+								depth,
+							};
+
+							const responseData = await dalilAiApiRequest.call(this, 'GET', '/rest/people', {}, query);
+
+							if (Array.isArray(responseData)) {
+								responseData.forEach((person) => {
+									returnData.push({
+										json: person,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: responseData,
+									pairedItem: { item: i },
+								});
+							}
+						} else if (searchBy === 'linkedin') {
+							// Search by LinkedIn using REST API with filter
+							const searchLinkedin = this.getNodeParameter('searchLinkedin', i) as string;
+							const filter = `linkedinLink.primaryLinkUrl[ilike]:${searchLinkedin}`;
+							const query: any = {
+								filter,
+								limit,
+								depth,
+							};
+
+							const responseData = await dalilAiApiRequest.call(this, 'GET', '/rest/people', {}, query);
+
+							if (Array.isArray(responseData)) {
+								responseData.forEach((person) => {
+									returnData.push({
+										json: person,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: responseData,
+									pairedItem: { item: i },
+								});
+							}
+						} else if (searchBy === 'phone') {
+							// Search by phone using REST API with filter
+							const searchPhone = (this.getNodeParameter('searchPhone', i)  as string)?.replace(/\s+/g, '');
+
+							let filter = '';
+
+							// Check if phone number starts with "+"
+							if (searchPhone.startsWith('+')) {
+								// Find matching country code
+								let callingCode = '';
+								let phoneNumber = searchPhone;
+
+								// Try to match the longest country code
+								for (const code of countryCallingCodes) {
+									if (searchPhone.startsWith(code) && code.length > callingCode.length) {
+										callingCode = code;
+									}
+								}
+
+								if (callingCode) {
+									// Remove the calling code from the phone number
+									phoneNumber = searchPhone.substring(callingCode.length);
+									filter = `phones.primaryPhoneCallingCode[eq]:${callingCode},phones.primaryPhoneNumber[ilike]:${phoneNumber}`;
+								} else {
+									// No matching country code found, search by number only
+									filter = `phones.primaryPhoneNumber[ilike]:${searchPhone}`;
+								}
+							} else {
+								// No "+" sign, search by number only
+								filter = `phones.primaryPhoneNumber[ilike]:${searchPhone}`;
+							}
+
 							const query: any = {
 								filter,
 								limit,
@@ -1804,52 +1883,25 @@ export class DalilAi implements INodeType {
 							});
 						}
 					} else if (operation === 'search') {
-						// Search companies by name
-						const searchName = this.getNodeParameter('searchName', i) as string;
+						// Search companies
+						const searchBy = this.getNodeParameter('searchBy', i) as string;
 						const depth = this.getNodeParameter('depth', i, 0) as number;
 						const limit = this.getNodeParameter('limit', i, 1) as number;
 
-						const searchQuery = `
-							query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
-								search(
-									searchInput: $searchInput
-									includedObjectNameSingulars: $includedObjectNameSingulars
-									limit: $limit
-								) {
-									edges {
-										node {
-											recordId
-											objectNameSingular
-											label
-											imageUrl
-										}
-									}
-								}
-							}
-						`;
-
-						const variables = {
-							searchInput: searchName,
-							includedObjectNameSingulars: ['company'],
-							limit,
-						};
-
-						const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
-						const recordIds = searchResponse.search.edges.map((edge: any) => edge.node.recordId);
-
-						if (recordIds.length > 0) {
-							// Get full details using REST API with ID filter
-							const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+						if (searchBy === 'linkedin') {
+							// Search by LinkedIn using REST API with filter
+							const searchLinkedin = this.getNodeParameter('searchLinkedin', i) as string;
+							const filter = `linkedinLink.primaryLinkUrl[ilike]:${searchLinkedin}`;
 							const query: any = {
-								filter: idsFilter,
+								filter,
 								limit,
 								depth,
 							};
 
-							const detailsResponse = await dalilAiApiRequest.call(this, 'GET', '/rest/companies', {}, query);
+							const responseData = await dalilAiApiRequest.call(this, 'GET', '/rest/companies', {}, query);
 
-							if (Array.isArray(detailsResponse)) {
-								detailsResponse.forEach((company) => {
+							if (Array.isArray(responseData)) {
+								responseData.forEach((company) => {
 									returnData.push({
 										json: company,
 										pairedItem: { item: i },
@@ -1857,9 +1909,91 @@ export class DalilAi implements INodeType {
 								});
 							} else {
 								returnData.push({
-									json: detailsResponse,
+									json: responseData,
 									pairedItem: { item: i },
 								});
+							}
+						} else if (searchBy === 'domain') {
+							// Search by domain using REST API with filter
+							const searchDomain = this.getNodeParameter('searchDomain', i) as string;
+							const filter = `domainName.primaryLinkUrl[ilike]:${searchDomain}`;
+							const query: any = {
+								filter,
+								limit,
+								depth,
+							};
+
+							const responseData = await dalilAiApiRequest.call(this, 'GET', '/rest/companies', {}, query);
+
+							if (Array.isArray(responseData)) {
+								responseData.forEach((company) => {
+									returnData.push({
+										json: company,
+										pairedItem: { item: i },
+									});
+								});
+							} else {
+								returnData.push({
+									json: responseData,
+									pairedItem: { item: i },
+								});
+							}
+						} else {
+							// Search by name using GraphQL search API
+							const searchName = this.getNodeParameter('searchName', i) as string;
+
+							const searchQuery = `
+								query Search($searchInput: String!, $includedObjectNameSingulars: [String!], $limit: Int!) {
+									search(
+										searchInput: $searchInput
+										includedObjectNameSingulars: $includedObjectNameSingulars
+										limit: $limit
+									) {
+										edges {
+											node {
+												recordId
+												objectNameSingular
+												label
+												imageUrl
+											}
+										}
+									}
+								}
+							`;
+
+							const variables = {
+								searchInput: searchName,
+								includedObjectNameSingulars: ['company'],
+								limit,
+							};
+
+							const searchResponse = await dalilAiGraphqlRequest.call(this, searchQuery, variables);
+							const recordIds = searchResponse.search.edges.map((edge: any) => edge.node.recordId);
+
+							if (recordIds.length > 0) {
+								// Get full details using REST API with ID filter
+								const idsFilter = `id[in]:[${recordIds.join(',')}]`;
+								const query: any = {
+									filter: idsFilter,
+									limit,
+									depth,
+								};
+
+								const detailsResponse = await dalilAiApiRequest.call(this, 'GET', '/rest/companies', {}, query);
+
+								if (Array.isArray(detailsResponse)) {
+									detailsResponse.forEach((company) => {
+										returnData.push({
+											json: company,
+											pairedItem: { item: i },
+										});
+									});
+								} else {
+									returnData.push({
+										json: detailsResponse,
+										pairedItem: { item: i },
+									});
+								}
 							}
 						}
 					}

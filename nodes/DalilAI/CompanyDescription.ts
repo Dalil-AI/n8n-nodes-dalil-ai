@@ -201,7 +201,6 @@ export const companyFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -443,7 +442,6 @@ export const companyFields: INodeProperties[] = [
 								typeOptions: {
 									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
-								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -725,6 +723,34 @@ export const companyFields: INodeProperties[] = [
 	/*                                company:search                              */
 	/* -------------------------------------------------------------------------- */
 	{
+		displayName: 'Search By',
+		name: 'searchBy',
+		type: 'options',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['search'],
+			},
+		},
+		options: [
+			{
+				name: 'Name',
+				value: 'name',
+			},
+			{
+				name: 'LinkedIn',
+				value: 'linkedin',
+			},
+			{
+				name: 'Domain',
+				value: 'domain',
+			},
+		],
+		default: 'name',
+		description: 'Field to search by',
+	},
+	{
 		displayName: 'Company Name',
 		name: 'searchName',
 		type: 'string',
@@ -733,10 +759,43 @@ export const companyFields: INodeProperties[] = [
 			show: {
 				resource: ['company'],
 				operation: ['search'],
+				searchBy: ['name'],
 			},
 		},
 		default: '',
 		description: 'Name of the company to search for (e.g., "Acme Corp", "TechStart")',
+	},
+	{
+		displayName: 'LinkedIn URL',
+		name: 'searchLinkedin',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['search'],
+				searchBy: ['linkedin'],
+			},
+		},
+		default: '',
+		placeholder: 'https://linkedin.com/company/acme-corp',
+		description: 'LinkedIn profile URL to search for',
+	},
+	{
+		displayName: 'Domain URL',
+		name: 'searchDomain',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['search'],
+				searchBy: ['domain'],
+			},
+		},
+		default: '',
+		placeholder: 'https://acmecorp.com or acmecorp.com',
+		description: 'Company domain URL to search for',
 	},
 	{
 		displayName: 'Depth',
