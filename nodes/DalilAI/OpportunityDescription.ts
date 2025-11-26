@@ -108,6 +108,7 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCompanies',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the company associated with this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -134,12 +135,13 @@ export const opportunityFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -161,6 +163,7 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the team member responsible for managing this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -171,6 +174,7 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getPeople',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the person who is the main point of contact for this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -181,6 +185,7 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getOpportunityStageOptions',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -191,9 +196,8 @@ export const opportunityFields: INodeProperties[] = [
 	/*                               opportunity:update                           */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Opportunity ID',
+		displayName: 'Opportunity Name or ID',
 		name: 'opportunityId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -201,6 +205,11 @@ export const opportunityFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getOpportunities',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the opportunity to update',
 	},
@@ -241,6 +250,7 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCompanies',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the company associated with this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -267,12 +277,13 @@ export const opportunityFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getOpportunityCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -301,6 +312,7 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the team member responsible for managing this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -311,6 +323,7 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getPeople',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the person who is the main point of contact for this opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -321,19 +334,21 @@ export const opportunityFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getOpportunityStageOptions',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'Current opportunity stage. Options include "DISCOVERY", "PROPOSAL", "NEGOTIATION", "CLOSED_WON", "CLOSED_LOST". Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['opportunity'],
@@ -347,9 +362,8 @@ export const opportunityFields: INodeProperties[] = [
 	/*                               opportunity:delete                           */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Opportunity ID',
+		displayName: 'Opportunity Name or ID',
 		name: 'opportunityId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -357,6 +371,11 @@ export const opportunityFields: INodeProperties[] = [
 				operation: ['delete'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getOpportunities',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the opportunity to delete',
 	},
@@ -365,9 +384,8 @@ export const opportunityFields: INodeProperties[] = [
 	/*                                opportunity:get                             */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Opportunity ID',
+		displayName: 'Opportunity Name or ID',
 		name: 'opportunityId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -375,17 +393,23 @@ export const opportunityFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getOpportunities',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the opportunity to retrieve',
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['opportunity'],
@@ -459,13 +483,14 @@ export const opportunityFields: INodeProperties[] = [
 				placeholder: 'stage[eq]:DISCOVERY,amount.amountMicros[gt]:1000000',
 			},
 			{
-				displayName: 'Depth Name or ID',
+				displayName: 'Depth',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: '',
+				noDataExpression: false,
+				default: 0,
 				description: 'Level of nested related objects to include: 0 (opportunities only), 1 (opportunities + direct relations), 2 (opportunities + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],

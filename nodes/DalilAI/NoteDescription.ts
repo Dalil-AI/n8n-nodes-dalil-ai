@@ -102,9 +102,8 @@ export const noteFields: INodeProperties[] = [
 	/*                                note:update                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Note ID',
+		displayName: 'Note Title or ID',
 		name: 'noteId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -112,6 +111,11 @@ export const noteFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getNotes',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the note to update',
 	},
@@ -152,13 +156,14 @@ export const noteFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['note'],
@@ -172,9 +177,8 @@ export const noteFields: INodeProperties[] = [
 	/*                                note:delete                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Note ID',
+		displayName: 'Note Title or ID',
 		name: 'noteId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -182,6 +186,11 @@ export const noteFields: INodeProperties[] = [
 				operation: ['delete'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getNotes',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the note to delete',
 	},
@@ -190,9 +199,8 @@ export const noteFields: INodeProperties[] = [
 	/*                                note:get                                    */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Note ID',
+		displayName: 'Note Title or ID',
 		name: 'noteId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -200,17 +208,23 @@ export const noteFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getNotes',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the note to retrieve',
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['note'],
@@ -284,13 +298,14 @@ export const noteFields: INodeProperties[] = [
 				placeholder: 'title[like]:Meeting,visibilityLevel[gte]:2',
 			},
 			{
-				displayName: 'Depth Name or ID',
+				displayName: 'Depth',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: '',
+				noDataExpression: false,
+				default: 0,
 				description: 'Level of nested related objects to include: 0 (notes only), 1 (notes + direct relations), 2 (notes + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],

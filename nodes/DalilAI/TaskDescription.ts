@@ -119,6 +119,7 @@ export const taskFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getTaskStatusOptions',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -130,9 +131,8 @@ export const taskFields: INodeProperties[] = [
 	/*                                task:update                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Task ID',
+		displayName: 'Task Title or ID',
 		name: 'taskId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -140,6 +140,11 @@ export const taskFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getTasks',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the task to update',
 	},
@@ -163,6 +168,7 @@ export const taskFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the workspace member assigned to this task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -190,6 +196,7 @@ export const taskFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getTaskStatusOptions',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'Task status. Options: "TODO" (To do), "IN_PROGRESS" (In progress), "DONE" (Done). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -203,13 +210,14 @@ export const taskFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['task'],
@@ -223,9 +231,8 @@ export const taskFields: INodeProperties[] = [
 	/*                                task:delete                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Task ID',
+		displayName: 'Task Title or ID',
 		name: 'taskId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -233,6 +240,11 @@ export const taskFields: INodeProperties[] = [
 				operation: ['delete'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getTasks',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the task to delete',
 	},
@@ -241,9 +253,8 @@ export const taskFields: INodeProperties[] = [
 	/*                                task:get                                    */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Task ID',
+		displayName: 'Task Title or ID',
 		name: 'taskId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -251,17 +262,23 @@ export const taskFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getTasks',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the task to retrieve',
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['task'],
@@ -335,13 +352,14 @@ export const taskFields: INodeProperties[] = [
 				placeholder: 'status[eq]:TODO,dueAt[gte]:2024-01-01',
 			},
 			{
-				displayName: 'Depth Name or ID',
+				displayName: 'Depth',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: '',
+				noDataExpression: false,
+				default: 0,
 				description: 'Level of nested related objects to include: 0 (tasks only), 1 (tasks + direct relations), 2 (tasks + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],

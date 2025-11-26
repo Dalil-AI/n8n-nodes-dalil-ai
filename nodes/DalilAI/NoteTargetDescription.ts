@@ -58,6 +58,7 @@ export const noteTargetFields: INodeProperties[] = [
 		typeOptions: {
 			loadOptionsMethod: 'getNotes',
 		},
+		noDataExpression: false,
 		required: true,
 		displayOptions: {
 			show: {
@@ -88,6 +89,7 @@ export const noteTargetFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCompanies',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -107,12 +109,13 @@ export const noteTargetFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -134,6 +137,7 @@ export const noteTargetFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getOpportunities',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -144,6 +148,7 @@ export const noteTargetFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getPeople',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -188,6 +193,7 @@ export const noteTargetFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCompanies',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the company to link to the note. Leave empty if linking to person or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -207,12 +213,13 @@ export const noteTargetFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getNoteTargetCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select a custom property for note targets. Available properties depend on your workspace configuration. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -234,6 +241,7 @@ export const noteTargetFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getNotes',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the note to link to a record (person, company, or opportunity). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -244,6 +252,7 @@ export const noteTargetFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getOpportunities',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the opportunity to link to the note. Leave empty if linking to person or company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -254,19 +263,21 @@ export const noteTargetFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getPeople',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the person to link to the note. Leave empty if linking to company or opportunity. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['noteTarget'],
@@ -312,13 +323,14 @@ export const noteTargetFields: INodeProperties[] = [
 		description: 'UUID string of the note relation to retrieve',
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['noteTarget'],
@@ -392,13 +404,14 @@ export const noteTargetFields: INodeProperties[] = [
 				placeholder: 'noteId[eq]:note-uuid,personId[is]:NOT_NULL',
 			},
 			{
-				displayName: 'Depth Name or ID',
+				displayName: 'Depth',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: '',
+				noDataExpression: false,
+				default: 1,
 				description: 'Level of nested related objects to include: 0 (note relations only), 1 (note relations + direct relations), 2 (note relations + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],

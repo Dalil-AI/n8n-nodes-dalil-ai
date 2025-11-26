@@ -743,7 +743,9 @@ export class DalilAi implements INodeType {
 								namePlural: pipeline.namePlural,
 								nameSingular: pipeline.nameSingular,
 								labelSingular: pipeline.labelSingular,
-								labelPlural: pipeline.labelPlural
+								labelPlural: pipeline.labelPlural,
+								parentObjectNameSingular: pipeline.objectMetadata.nameSingular,
+								parentObjectNamePlural: pipeline.objectMetadata.namePlural,
 							};
 							
 							const option = {
@@ -886,9 +888,9 @@ export class DalilAi implements INodeType {
 
 					for (const company of companies) {
 						returnData.push({
-							name: company.name || company.id,
+							name: company.name || "Unknown Name",
 							value: company.id,
-							description: company.domainName?.primaryLinkUrl || undefined,
+							description: company.domainName?.primaryLinkUrl || "Unknown domain name",
 						});
 					}
 				} catch (error) {
@@ -906,14 +908,14 @@ export class DalilAi implements INodeType {
 					const people = Array.isArray(response) ? response : response.data.people || [];
 
 					for (const person of people) {
-						const displayName = person.name?.firstName && person.name?.lastName
-							? `${person.name.firstName} ${person.name.lastName}`.trim()
-							: person.name?.firstName || person.emails?.primaryEmail || person.id;
+						const displayName = (person.name?.firstName || person.name?.lastName)
+							? `${person.name.firstName ?? ""} ${person.name.lastName ?? ""}`.trim()
+							: "Unknown Name";
 
 						returnData.push({
 							name: displayName,
 							value: person.id,
-							description: person.emails?.primaryEmail || undefined,
+							description: person.emails?.primaryEmail || "Unknown email",
 						});
 					}
 				} catch (error) {
@@ -932,9 +934,9 @@ export class DalilAi implements INodeType {
 
 					for (const opportunity of opportunities) {
 						returnData.push({
-							name: opportunity.name || opportunity.id,
+							name: opportunity.name || "Unknown Name",
 							value: opportunity.id,
-							description: opportunity.stage || undefined,
+							description: opportunity.stage || "Unknown stage",
 						});
 					}
 				} catch (error) {
@@ -952,7 +954,7 @@ export class DalilAi implements INodeType {
 					const notes = Array.isArray(response) ? response : response.data.notes || [];
 
 					for (const note of notes) {
-						const displayName = note.title || note.id;
+						const displayName = note.title || "Unknown Title";
 						returnData.push({
 							name: displayName,
 							value: note.id,
@@ -974,9 +976,9 @@ export class DalilAi implements INodeType {
 
 					for (const task of tasks) {
 						returnData.push({
-							name: task.title || task.id,
+							name: task.title || "Unknown Title",
 							value: task.id,
-							description: task.status || undefined,
+							description: task.status || "Unknown status",
 						});
 					}
 				} catch (error) {
@@ -1004,6 +1006,109 @@ export class DalilAi implements INodeType {
 						description: 'Returns the primary object, its directly related objects, and the related objects of those related objects',
 					},
 				];
+			},
+
+			async getPipelineRecords(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				// Get the selected pipeline metadata
+				const selectedPipelineStr = this.getCurrentNodeParameter('selectedPipeline') as string;
+
+				if (!selectedPipelineStr) {
+					return returnData;
+				}
+
+				try {
+					const pipelineMetadata = JSON.parse(selectedPipelineStr);
+					const namePlural = pipelineMetadata.namePlural;
+					const pipelineEndpoint = `/rest/${namePlural}`;
+
+					const response = await dalilAiApiRequest.call(this, 'GET', pipelineEndpoint, {}, { limit: 100 });
+					const records = Array.isArray(response) ? response : response.data?.[namePlural] || [];
+
+					for (const record of records) {
+						// Try to get a meaningful display name
+						const displayName =
+							typeof record.parent?.name === "string"
+								? record.parent.name
+								: record.parent?.name &&
+								typeof record.parent.name === "object" &&
+								(record.parent.name.firstName || record.parent.name.lastName)
+								? `${record.parent.name.firstName ?? ""} ${record.parent.name.lastName ?? ""}`.trim() : "Unknown Name"
+						const description = record.parent?.emails?.primaryEmail || record.parent?.domainName?.primaryLinkUrl || "No Description";
+						returnData.push({
+							name: displayName,
+							value: record.id,
+							description: description,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load pipeline records: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
+			},
+
+			async getPipelineParentRecords(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+
+				// Get the selected pipeline metadata
+				const selectedPipelineStr = this.getCurrentNodeParameter('selectedPipeline') as string;
+
+				if (!selectedPipelineStr) {
+					return returnData;
+				}
+
+				try {
+					const pipelineMetadata = JSON.parse(selectedPipelineStr);
+					const parentObjectNameSingular = pipelineMetadata.parentObjectNameSingular; // 'person' or 'company'
+
+					if (!parentObjectNameSingular) {
+						throw new ApplicationError('Pipeline metadata is missing parentObjectName property');
+					}
+
+					// Determine the endpoint based on parent object type
+					let parentEndpoint: string;
+					if (parentObjectNameSingular === 'person') {
+						parentEndpoint = '/rest/people';
+					} else if (parentObjectNameSingular === 'company') {
+						parentEndpoint = '/rest/companies';
+					} else {
+						throw new ApplicationError(`Unsupported parent object type: ${parentObjectNameSingular}`);
+					}
+
+					const response = await dalilAiApiRequest.call(this, 'GET', parentEndpoint, {}, { limit: 100 });
+					const records = Array.isArray(response?.data?.[pipelineMetadata.parentObjectNamePlural]) ? response?.data?.[pipelineMetadata.parentObjectNamePlural] : [];
+
+					for (const record of records) {
+						let displayName: string;
+						let description: string | undefined;
+
+						if (parentObjectNameSingular === 'person') {
+							// Format person name
+							displayName = (record.name?.firstName || record.name?.lastName)
+								? `${record.name.firstName ?? ""} ${record.name.lastName ?? ""}`.trim()
+								: "Unknown Name";
+							description = record.emails?.primaryEmail || "No email";
+						} else if (parentObjectNameSingular === 'company') {
+							// Format company name
+							displayName = record.name || "Unknown Name";
+							description = record.domainName?.primaryLinkUrl || "No domain name";
+						} else {
+							displayName = record.name || record.title || record.label || record.id;
+						}
+
+						returnData.push({
+							name: displayName,
+							value: record.id,
+							description,
+						});
+					}
+				} catch (error) {
+					throw new ApplicationError(`Failed to load parent records: ${error}`);
+				}
+
+				return returnData.sort((a, b) => a.name.localeCompare(b.name));
 			},
 		},
 	};
@@ -2830,7 +2935,7 @@ export class DalilAi implements INodeType {
 
 					} else if (operation === 'update') {
 						// Update pipeline record
-						const recordId = this.getNodeParameter('recordId', i) as string;
+						const id = this.getNodeParameter('id', i) as string;
 						const updateFields = this.getNodeParameter('updateFields', i, {}) as any;
 						const depth = this.getNodeParameter('depth', i) as number;
 
@@ -2865,7 +2970,7 @@ export class DalilAi implements INodeType {
 						const responseData = await dalilAiApiRequest.call(
 							this,
 							'PATCH',
-							`${pipelineEndpoint}/${recordId}`,
+							`${pipelineEndpoint}/${id}`,
 							body,
 							{ depth },
 						);
@@ -2877,24 +2982,24 @@ export class DalilAi implements INodeType {
 
 					} else if (operation === 'delete') {
 						// Delete pipeline record
-						const recordId = this.getNodeParameter('recordId', i) as string;
+						const id = this.getNodeParameter('id', i) as string;
 						
-						await dalilAiApiRequest.call(this, 'DELETE', `${pipelineEndpoint}/${recordId}`);
+						await dalilAiApiRequest.call(this, 'DELETE', `${pipelineEndpoint}/${id}`);
 						
 						returnData.push({
-							json: { success: true, id: recordId },
+							json: { success: true, id: id },
 							pairedItem: { item: i },
 						});
 
 					} else if (operation === 'get') {
 						// Get pipeline record
-						const recordId = this.getNodeParameter('recordId', i) as string;
+						const id = this.getNodeParameter('id', i) as string;
 						const depth = this.getNodeParameter('depth', i) as number;
 						
 						const responseData = await dalilAiApiRequest.call(
 							this,
 							'GET',
-							`${pipelineEndpoint}/${recordId}`,
+							`${pipelineEndpoint}/${id}`,
 							{},
 							{ depth },
 						);

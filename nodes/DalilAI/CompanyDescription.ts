@@ -91,6 +91,7 @@ export const companyFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the team member responsible for managing this company account. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -167,6 +168,7 @@ export const companyFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCreatedBySourceOptions',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'Source indicating how the company was created (e.g., "EMAIL", "MANUAL", "IMPORT"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -193,12 +195,13 @@ export const companyFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -286,9 +289,8 @@ export const companyFields: INodeProperties[] = [
 	/*                                company:update                              */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Company ID',
+		displayName: 'Company Name or ID',
 		name: 'companyId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -296,6 +298,11 @@ export const companyFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getCompanies',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the company to update',
 	},
@@ -319,6 +326,7 @@ export const companyFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the team member responsible for managing this company account. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -402,6 +410,7 @@ export const companyFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCreatedBySourceOptions',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'Source indicating how the company was created (e.g., "EMAIL", "MANUAL", "IMPORT"). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -428,12 +437,13 @@ export const companyFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getCompanyCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -535,6 +545,7 @@ export const companyFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkPolicyOptions',
 				},
+				noDataExpression: false,
 				default: [],
 				description: 'Company work policy options. Select multiple values like "ON_SITE", "HYBRID", "REMOTE_WORK". Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -555,13 +566,14 @@ export const companyFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['company'],
@@ -575,9 +587,8 @@ export const companyFields: INodeProperties[] = [
 	/*                                company:delete                              */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Company ID',
+		displayName: 'Company Name or ID',
 		name: 'companyId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -585,6 +596,11 @@ export const companyFields: INodeProperties[] = [
 				operation: ['delete'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getCompanies',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the company to delete',
 	},
@@ -593,9 +609,8 @@ export const companyFields: INodeProperties[] = [
 	/*                                company:get                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Company ID',
+		displayName: 'Company Name or ID',
 		name: 'companyId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -603,17 +618,23 @@ export const companyFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getCompanies',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the company to retrieve',
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['company'],
@@ -687,13 +708,14 @@ export const companyFields: INodeProperties[] = [
 				placeholder: 'name[eq]:CompanyName,employees[gt]:50',
 			},
 			{
-				displayName: 'Depth Name or ID',
+				displayName: 'Depth',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: '',
+				noDataExpression: false,
+				default: 0,
 				description: 'Level of nested related objects to include: 0 (companies only), 1 (companies + direct relations), 2 (companies + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],

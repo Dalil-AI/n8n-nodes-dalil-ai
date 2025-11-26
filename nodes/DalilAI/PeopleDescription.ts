@@ -115,6 +115,7 @@ export const peopleFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCompanies',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the associated company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -134,12 +135,13 @@ export const peopleFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -189,6 +191,7 @@ export const peopleFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the team member responsible for managing this person. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -242,9 +245,8 @@ export const peopleFields: INodeProperties[] = [
 	/*                                people:update                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
+		displayName: 'Person Name or ID',
 		name: 'personId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -252,6 +254,11 @@ export const peopleFields: INodeProperties[] = [
 				operation: ['update'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getPeople',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the person to update',
 	},
@@ -299,6 +306,7 @@ export const peopleFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getCompanies',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the associated company. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -318,12 +326,13 @@ export const peopleFields: INodeProperties[] = [
 						displayName: 'Custom Property',
 						values: [
 							{
-								displayName: 'Property Name or ID',
+								displayName: 'Property Name',
 								name: 'property',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getPeopleCustomProperties',
 								},
+								noDataExpression: false,
 								default: '',
 								description: 'Select the custom property from your workspace. Each property has a specific data type and expected value format. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
@@ -380,6 +389,7 @@ export const peopleFields: INodeProperties[] = [
 				typeOptions: {
 					loadOptionsMethod: 'getWorkspaceMembers',
 				},
+				noDataExpression: false,
 				default: '',
 				description: 'UUID string of the team member responsible for managing this person. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
@@ -428,13 +438,14 @@ export const peopleFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['people'],
@@ -448,9 +459,8 @@ export const peopleFields: INodeProperties[] = [
 	/*                                people:delete                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
+		displayName: 'Person Name or ID',
 		name: 'personId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -458,6 +468,11 @@ export const peopleFields: INodeProperties[] = [
 				operation: ['delete'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getPeople',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the person to delete',
 	},
@@ -466,9 +481,8 @@ export const peopleFields: INodeProperties[] = [
 	/*                                people:get                                  */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Person ID',
+		displayName: 'Person Name or ID',
 		name: 'personId',
-		type: 'string',
 		required: true,
 		displayOptions: {
 			show: {
@@ -476,17 +490,23 @@ export const peopleFields: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getPeople',
+		},
+		noDataExpression: false,
 		default: '',
 		description: 'UUID string of the person to retrieve',
 	},
 	{
-		displayName: 'Depth Name or ID',
+		displayName: 'Depth',
 		name: 'depth',
 		type: 'options',
 		typeOptions: {
 			loadOptionsMethod: 'getDepthOptions',
 		},
-		default: '',
+		noDataExpression: false,
+		default: 0,
 		displayOptions: {
 			show: {
 				resource: ['people'],
@@ -560,13 +580,14 @@ export const peopleFields: INodeProperties[] = [
 				placeholder: 'firstName[eq]:John,score[gt]:5',
 			},
 			{
-				displayName: 'Depth Name or ID',
+				displayName: 'Depth',
 				name: 'depth',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getDepthOptions',
 				},
-				default: '',
+				noDataExpression: false,
+				default: 0,
 				description: 'Level of nested related objects to include: 0 (people only), 1 (people + direct relations), 2 (people + relations + their relations). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 		],
